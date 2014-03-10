@@ -59,5 +59,19 @@ class Collision {
          }	
 		else return false;
 	}
+	public boolean collisionBulletEnemy(Bullet bullet, Enemy enemy){
+		int bulletUpperEdge = bullet.getY();
+		int bulletLoweredge = bullet.getY() + bullet.getHeight();
+		int bulletLeftEdge = bullet.getX();
+		int bulletRightEdge = bullet.getX() + bullet.getWidth();
+		
+		int enemyUpperEdge = enemy.getY();
+		int enemyLowerEdge = enemy.getY() + enemy.getWidth();
+		int enemyLeftEdge = enemy.getX();
+		int enemyRightEdge = enemy.getX() + enemy.getHeight();
+		
+		if(enemyUpperEdge >= bulletUpperEdge && enemyLeftEdge <= bulletLeftEdge)
+		
+	}
 	
 }

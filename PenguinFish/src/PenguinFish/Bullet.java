@@ -2,29 +2,37 @@ package PenguinFish;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Bullet {
-	private double currentRadians;
 	private int speed;
-	private Image image;
+	private BufferedImage image;
+	private Image rotatedImage;
 	private int xPosition,yPosition;
-	private double rotation;
 	private final double PI = Math.PI;
 	private Direction direction;
 	public Bullet(int x,int y,Direction direction){
-		currentRadians = PI;
+		rotatedImage = null;
 		this.xPosition = x;
 		this.yPosition = y;
 		this.direction = direction;
 		this.speed = 10;
-		image = new ImageIcon("res/img/Bullet.png").getImage();
-		rotation = setRotation(directionToRotation(direction));
-		
+		try{
+		image = ImageIO.read(new File("res/img/Bullet.png"));
+		}catch(IOException e){
+			System.err.println(e.toString());
+		}
 	}
 	private int directionToRotation(Direction d){
+		
 		int angle = 0;
 		switch(d){
 		case NORTH: angle = 0;break;
@@ -68,37 +76,17 @@ class Bullet {
 		case NORTHWEST:
 			xPosition  -= (int)speed/Math.sqrt(2);
 			yPosition  -= (int)speed/Math.sqrt(2);
-			break;
-			
-		default:
-			break;
-			
-		}
-		rotation = setRotation(directionToRotation(direction));
-		//long before = System.currentTimeMillis();
-		g2d.rotate(rotation, xPosition, yPosition);
-		//long after = System.currentTimeMillis();
-		//System.out.println("Rotate time: " + (after - before) + "ms");
-		g2d.drawImage(image, xPosition, yPosition, panel);
-		//rotation = 360
-		g2d.dispose();
-		
+			break;		
+		}		
 	}
 	public void rotateBullet(Graphics2D g2d){
-//		currentRadians = (currentRadians + rotation)%2*PI;
-//		System.out.println("Current Radians" + currentRadians);
-//		double t = setRotation(directionToRotation(direction));
-//		System.out.println("Rotation: " + rotation);
-//		//System.out.println("Direction: " + t);
-//		while (rotation != currentRadians){
-//			g2d.rotate(PI/12, xPosition+10, yPosition+10);
-//			//g2d.r
-//			System.out.println("Rotate");
-//		}
-
-
-
-		
+		double dir = setRotation(directionToRotation(direction));
+		if(rotatedImage == null){
+		AffineTransform tx = AffineTransform.getRotateInstance(dir, image.getWidth()/2, image.getHeight()/2);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+		rotatedImage = op.filter(image, null);
+		}
+		g2d.drawImage(rotatedImage, xPosition, yPosition, null);
 	}
 	
 	public void setPosition(int x, int y){

@@ -231,9 +231,8 @@ class Game extends JPanel implements Runnable {
 		Bullet tempBullet;
 		for(int i = 0; i < bullets.size();i++){
 			tempBullet = bullets.get(i);
-			tempBullet.setRotation(45);
-			//tempBullet.rotateBullet(g2d);
 			tempBullet.drawBullet(g2d, this);
+			tempBullet.rotateBullet(g2d);
 			if(collision.collisionWallsAmmo(tempBullet.getX(), tempBullet.getY(), tempBullet.getWidth(), tempBullet.getHeight())){
 				bullets.remove(i);
 			}

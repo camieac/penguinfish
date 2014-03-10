@@ -61,11 +61,11 @@ public class Enemy {
 		return enemySize;
 	}
 
-	public int getEnemyX() {
+	public int getX() {
 		return enemyX;
 	}
 
-	public int getEnemyY() {
+	public int getY() {
 		return enemyY;
 	}
 
@@ -265,4 +265,12 @@ System.out.println("Aggro Engaged");
 ////		player.getPlayerSize(), aggroRadius, game);
 //hitOccurred = false;
 //}
+
+	public int getWidth() {
+		return enemySize;
+	}
+
+	public int getHeight() {
+		return enemySize;
+	}
 }
