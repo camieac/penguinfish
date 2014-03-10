@@ -189,46 +189,45 @@ class Player {
 		
 		if(playerUp){
 			if(playerLeft){
-				this.playerDirection = Direction.NORTHWEST;
-				System.out.println("");
+				playerDirection = Direction.NORTHWEST;
 			}
 			if(playerRight){
-				this.playerDirection = Direction.NORTHEAST;
+				playerDirection = Direction.NORTHEAST;
 			}
-			else this.playerDirection = Direction.NORTH;
+			else playerDirection = Direction.NORTH;
 		}
 		if(playerDown){
 			if(playerLeft){
-				this.playerDirection = Direction.SOUTHWEST;
+				playerDirection = Direction.SOUTHWEST;
 			}
 			if(playerRight){
-				this.playerDirection = Direction.SOUTHEAST;
+				playerDirection = Direction.SOUTHEAST;
 			}
-			else this.playerDirection = Direction.SOUTH;
+			else playerDirection = Direction.SOUTH;
 		}
 		if(playerLeft){
 			if(playerUp){
-				this.playerDirection = Direction.NORTHWEST;
+				playerDirection = Direction.NORTHWEST;
 			}
 			if(playerDown){
-				this.playerDirection = Direction.SOUTHWEST;
+				playerDirection = Direction.SOUTHWEST;
 			}
-			else this.playerDirection = Direction.WEST;
+			else playerDirection = Direction.WEST;
 			
 		}
 		if(playerRight){
 			if(playerUp){
-				this.playerDirection = Direction.NORTHEAST;
+				playerDirection = Direction.NORTHEAST;
 			}
 			if(playerDown){
-				this.playerDirection = Direction.SOUTHEAST;
+				playerDirection = Direction.SOUTHEAST;
 			}
-			else this.playerDirection = Direction.EAST;
+			else playerDirection = Direction.EAST;
 		}
 		
 		
 		
-		
+		System.out.println(playerDirection.toString());
 		
 		
 	}
