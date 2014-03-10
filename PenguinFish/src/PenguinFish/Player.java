@@ -191,7 +191,7 @@ class Player {
 			if(playerLeft){
 				playerDirection = Direction.NORTHWEST;
 			}
-			if(playerRight){
+			else if(playerRight){
 				playerDirection = Direction.NORTHEAST;
 			}
 			else playerDirection = Direction.NORTH;
@@ -200,7 +200,7 @@ class Player {
 			if(playerLeft){
 				playerDirection = Direction.SOUTHWEST;
 			}
-			if(playerRight){
+			else if(playerRight){
 				playerDirection = Direction.SOUTHEAST;
 			}
 			else playerDirection = Direction.SOUTH;
@@ -209,7 +209,7 @@ class Player {
 			if(playerUp){
 				playerDirection = Direction.NORTHWEST;
 			}
-			if(playerDown){
+			else if(playerDown){
 				playerDirection = Direction.SOUTHWEST;
 			}
 			else playerDirection = Direction.WEST;
@@ -219,7 +219,7 @@ class Player {
 			if(playerUp){
 				playerDirection = Direction.NORTHEAST;
 			}
-			if(playerDown){
+			else if(playerDown){
 				playerDirection = Direction.SOUTHEAST;
 			}
 			else playerDirection = Direction.EAST;

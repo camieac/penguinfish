@@ -46,8 +46,8 @@ public class GUI extends JFrame implements ActionListener {
 	public GUI() {
 		
 		super();
-		panelWidth = 1000;
-		panelHeight = 1000;
+		panelWidth = 500;
+		panelHeight = 500;
 		initialise();
 		this.addKeyListener(new KeyAdapter() {		// Listeners for the keyboard
 			public void keyPressed(KeyEvent evt) {	// Method for the key pressed

@@ -242,8 +242,11 @@ class Game extends JPanel implements Runnable {
 			tempBullet = bullets.get(i);
 			//tempBullet.setRotation(45);
 			tempBullet.drawBullet(g2d, this);
+			if(collision.collisionWallsAmmo(tempBullet.getX(), tempBullet.getY(), tempBullet.getWidth(), tempBullet.getHeight())){
+				bullets.remove(i);
+			}
 		}
-		
+		System.out.println("# of bullets" + bullets.size());
 		
 		
 		// Draw "Game Over" screen when life = 0

@@ -54,4 +54,11 @@ class Collision {
     	 return directions;
 	}
 	
+	public boolean collisionWallsAmmo(int imageX, int imageY, int imageWidth, int imageHeight){
+		if (imageX + imageWidth <= 0 ||imageX >= width || imageY + imageHeight <= 0 || imageY >= height) {
+	 		return true;
+         }	
+		else return false;
+	}
+	
 }

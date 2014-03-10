@@ -72,5 +72,17 @@ class Bullet {
 	public void setRotation(int degree){
 		rotation = PI/180*degree;
 	}
+	public int getX(){
+		return xPosition;
+	}
+	public int getY(){
+		return yPosition;
+	}
+	public int getWidth(){
+		return image.getWidth(null);
+	}
+	public int getHeight(){
+		return image.getHeight(null);
+	}
 	
 }
