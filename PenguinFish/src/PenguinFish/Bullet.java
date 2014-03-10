@@ -29,6 +29,7 @@ class Bullet {
 			yPosition -= speed;
 			break;
 		case NORTHEAST:
+			System.out.println("Broken");
 			xPosition += (int)speed/Math.sqrt(2);
 			yPosition -= (int)speed/Math.sqrt(2);
 			break;
@@ -50,6 +51,7 @@ class Bullet {
 			xPosition -= speed;
 			break;
 		case NORTHWEST: 
+			System.out.println("Broken 2");
 			xPosition  -= (int)speed/Math.sqrt(2);
 			yPosition  -= (int)speed/Math.sqrt(2);
 			break;

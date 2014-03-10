@@ -22,6 +22,7 @@ class Player {
 	
 	private int playerX = 200, playerY = 200;
 	public Player(){
+		playerDirection = Direction.SOUTH;
 		imageDead = new ImageIcon("res/img/CharacterDead.png").getImage();
 		defaultPlayerDown = new ImageIcon("res/img/CharacterDefault.png").getImage();
 		defaultPlayerUp = new ImageIcon("res/img/CharacterDefaultBack.png")
@@ -39,35 +40,58 @@ class Player {
 				.getImage();
 	}
 	public void drawPlayer(Graphics2D g2d, JPanel panel){
-	// Draw player
-			if (life >= 50) {
-				if (playerUp == true) {
-					g2d.drawImage(defaultPlayerUp, playerX, playerY, panel);
-				} else if (playerDown == true) {
-					g2d.drawImage(defaultPlayerDown, playerX, playerY, panel);
-				} else if (playerLeft == true) {
-					g2d.drawImage(defaultPlayerLeft, playerX, playerY, panel);
-				} else if (playerRight == true) {
-					g2d.drawImage(defaultPlayerRight, playerX, playerY, panel);
-				} else {
-					g2d.drawImage(defaultPlayerDown, playerX, playerY, panel);
-				}
-			}
-	
-	
-	if (life < 50 && life > 0) {
-		if (playerUp == true) {
-			g2d.drawImage(hurtPlayerUp, playerX, playerY, panel);
-		} else if (playerDown == true) {
-			g2d.drawImage(hurtPlayerDown, playerX, playerY, panel);
-		} else if (playerLeft == true) {
-			g2d.drawImage(hurtPlayerLeft, playerX, playerY, panel);
-		} else if (playerRight == true) {
-			g2d.drawImage(hurtPlayerRight, playerX, playerY, panel);
-		} else {
-			g2d.drawImage(hurtPlayerDown, playerX, playerY, panel);
-		}
+//	// Draw player
+//			if (life >= 50) {
+//				if (playerUp == true) {
+//					g2d.drawImage(defaultPlayerUp, playerX, playerY, panel);
+//				} else if (playerDown == true) {
+//					g2d.drawImage(defaultPlayerDown, playerX, playerY, panel);
+//				} else if (playerLeft == true) {
+//					g2d.drawImage(defaultPlayerLeft, playerX, playerY, panel);
+//				} else if (playerRight == true) {
+//					g2d.drawImage(defaultPlayerRight, playerX, playerY, panel);
+//				} else {
+//					g2d.drawImage(defaultPlayerDown, playerX, playerY, panel);
+//				}
+//			}
+//	
+//	
+//	if (life < 50 && life > 0) {
+//		if (playerUp == true) {
+//			g2d.drawImage(hurtPlayerUp, playerX, playerY, panel);
+//		} else if (playerDown == true) {
+//			g2d.drawImage(hurtPlayerDown, playerX, playerY, panel);
+//		} else if (playerLeft == true) {
+//			g2d.drawImage(hurtPlayerLeft, playerX, playerY, panel);
+//		} else if (playerRight == true) {
+//			g2d.drawImage(hurtPlayerRight, playerX, playerY, panel);
+//		} else {
+//			g2d.drawImage(hurtPlayerDown, playerX, playerY, panel);
+//		}
+//	}
+		
+
+		// Draw player
+		Image image = defaultPlayerDown;
+	switch(playerDirection){
+	case NORTH:image = defaultPlayerUp;
+		break;
+	case NORTHEAST:image = defaultPlayerUp;
+		break;
+	case EAST:image = defaultPlayerRight;
+		break;
+	case SOUTHEAST:image = defaultPlayerDown;
+		break;
+	case SOUTH:image = defaultPlayerDown;
+		break;
+	case SOUTHWEST:image = defaultPlayerDown;
+		break;
+	case WEST:image = defaultPlayerLeft;
+		break;
+	case NORTHWEST:image = defaultPlayerUp;
+		break;
 	}
+	g2d.drawImage(image, playerX, playerY, panel);
 	}
 	public int getDistanceDown(){
 		return this.distanceDown;
@@ -166,6 +190,7 @@ class Player {
 		if(playerUp){
 			if(playerLeft){
 				this.playerDirection = Direction.NORTHWEST;
+				System.out.println("");
 			}
 			if(playerRight){
 				this.playerDirection = Direction.NORTHEAST;
