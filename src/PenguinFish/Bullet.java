@@ -5,6 +5,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.text.StyleContext.SmallAttributeSet;
 
 class Bullet {
 	private int speed;
@@ -18,42 +19,41 @@ class Bullet {
 		this.yPosition = y;
 		this.direction = direction;
 		this.speed = 10;
-		image = new ImageIcon("res/img/Bullet.png").getImage();
+		image = new ImageIcon("res/img/FishSkeleton.png").getImage();
 		rotation = 0;
 		
 	}
 	
 	public void drawBullet(Graphics2D g2d, JPanel panel){
 		switch(direction){
-		case NORTH: 
+		case NORTH:
 			yPosition -= speed;
 			break;
 		case NORTHEAST:
-			System.out.println("Broken");
-			xPosition += (int)speed/Math.sqrt(2);
-			yPosition -= (int)speed/Math.sqrt(2);
+			//System.out.println("Broken");
+			xPosition += (int) speed/Math.sqrt(2);
+			yPosition -= (int) speed/Math.sqrt(2);
 			break;
-		case EAST: 
+		case EAST:
 			xPosition += speed;
 			break;
-		case SOUTHEAST: 
-			xPosition  += (int)speed/Math.sqrt(2);
-			yPosition  += (int)speed/Math.sqrt(2);
+		case SOUTHEAST:
+			xPosition  += (int) speed/Math.sqrt(2);
+			yPosition  += (int) speed/Math.sqrt(2);
 			break;
 		case SOUTH: 
 			yPosition += speed;
 			break;
-		case SOUTHWEST: 
-			xPosition  -= (int)speed/Math.sqrt(2);
-			yPosition  += (int)speed/Math.sqrt(2);
+		case SOUTHWEST:
+			xPosition  -= (int) speed/Math.sqrt(2);
+			yPosition  += (int) speed/Math.sqrt(2);
 			break;
-		case WEST: 
+		case WEST:
 			xPosition -= speed;
 			break;
-		case NORTHWEST: 
-			System.out.println("Broken 2");
-			xPosition  -= (int)speed/Math.sqrt(2);
-			yPosition  -= (int)speed/Math.sqrt(2);
+		case NORTHWEST:
+			xPosition  -= (int) speed/Math.sqrt(2);
+			yPosition  -= (int) speed/Math.sqrt(2);
 			break;
 		default:
 		System.out.println("ERROR");

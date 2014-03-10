@@ -121,7 +121,7 @@ class Game extends JPanel implements Runnable {
 			case KeyEvent.VK_RIGHT:
 				player.setPlayerRight(true);
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_D:
 				addBullet();
 				break;
 			case KeyEvent.VK_S:
@@ -132,7 +132,7 @@ class Game extends JPanel implements Runnable {
 	}
 	
 	public void addBullet(){
-		bullets.add(new Bullet(player.getPlayerX(),player.getPlayerY(),player.getDirection()));
+		bullets.add(new Bullet(player.getPlayerX(), player.getPlayerY(), player.getDirection()));
 	}
 
 	// public void timeForNewHeart(){

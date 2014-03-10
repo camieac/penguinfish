@@ -25,6 +25,7 @@ class Player {
 		playerDirection = Direction.SOUTH;
 		imageDead = new ImageIcon("res/img/CharacterDead.png").getImage();
 		defaultPlayerDown = new ImageIcon("res/img/CharacterDefault.png").getImage();
+		//defaultPlayerDown = defaultPlayerDown.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
 		defaultPlayerUp = new ImageIcon("res/img/CharacterDefaultBack.png")
 				.getImage();
 		defaultPlayerLeft = new ImageIcon("res/img/CharacterDefaultLeft.png")
@@ -225,14 +226,11 @@ class Player {
 			else playerDirection = Direction.EAST;
 		}
 		
-		
-		
-		System.out.println(playerDirection.toString());
-		
+		//System.out.println(playerDirection.toString());
 		
 	}
 	public Direction getDirection() {
-		return playerDirection;
+		return this.playerDirection;
 	}
 	
 }
