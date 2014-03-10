@@ -16,12 +16,12 @@ public class Enemy {
 	Direction directionX, directionY;
 	Random rand = new Random();
 
+	//Constructor
 	public Enemy(int enemyX, int enemyY, Image enemy) {
 		this.enemyX = enemyX;
 		this.enemyY = enemyY;
 		this.enemySize = 10;
 		this.image = enemy;
-
 
 		directionX = Direction.getRandomX();
 		directionY = Direction.getRandomY();
@@ -29,14 +29,15 @@ public class Enemy {
 		aggroRadius = 30;
 
 		hit = false;
-	
 
 	}
 
+	//draw enemy on gui
 	public void drawEnemy(Game game, Graphics2D g2d) {
-			g2d.drawImage(image, enemyX, enemyY, game);
+		g2d.drawImage(image, enemyX, enemyY, game);
 	}
 
+	//Getters start
 	public int getDistanceDown() {
 		return distanceDown;
 	}
@@ -68,9 +69,9 @@ public class Enemy {
 	public int getEnemyY() {
 		return enemyY;
 	}
+	//Getters end
 
-	
-
+	//Setters start
 	public void setDistanceDown(int distanceDown) {
 		this.distanceDown = distanceDown;
 	}
@@ -102,13 +103,9 @@ public class Enemy {
 	public void setEnemyY(int enemyY) {
 		this.enemyY = enemyY;
 	}
+	//Setters end
 
-	
-
-	
-
-	
-
+	//
 	public void setupDistances(int baseDistance) {
 		this.distanceUp = baseDistance * (rand.nextInt(20)) / 10;
 		this.distanceDown = -baseDistance * (rand.nextInt(20)) / 10;
@@ -136,9 +133,9 @@ public class Enemy {
 
 	}
 
-	public void doAggro(int playerX, int playerY, int playerSize,
+	public void aggression(int playerX, int playerY, int playerSize,
 			int aggroRadius, Game game) {
-System.out.println("Aggro Engaged");
+		System.out.println("Aggro Engaged");
 		// Move enemy to the right
 		if (directionX == Direction.EAST) {
 			if (enemyX >= (playerX + playerSize + aggroRadius)) {
@@ -211,15 +208,17 @@ System.out.println("Aggro Engaged");
 
 	}
 
-	public void moveEnemy(Player player,Game game) {
-		if(aggroTimeRemaining > 0){
-			doAggro(player.getPlayerX(), player.getPlayerY(), player.getPlayerSize(), aggroRadius, game);
+	//ememy movement
+	public void moveEnemy(Player player, Game game) {
+		if (aggroTimeRemaining > 0) {
+				aggression(player.getPlayerX(), player.getPlayerY(), player.getPlayerSize(), aggroRadius, game);
 			aggroTimeRemaining--;
 		}
 		// Move enemy to right
 		if (directionX == Direction.EAST) {
 			moveRight();
-		} // Move enemy to the left
+		} 
+		// Move enemy to the left
 		if (directionX == Direction.WEST) {
 			moveLeft();
 		}
@@ -227,42 +226,42 @@ System.out.println("Aggro Engaged");
 		if (directionY == Direction.SOUTH) {
 			moveDown();
 		}
+		// Move enemy up
 		if (directionY == Direction.NORTH) {
-			// Move enemy up
+			
 			moveUp();
 		}
 	}
 
+	//enemy hits a wall
 	public void hitWall(Collision collision, Player player, Game game) {
 		boolean hitOccurred = false;
-		Direction[] newDirections = collision.collisionWalls(enemyX, enemyY, enemySize, enemySize,
-				directionX, directionY);
+		Direction[] newDirections = collision.collisionWalls(enemyX, enemyY,
+				enemySize, enemySize, directionX, directionY);
 		directionX = newDirections[0];
 		directionY = newDirections[1];
 
 	}
 
+	//two enemies collide
 	public void enemyHitsEnemy(Collision collision) {
-	
-//					enemy.getMovement2()[0] = leftRight[i];
-//					enemy.getMovement2()[1] = topBottom[i];
-					collision.collisionObjects(enemyX,
-							enemyY, enemySize,
-							enemySize, enemyX,
-							enemyY, enemySize,
-							enemySize, directionX,directionY);
-//					leftRight[i] = enemy.getMovement2()[0];
-//					topBottom[i] = enemy.getMovement2()[1];
-		
+
+		// enemy.getMovement2()[0] = leftRight[i];
+		// enemy.getMovement2()[1] = topBottom[i];
+		collision.collisionObjects(enemyX, enemyY, enemySize, enemySize,
+				enemyX, enemyY, enemySize, enemySize, directionX, directionY);
+		// leftRight[i] = enemy.getMovement2()[0];
+		// topBottom[i] = enemy.getMovement2()[1];
+
 	}
-//	if (Math.abs(enemyX - player.getPlayerX()) >= 80
-//	&& Math.abs(enemyY - player.getPlayerY()) >= 80) {
-////System.out.println("Wall hit");
-//hitOccurred = true;
-//}
-//if (hitOccurred) {
-////engageAggro(player.getPlayerX(), player.getPlayerY(),
-////		player.getPlayerSize(), aggroRadius, game);
-//hitOccurred = false;
-//}
+	// if (Math.abs(enemyX - player.getPlayerX()) >= 80
+	// && Math.abs(enemyY - player.getPlayerY()) >= 80) {
+	// //System.out.println("Wall hit");
+	// hitOccurred = true;
+	// }
+	// if (hitOccurred) {
+	// //engageAggro(player.getPlayerX(), player.getPlayerY(),
+	// // player.getPlayerSize(), aggroRadius, game);
+	// hitOccurred = false;
+	// }
 }
