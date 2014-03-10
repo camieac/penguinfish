@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Bullet {
+	private double currentRadians;
 	private int speed;
 	private Image image;
 	private int xPosition,yPosition;
@@ -14,22 +15,36 @@ class Bullet {
 	private final double PI = Math.PI;
 	private Direction direction;
 	public Bullet(int x,int y,Direction direction){
+		currentRadians = PI;
 		this.xPosition = x;
 		this.yPosition = y;
 		this.direction = direction;
 		this.speed = 10;
 		image = new ImageIcon("res/img/Bullet.png").getImage();
-		rotation = 0;
+		rotation = setRotation(directionToRotation(direction));
 		
 	}
-	
+	private int directionToRotation(Direction d){
+		int angle = 0;
+		switch(d){
+		case NORTH: angle = 0;break;
+		case NORTHEAST: angle = 45;break;
+		case EAST: angle = 90;break;
+		case SOUTHEAST: angle = 135;break;
+		case SOUTH: angle = 180;break;
+		case SOUTHWEST: angle = 225;break;
+		case WEST: angle = 270;break;
+		case NORTHWEST: angle = 315;break;
+		}
+		return angle;
+	}
 	public void drawBullet(Graphics2D g2d, JPanel panel){
 		switch(direction){
 		case NORTH: 
 			yPosition -= speed;
+			
 			break;
 		case NORTHEAST:
-			System.out.println("Broken");
 			xPosition += (int)speed/Math.sqrt(2);
 			yPosition -= (int)speed/Math.sqrt(2);
 			break;
@@ -50,27 +65,48 @@ class Bullet {
 		case WEST: 
 			xPosition -= speed;
 			break;
-		case NORTHWEST: 
-			System.out.println("Broken 2");
+		case NORTHWEST:
 			xPosition  -= (int)speed/Math.sqrt(2);
 			yPosition  -= (int)speed/Math.sqrt(2);
 			break;
+			
 		default:
-		System.out.println("ERROR");
 			break;
+			
 		}
+		rotation = setRotation(directionToRotation(direction));
+		//long before = System.currentTimeMillis();
+		g2d.rotate(rotation, xPosition, yPosition);
+		//long after = System.currentTimeMillis();
+		//System.out.println("Rotate time: " + (after - before) + "ms");
 		g2d.drawImage(image, xPosition, yPosition, panel);
+		//rotation = 360
+		g2d.dispose();
+		
 	}
 	public void rotateBullet(Graphics2D g2d){
-		g2d.rotate(rotation, xPosition + 15, yPosition + 15);
+//		currentRadians = (currentRadians + rotation)%2*PI;
+//		System.out.println("Current Radians" + currentRadians);
+//		double t = setRotation(directionToRotation(direction));
+//		System.out.println("Rotation: " + rotation);
+//		//System.out.println("Direction: " + t);
+//		while (rotation != currentRadians){
+//			g2d.rotate(PI/12, xPosition+10, yPosition+10);
+//			//g2d.r
+//			System.out.println("Rotate");
+//		}
+
+
+
+		
 	}
 	
 	public void setPosition(int x, int y){
 		this.xPosition = x;
 		this.yPosition = y;
 	}
-	public void setRotation(int degree){
-		rotation = PI/180*degree;
+	public double setRotation(int degree){
+		return PI/180*degree;
 	}
 	public int getX(){
 		return xPosition;

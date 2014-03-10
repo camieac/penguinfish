@@ -128,11 +128,8 @@ public class GUI extends JFrame implements ActionListener {
 		});
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Action Performed");
 		if(e.getSource() == restartMenuItem){
-			System.out.println("Game restarted");
 			game.reset();
 		}else if(e.getSource() == paceIncreaseMenuItem){
 			game.incrementPace(1);

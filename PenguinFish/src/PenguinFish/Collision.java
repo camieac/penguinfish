@@ -30,24 +30,23 @@ class Collision {
             }
 	
 	public Direction[] collisionWalls(int imageX, int imageY, int imageWidth, int imageHeight, Direction directionX,Direction directionY){
-	 	boolean testHit = false;
+	 
 		if (imageX <= 0) {
 	 		directionX = Direction.EAST;
-	 		testHit = true;
+	 	
          }	
     	 if (imageX >= (width - imageWidth)) {
     		 directionX = Direction.WEST;
-    		 testHit = true;
+    		
     	 }
     	 if (imageY <= 0) {
     		 directionY = Direction.SOUTH;
-    		 testHit = true;
+
     	 }
     	 if (imageY >= (height - imageHeight)) {
     		 directionY = Direction.NORTH;
-    		 testHit = true;
     	 }
-    	 if(testHit) System.out.println("Enemy hit wall");
+    	
     	 Direction[] directions = new Direction[2];
          directions[0] = directionX;
          directions[1] = directionY;

@@ -10,7 +10,6 @@ import javax.swing.*;
 
 class Game extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
-	// X and Y positions for thea enemy and the player
 	private int baseDistance;
 	private Collision collision;
 	private Enemy[] enemies;
@@ -65,7 +64,6 @@ class Game extends JPanel implements Runnable {
 		thread.start();
 		game = true;
 		gameOver = false;
-		System.out.println("Ba: " + pace);
 	}
 
 	private void difficultyWait() {
@@ -135,14 +133,7 @@ class Game extends JPanel implements Runnable {
 		bullets.add(new Bullet(player.getPlayerX(),player.getPlayerY(),player.getDirection()));
 	}
 
-	// public void timeForNewHeart(){
-	// int randHeart = generator.nextInt(60000);
-	// long newTime = System.currentTimeMillis();
-	// if (newTime - startTime > randHeart){
-	// newHeart = true;
-	// }
-	// }
-
+	
 	// Receive the key released
 	public void keyReleased(KeyEvent evt) {
 
@@ -240,14 +231,13 @@ class Game extends JPanel implements Runnable {
 		Bullet tempBullet;
 		for(int i = 0; i < bullets.size();i++){
 			tempBullet = bullets.get(i);
-			//tempBullet.setRotation(45);
+			tempBullet.setRotation(45);
+			//tempBullet.rotateBullet(g2d);
 			tempBullet.drawBullet(g2d, this);
 			if(collision.collisionWallsAmmo(tempBullet.getX(), tempBullet.getY(), tempBullet.getWidth(), tempBullet.getHeight())){
 				bullets.remove(i);
 			}
-		}
-		System.out.println("# of bullets" + bullets.size());
-		
+		}	
 		
 		// Draw "Game Over" screen when life = 0
 		if (gameOver) {
@@ -286,13 +276,7 @@ class Game extends JPanel implements Runnable {
 				gameOver = true;
 			}
 
-//			if (player.getPlayerX() + player.getPlayerSize() >= heartX
-//					&& player.getPlayerX() <= heartX + enemies.getEnemySize()
-//					&& player.getPlayerY() + player.getPlayerSize() >= heartY
-//					&& player.getPlayerY() <= heartY + enemies.getEnemySize()) {
-//				player.setLife(player.getLife() + 10);
-//				newHeart = false;
-//			}
+		
 
 			
 

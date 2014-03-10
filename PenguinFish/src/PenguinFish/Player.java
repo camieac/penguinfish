@@ -7,12 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Player {
-	private Image defaultPlayerDown, defaultPlayerUp, defaultPlayerLeft, defaultPlayerRight;
-	int distanceDown;
-	int distanceLeft;
-	int distanceRight;
+	private Image defaultPlayerDown, defaultPlayerUp, defaultPlayerLeft, defaultPlayerRight,
+	defaultPlayerNW, defaultPlayerNE, defaultPlayerSW, defaultPlayerSE;
+	int distance;
 	Direction playerDirection;
-	int distanceUp;
 	private Image hurtPlayerDown, hurtPlayerUp, hurtPlayerLeft, hurtPlayerRight,imageDead;
 	int life = 100;
 	private int playerSize = 30;
@@ -31,6 +29,13 @@ class Player {
 				.getImage();
 		defaultPlayerRight = new ImageIcon("res/img/CharacterDefaultRight.png")
 				.getImage();
+		defaultPlayerNW = new ImageIcon("res/img/CharacterDefaultNW.png").getImage();
+		defaultPlayerNE = new ImageIcon("res/img/CharacterDefaultNE.png")
+				.getImage();
+		defaultPlayerSW = new ImageIcon("res/img/CharacterDefaultSW.png")
+				.getImage();
+		defaultPlayerSE = new ImageIcon("res/img/CharacterDefaultSE.png")
+				.getImage();
 		
 		hurtPlayerDown = new ImageIcon("res/img/CharacterHurt.png").getImage();
 		hurtPlayerUp = new ImageIcon("res/img/CharacterHurtBack.png").getImage();
@@ -40,62 +45,53 @@ class Player {
 				.getImage();
 	}
 	public void drawPlayer(Graphics2D g2d, JPanel panel){
-//	// Draw player
-//			if (life >= 50) {
-//				if (playerUp == true) {
-//					g2d.drawImage(defaultPlayerUp, playerX, playerY, panel);
-//				} else if (playerDown == true) {
-//					g2d.drawImage(defaultPlayerDown, playerX, playerY, panel);
-//				} else if (playerLeft == true) {
-//					g2d.drawImage(defaultPlayerLeft, playerX, playerY, panel);
-//				} else if (playerRight == true) {
-//					g2d.drawImage(defaultPlayerRight, playerX, playerY, panel);
-//				} else {
-//					g2d.drawImage(defaultPlayerDown, playerX, playerY, panel);
-//				}
-//			}
-//	
-//	
-//	if (life < 50 && life > 0) {
-//		if (playerUp == true) {
-//			g2d.drawImage(hurtPlayerUp, playerX, playerY, panel);
-//		} else if (playerDown == true) {
-//			g2d.drawImage(hurtPlayerDown, playerX, playerY, panel);
-//		} else if (playerLeft == true) {
-//			g2d.drawImage(hurtPlayerLeft, playerX, playerY, panel);
-//		} else if (playerRight == true) {
-//			g2d.drawImage(hurtPlayerRight, playerX, playerY, panel);
-//		} else {
-//			g2d.drawImage(hurtPlayerDown, playerX, playerY, panel);
-//		}
-//	}
-		
-
 		// Draw player
 		Image image = defaultPlayerDown;
+		if (life >=50){
+		
 	switch(playerDirection){
 	case NORTH:image = defaultPlayerUp;
 		break;
-	case NORTHEAST:image = defaultPlayerUp;
+	case NORTHEAST:image = defaultPlayerNE;
 		break;
 	case EAST:image = defaultPlayerRight;
 		break;
-	case SOUTHEAST:image = defaultPlayerDown;
+	case SOUTHEAST:image = defaultPlayerSE;
 		break;
 	case SOUTH:image = defaultPlayerDown;
 		break;
-	case SOUTHWEST:image = defaultPlayerDown;
+	case SOUTHWEST:image = defaultPlayerSW;
 		break;
 	case WEST:image = defaultPlayerLeft;
 		break;
-	case NORTHWEST:image = defaultPlayerUp;
+	case NORTHWEST:image = defaultPlayerNW;
 		break;
+	}
+		}
+	if (life <= 50 && life > 0){
+	
+	switch(playerDirection){
+	case NORTH:image = hurtPlayerUp;
+		break;
+	case NORTHEAST:image = defaultPlayerNE;
+		break;
+	case EAST:image = hurtPlayerRight;
+		break;
+	case SOUTHEAST:image = defaultPlayerSE;
+		break;
+	case SOUTH:image = hurtPlayerDown;
+		break;
+	case SOUTHWEST:image =defaultPlayerSW;
+		break;
+	case WEST:image = hurtPlayerLeft;
+		break;
+	case NORTHWEST:image = defaultPlayerNW;
+		break;
+	}
 	}
 	g2d.drawImage(image, playerX, playerY, panel);
 	}
-	public int getDistanceDown(){
-		return this.distanceDown;
-	}
+	
 	public int getLife(){
 		return this.life;
 	}
@@ -123,27 +119,27 @@ class Player {
 	public void movePlayer(JPanel panel, boolean speedHeld){
 		if (playerUp == true && playerY >= 15) {
 			if (speedHeld) {
-				playerY += 2 * distanceDown;
+				playerY -= 2 * distance;
 			} else
-				playerY += distanceDown;
+				playerY -= distance;
 		}
 		if (playerDown == true && playerY <= (panel.getHeight() - playerSize)) {
 			if (speedHeld) {
-				playerY += 2 * distanceUp;
+				playerY += 2 * distance;
 			} else
-				playerY += distanceUp;
+				playerY += distance;
 		}
 		if (playerLeft == true && playerX >= 0) {
 			if (speedHeld) {
-				playerX += 2 * distanceLeft;
+				playerX -= 2 * distance;
 			} else
-				playerX += distanceLeft;
+				playerX -= distance;
 		}
 		if (playerRight == true && playerX <= (panel.getWidth() - playerSize)) {
 			if (speedHeld) {
-				playerX += 2 * distanceRight;
+				playerX += 2 * distance;
 			} else
-				playerX += distanceRight;
+				playerX += distance;
 		}
 		
 	}
@@ -176,11 +172,7 @@ class Player {
 		this.playerY = n;
 	}
 	public void setupDistances(int baseDistance) {
-		this.distanceUp = baseDistance;
-		this.distanceDown = -baseDistance;
-		this.distanceLeft = -baseDistance;
-		this.distanceRight = baseDistance;
-		
+		this.distance = baseDistance;
 	}
 	public Image getPlayerDeadImage() {	
 		return imageDead;
@@ -196,7 +188,7 @@ class Player {
 			}
 			else playerDirection = Direction.NORTH;
 		}
-		if(playerDown){
+		else if(playerDown){
 			if(playerLeft){
 				playerDirection = Direction.SOUTHWEST;
 			}
@@ -205,7 +197,7 @@ class Player {
 			}
 			else playerDirection = Direction.SOUTH;
 		}
-		if(playerLeft){
+		else if(playerLeft){
 			if(playerUp){
 				playerDirection = Direction.NORTHWEST;
 			}
@@ -215,7 +207,7 @@ class Player {
 			else playerDirection = Direction.WEST;
 			
 		}
-		if(playerRight){
+		else if(playerRight){
 			if(playerUp){
 				playerDirection = Direction.NORTHEAST;
 			}
@@ -227,7 +219,6 @@ class Player {
 		
 		
 		
-		System.out.println(playerDirection.toString());
 		
 		
 	}
