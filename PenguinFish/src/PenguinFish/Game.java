@@ -14,7 +14,7 @@ class Game extends JPanel implements Runnable {
 	private Collision collision;
 	private Enemy[] enemies;
 	private LinkedList<Bullet> bullets;
-	private Image fullHeart, emptyHeart;
+	private Image fullHeart, emptyHeart, background;
 
 	private Graphics2D g2d;
 	private boolean game, gameOver;
@@ -109,6 +109,7 @@ class Game extends JPanel implements Runnable {
 		
 			case KeyEvent.VK_UP:
 				player.setPlayerUp(true);
+				
 				break;
 			case KeyEvent.VK_DOWN:
 				player.setPlayerDown(true);
@@ -166,7 +167,7 @@ class Game extends JPanel implements Runnable {
 
 		fullHeart = new ImageIcon("res/img/Heart01.png").getImage();
 		emptyHeart = new ImageIcon("res/img/Heart02.png").getImage();
-
+		background = new ImageIcon("res/img/Background.png").getImage();
 	}
 
 	// Interface
@@ -176,6 +177,7 @@ class Game extends JPanel implements Runnable {
 		super.paintComponent(gc);
 
 		g2d = (Graphics2D) gc;
+		g2d.drawImage(background, -1600, -2750, this);
 		if (newHeart) {
 
 			g2d.drawImage(fullHeart, heartX, heartY, this);

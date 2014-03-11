@@ -17,8 +17,13 @@ class Player {
 	
 	boolean playerUp, playerDown, playerLeft, playerRight;
 	
-	
 	private int playerX = 200, playerY = 200;
+	private boolean backgroundBottomEdge;
+	private boolean backgroundTopEdge;
+	private boolean backgroundLeftEdge;
+	private boolean backgroundRightEdge;
+	
+	
 	public Player(){
 		playerDirection = Direction.SOUTH;
 		imageDead = new ImageIcon("res/img/CharacterDead.png").getImage();
@@ -117,6 +122,61 @@ class Player {
 		return this.playerY;
 	}
 	public void movePlayer(JPanel panel, boolean speedHeld){
+		
+		////////////////////////////////////////////////////
+		//Trying to get background to move!!!
+		////////////////////////////////////
+		/*
+		if (backgroundLeftEdge){
+			if(backgroundTopEdge){
+				//move player NW
+			}
+			else if(backgroundBottomEdge){
+				//move player SW
+			}
+			else{
+				//move player W
+			}
+		}
+		else if (backgroundRightEdge){
+			if (backgroundTopEdge){
+				//move player NE
+			}
+			else if(backgroundBottomEdge){
+				//move player SE
+			}
+			else{
+				//move player E
+			}
+		}
+		else if (backgroundTopEdge){
+			if(backgroundLeftEdge){
+				//move player NW
+			}
+			else if(backgroundRightEdge){
+				//move player NE
+			}
+			else{
+				//move player N
+			}
+		}
+		else if (backgroundBottomEdge){
+			if (backgroundLeftEdge){
+				//move player SW
+			}
+			else if(backgroundRightEdge){
+				//move player SE
+			}
+			else{
+				//move player S
+			}
+		}
+		*/
+		//////////////////////////////////////////////
+		//Otherwise the player stays put in the centre of the screen and 
+		//the background image moves as the camera moves  
+		//////////////////////////////////////////////
+		
 		if (playerUp == true && playerY >= 15) {
 			if (speedHeld) {
 				playerY -= 2 * distance;
