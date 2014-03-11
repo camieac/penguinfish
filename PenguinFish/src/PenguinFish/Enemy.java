@@ -138,7 +138,7 @@ public class Enemy {
 
 	public void doAggro(int playerX, int playerY, int playerSize,
 			int aggroRadius, Game game) {
-System.out.println("Aggro Engaged");
+//System.out.println("Aggro Engaged");
 		// Move enemy to the right
 		if (directionX == Direction.EAST) {
 			if (enemyX >= (playerX + playerSize + aggroRadius)) {
@@ -203,7 +203,7 @@ System.out.println("Aggro Engaged");
 			hit = true;
 		}
 		if (hit) {
-			System.out.println("Player hit enemy");
+			//System.out.println("Player hit enemy");
 			aggroTimeRemaining = baseAggroTime;
 			player.deductHealth();
 			hit = false;

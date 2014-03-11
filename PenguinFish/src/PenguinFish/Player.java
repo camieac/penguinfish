@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Player {
+	boolean movePlayer;
 	private Image defaultPlayerDown, defaultPlayerUp, defaultPlayerLeft, defaultPlayerRight,
 	defaultPlayerNW, defaultPlayerNE, defaultPlayerSW, defaultPlayerSE;
 	int distance;
@@ -17,14 +18,17 @@ class Player {
 	
 	boolean playerUp, playerDown, playerLeft, playerRight;
 	
-	private int playerX = 200, playerY = 200;
+	private int playerX, playerY;
 	private boolean backgroundBottomEdge;
 	private boolean backgroundTopEdge;
 	private boolean backgroundLeftEdge;
 	private boolean backgroundRightEdge;
 	
 	
-	public Player(){
+	public Player(int w, int h){
+		movePlayer = false;
+		playerX = (w/2) - (playerSize/2);
+		playerY = (h/2) - (playerSize/2);
 		playerDirection = Direction.SOUTH;
 		imageDead = new ImageIcon("res/img/CharacterDead.png").getImage();
 		defaultPlayerDown = new ImageIcon("res/img/CharacterDefault.png").getImage();
@@ -77,6 +81,7 @@ class Player {
 	
 	switch(playerDirection){
 	case NORTH:image = hurtPlayerUp;
+		
 		break;
 	case NORTHEAST:image = defaultPlayerNE;
 		break;
@@ -126,7 +131,7 @@ class Player {
 		////////////////////////////////////////////////////
 		//Trying to get background to move!!!
 		////////////////////////////////////
-		/*
+		
 		if (backgroundLeftEdge){
 			if(backgroundTopEdge){
 				//move player NW
@@ -171,7 +176,7 @@ class Player {
 				//move player S
 			}
 		}
-		*/
+		
 		//////////////////////////////////////////////
 		//Otherwise the player stays put in the centre of the screen and 
 		//the background image moves as the camera moves  
@@ -232,7 +237,9 @@ class Player {
 		this.playerY = n;
 	}
 	public void setupDistances(int baseDistance) {
-		this.distance = baseDistance;
+		if(movePlayer) this.distance = baseDistance;
+		else this.distance = 0;
+		
 	}
 	public Image getPlayerDeadImage() {	
 		return imageDead;

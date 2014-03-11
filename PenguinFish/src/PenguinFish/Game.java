@@ -3,16 +3,19 @@ package PenguinFish;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.*;
 
 class Game extends JPanel implements Runnable {
+	private Background bg;
+	int periodsSinceFire;
 	private static final long serialVersionUID = 1L;
 	private int baseDistance;
 	private Collision collision;
-	private Enemy[] enemies;
+	private LinkedList<Enemy> enemies;
 	private LinkedList<Bullet> bullets;
 	private Image fullHeart, emptyHeart, background;
 
@@ -36,7 +39,9 @@ class Game extends JPanel implements Runnable {
 	private int width, height; // Size of the window
 
 	public Game(int panelWidth, int panelHeight) {
-		numberOfEnemies = 1;
+		bg = new Background(panelWidth,panelHeight);
+		periodsSinceFire = 0;
+		numberOfEnemies = 0;
 		width = panelWidth;
 		height = panelHeight;
 		rand = new Random();
@@ -49,14 +54,15 @@ class Game extends JPanel implements Runnable {
 
 	private void createGame() {
 		pace = 2;
-		enemies = new Enemy[numberOfEnemies];
-		player = new Player();
+		enemies = new LinkedList<Enemy>();;
+		player = new Player(width,height);
 		bullets = new LinkedList<Bullet>();
 		//bullet = new Bullet(player.getPlayerX(),player.getPlayerY());
 		
 		for(int i = 0; i< numberOfEnemies;i++){
-		enemies[i] = new Enemy(rand.nextInt(width), rand.nextInt(height), new ImageIcon("res/img/Enemy01.png").getImage());
-		enemies[i].setupDistances(baseDistance);
+		Enemy tempEnemy = new Enemy(rand.nextInt(width), rand.nextInt(height), new ImageIcon("res/img/Enemy01.png").getImage());
+		tempEnemy.setupDistances(baseDistance);
+		enemies.add(tempEnemy);
 		}
 		
 		player.setupDistances(baseDistance);
@@ -109,7 +115,6 @@ class Game extends JPanel implements Runnable {
 		
 			case KeyEvent.VK_UP:
 				player.setPlayerUp(true);
-				
 				break;
 			case KeyEvent.VK_DOWN:
 				player.setPlayerDown(true);
@@ -131,7 +136,12 @@ class Game extends JPanel implements Runnable {
 	}
 	
 	public void addBullet(){
+		
+		if(periodsSinceFire >= 3){
 		bullets.add(new Bullet(player.getPlayerX(),player.getPlayerY(),player.getDirection()));
+		periodsSinceFire = 0;
+		}
+		
 	}
 
 	
@@ -235,20 +245,7 @@ class Game extends JPanel implements Runnable {
 			tempBullet = bullets.get(i);
 			tempBullet.drawBullet(g2d, this);
 			tempBullet.rotateBullet(g2d);
-			if(collision.collisionWallsAmmo(tempBullet.getX(), tempBullet.getY(), tempBullet.getWidth(), tempBullet.getHeight())){
-				bullets.remove(i);
-				System.out.println("Bullet removed");
-				boolean col;
-				for (int j = 0; j < enemies.length; j++){
-					col = collision.collisionBulletEnemy(tempBullet, enemies[j]);
-					if (col){
-						bullets.remove();
-						System.out.println("Hit");
-						enemies[j].setEnemyX(-enemies[j].getWidth()-10);
-						enemies[j].setEnemyY(-enemies[j].getHeight()-10);
-					}
-			}
-		}	
+			
 		}
 		// Draw "Game Over" screen when life = 0
 		if (gameOver) {
@@ -267,13 +264,60 @@ class Game extends JPanel implements Runnable {
 	}
 
 	public void run() {
+		
 		while (game) {
+			periodsSinceFire++;
+			//System.out.println(periodsSinceFire);
 			for(Enemy enemy : enemies){
 			enemy.moveEnemy(player,this);
 			enemy.hitWall(collision, player, this);
 			enemy.hitPlayer(collision, player, this);
 			enemy.enemyHitsEnemy(collision);
+			
+			
 			}
+			ArrayList<Bullet> bulletFlags = new ArrayList<Bullet>();
+			ArrayList<Enemy> enemyFlags = new ArrayList<Enemy>();
+			//int i = 0; i < bullets.size(); i++
+			boolean col = false;
+			boolean wall = false;
+			try{
+			for(Bullet b : bullets){
+				wall = collision.collisionWallsAmmo(b);
+				
+				if(wall && !bulletFlags.contains(b)){
+					bulletFlags.add(b);
+				}
+				
+				//int j = 0; j < enemies.size(); j++
+				for (Enemy e : enemies){
+					col = collision.collisionBulletEnemy(b, e);
+					if (col){
+						//bullets.remove(b);
+						if (!bulletFlags.contains(b)){
+						bulletFlags.add(b);
+						}
+					//	System.out.println("Hit");
+						//enemies.remove(e);
+						if(!enemyFlags.contains(e)){
+						enemyFlags.add(e);
+						}
+					}
+					
+			}
+			}
+			}
+			catch(ConcurrentModificationException e){
+				System.err.println("It broke");
+			}
+			for(Bullet b : bulletFlags){
+				bullets.remove(b);
+			}
+			for(Enemy e : enemyFlags){
+				enemies.remove(e);
+			}
+			bulletFlags.removeAll(bullets);
+			enemyFlags.removeAll(enemies);
 			// repaint();
 
 			difficultyWait();
@@ -287,7 +331,7 @@ class Game extends JPanel implements Runnable {
 				gameOver = true;
 			}
 
-		
+			bg.drawBackground(player.getDirection(),baseDistance);
 
 			
 
