@@ -10,7 +10,8 @@ enum Direction {
 	SOUTH(),
 	SOUTHWEST(),
 	WEST(),
-	NORTHWEST();
+	NORTHWEST(),
+	NONE();
 	
 	
 	private Direction(){

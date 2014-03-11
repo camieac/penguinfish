@@ -187,7 +187,8 @@ class Game extends JPanel implements Runnable {
 		super.paintComponent(gc);
 
 		g2d = (Graphics2D) gc;
-		g2d.drawImage(background, -1600, -2750, this);
+		bg.drawBackground(player.getDirection(),baseDistance,g2d,this);
+		//g2d.drawImage(background, -1600, -2750, this);
 		if (newHeart) {
 
 			g2d.drawImage(fullHeart, heartX, heartY, this);
@@ -254,6 +255,7 @@ class Game extends JPanel implements Runnable {
 			gc.setColor(Color.black);
 			gc.drawString("Game Over", (width / 2) - 25, height / 2);
 		}
+		
 		}
 
 	public void reset() {
@@ -331,7 +333,7 @@ class Game extends JPanel implements Runnable {
 				gameOver = true;
 			}
 
-			bg.drawBackground(player.getDirection(),baseDistance);
+			
 
 			
 

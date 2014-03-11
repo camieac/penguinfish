@@ -282,6 +282,8 @@ class Player {
 				playerDirection = Direction.SOUTHEAST;
 			}
 			else playerDirection = Direction.EAST;
+		}else{
+			playerDirection = Direction.NONE;
 		}
 		
 		
