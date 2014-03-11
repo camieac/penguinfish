@@ -61,7 +61,7 @@ class Collision {
 	}
 	public boolean collisionBulletEnemy(Bullet bullet, Enemy enemy){
 		int bulletUpperEdge = bullet.getY();
-		int bulletLoweredge = bullet.getY() + bullet.getHeight();
+		int bulletLowerEdge = bullet.getY() + bullet.getHeight();
 		int bulletLeftEdge = bullet.getX();
 		int bulletRightEdge = bullet.getX() + bullet.getWidth();
 		
@@ -70,7 +70,15 @@ class Collision {
 		int enemyLeftEdge = enemy.getX();
 		int enemyRightEdge = enemy.getX() + enemy.getHeight();
 		
-		if(enemyUpperEdge >= bulletUpperEdge && enemyLeftEdge <= bulletLeftEdge)
+		if(enemyUpperEdge == bulletLowerEdge && enemyLeftEdge >= bulletLeftEdge - bullet.getWidth() && enemyRightEdge <= bulletRightEdge + bullet.getWidth() ||
+		   enemyLowerEdge == bulletUpperEdge && enemyLeftEdge >= bulletLeftEdge - bullet.getWidth() && enemyRightEdge <= bulletRightEdge + bullet.getWidth() ||
+		   enemyLeftEdge == bulletRightEdge && enemyLowerEdge >= bulletLowerEdge + bullet.getHeight() && enemyUpperEdge <= bulletUpperEdge - bullet.getHeight() ||
+		   enemyRightEdge == bulletLeftEdge && enemyLowerEdge >= bulletLowerEdge + bullet.getHeight() && enemyUpperEdge <= bulletUpperEdge - bullet.getHeight()){
+			System.out.println("Bullet eradicated!");
+			return true;
+
+		}
+		else return false;
 		
 	}
 	

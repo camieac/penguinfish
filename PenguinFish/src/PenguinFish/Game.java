@@ -119,7 +119,7 @@ class Game extends JPanel implements Runnable {
 			case KeyEvent.VK_RIGHT:
 				player.setPlayerRight(true);
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_F:
 				addBullet();
 				break;
 			case KeyEvent.VK_S:
@@ -235,9 +235,15 @@ class Game extends JPanel implements Runnable {
 			tempBullet.rotateBullet(g2d);
 			if(collision.collisionWallsAmmo(tempBullet.getX(), tempBullet.getY(), tempBullet.getWidth(), tempBullet.getHeight())){
 				bullets.remove(i);
+				for (int j = 0; j < enemies.length; j++){
+					if (collision.collisionBulletEnemy(tempBullet, enemies[j])){
+						bullets.remove();
+						enemies[j].setEnemyX(-enemies[j].getWidth()-10);
+						enemies[j].setEnemyY(-enemies[j].getHeight()-10);
+					}
 			}
 		}	
-		
+		}
 		// Draw "Game Over" screen when life = 0
 		if (gameOver) {
 			g2d.drawImage(player.getPlayerDeadImage(), player.getPlayerX(), player.getPlayerY(),
@@ -245,7 +251,7 @@ class Game extends JPanel implements Runnable {
 			gc.setColor(Color.black);
 			gc.drawString("Game Over", (width / 2) - 25, height / 2);
 		}
-	}
+		}
 
 	public void reset() {
 		loadImages();

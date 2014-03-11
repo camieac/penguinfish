@@ -26,7 +26,7 @@ class Bullet {
 		this.direction = direction;
 		this.speed = 10;
 		try{
-		image = ImageIO.read(new File("res/img/Bullet.png"));
+		image = ImageIO.read(new File("res/img/FishSkeleton.png"));
 		}catch(IOException e){
 			System.err.println(e.toString());
 		}
