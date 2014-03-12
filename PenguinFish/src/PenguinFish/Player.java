@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Player {
-	boolean movePlayer;
 	private Image defaultPlayerDown, defaultPlayerUp, defaultPlayerLeft, defaultPlayerRight,
 	defaultPlayerNW, defaultPlayerNE, defaultPlayerSW, defaultPlayerSE;
 	int distance;
@@ -15,15 +14,9 @@ class Player {
 	private Image hurtPlayerDown, hurtPlayerUp, hurtPlayerLeft, hurtPlayerRight,imageDead;
 	int life = 100;
 	private int playerSize = 30;
-	
-	boolean playerUp, playerDown, playerLeft, playerRight;
-	
 	private int playerX, playerY;
-	private boolean backgroundBottomEdge;
-	private boolean backgroundTopEdge;
-	private boolean backgroundLeftEdge;
-	private boolean backgroundRightEdge;
-	
+	boolean playerUp, playerDown, playerLeft, playerRight;
+	boolean movePlayer;
 	
 	public Player(int w, int h){
 		movePlayer = false;
@@ -32,72 +25,60 @@ class Player {
 		playerDirection = Direction.SOUTH;
 		imageDead = new ImageIcon("res/img/CharacterDead.png").getImage();
 		defaultPlayerDown = new ImageIcon("res/img/CharacterDefault.png").getImage();
-		defaultPlayerUp = new ImageIcon("res/img/CharacterDefaultBack.png")
-				.getImage();
-		defaultPlayerLeft = new ImageIcon("res/img/CharacterDefaultLeft.png")
-				.getImage();
-		defaultPlayerRight = new ImageIcon("res/img/CharacterDefaultRight.png")
-				.getImage();
+		defaultPlayerUp = new ImageIcon("res/img/CharacterDefaultBack.png").getImage();
+		defaultPlayerLeft = new ImageIcon("res/img/CharacterDefaultLeft.png").getImage();
+		defaultPlayerRight = new ImageIcon("res/img/CharacterDefaultRight.png").getImage();
 		defaultPlayerNW = new ImageIcon("res/img/CharacterDefaultNW.png").getImage();
-		defaultPlayerNE = new ImageIcon("res/img/CharacterDefaultNE.png")
-				.getImage();
-		defaultPlayerSW = new ImageIcon("res/img/CharacterDefaultSW.png")
-				.getImage();
-		defaultPlayerSE = new ImageIcon("res/img/CharacterDefaultSE.png")
-				.getImage();
-		
+		defaultPlayerNE = new ImageIcon("res/img/CharacterDefaultNE.png").getImage();
+		defaultPlayerSW = new ImageIcon("res/img/CharacterDefaultSW.png").getImage();
+		defaultPlayerSE = new ImageIcon("res/img/CharacterDefaultSE.png").getImage();
 		hurtPlayerDown = new ImageIcon("res/img/CharacterHurt.png").getImage();
 		hurtPlayerUp = new ImageIcon("res/img/CharacterHurtBack.png").getImage();
-		hurtPlayerLeft = new ImageIcon("res/img/CharacterHurtLeft.png")
-				.getImage();
-		hurtPlayerRight = new ImageIcon("res/img/CharacterHurtRight.png")
-				.getImage();
+		hurtPlayerLeft = new ImageIcon("res/img/CharacterHurtLeft.png").getImage();
+		hurtPlayerRight = new ImageIcon("res/img/CharacterHurtRight.png").getImage();
 	}
 	public void drawPlayer(Graphics2D g2d, JPanel panel){
 		// Draw player
 		Image image = defaultPlayerDown;
 		if (life >=50){
-		
-	switch(playerDirection){
-	case NORTH:image = defaultPlayerUp;
-		break;
-	case NORTHEAST:image = defaultPlayerNE;
-		break;
-	case EAST:image = defaultPlayerRight;
-		break;
-	case SOUTHEAST:image = defaultPlayerSE;
-		break;
-	case SOUTH:image = defaultPlayerDown;
-		break;
-	case SOUTHWEST:image = defaultPlayerSW;
-		break;
-	case WEST:image = defaultPlayerLeft;
-		break;
-	case NORTHWEST:image = defaultPlayerNW;
-		break;
+			switch(playerDirection){
+			case NORTH:image = defaultPlayerUp;
+				break;
+			case NORTHEAST:image = defaultPlayerNE;
+				break;
+			case EAST:image = defaultPlayerRight;
+				break;
+			case SOUTHEAST:image = defaultPlayerSE;
+				break;
+			case SOUTH:image = defaultPlayerDown;
+				break;
+			case SOUTHWEST:image = defaultPlayerSW;
+				break;
+			case WEST:image = defaultPlayerLeft;
+				break;
+			case NORTHWEST:image = defaultPlayerNW;
+				break;
 	}
 		}
 	if (life <= 50 && life > 0){
-	
-	switch(playerDirection){
-	case NORTH:image = hurtPlayerUp;
-		
-		break;
-	case NORTHEAST:image = defaultPlayerNE;
-		break;
-	case EAST:image = hurtPlayerRight;
-		break;
-	case SOUTHEAST:image = defaultPlayerSE;
-		break;
-	case SOUTH:image = hurtPlayerDown;
-		break;
-	case SOUTHWEST:image =defaultPlayerSW;
-		break;
-	case WEST:image = hurtPlayerLeft;
-		break;
-	case NORTHWEST:image = defaultPlayerNW;
-		break;
-	}
+			switch(playerDirection){
+			case NORTH:image = hurtPlayerUp;		
+				break;
+			case NORTHEAST:image = defaultPlayerNE;
+				break;
+			case EAST:image = hurtPlayerRight;
+				break;
+			case SOUTHEAST:image = defaultPlayerSE;
+				break;
+			case SOUTH:image = hurtPlayerDown;
+				break;
+			case SOUTHWEST:image =defaultPlayerSW;
+				break;
+			case WEST:image = hurtPlayerLeft;
+				break;
+			case NORTHWEST:image = defaultPlayerNW;
+				break;
+			}
 	}
 	g2d.drawImage(image, playerX, playerY, panel);
 	}
@@ -127,60 +108,6 @@ class Player {
 		return this.playerY;
 	}
 	public void movePlayer(JPanel panel, boolean speedHeld){
-		
-		////////////////////////////////////////////////////
-		//Trying to get background to move!!!
-		////////////////////////////////////
-		
-		if (backgroundLeftEdge){
-			if(backgroundTopEdge){
-				//move player NW
-			}
-			else if(backgroundBottomEdge){
-				//move player SW
-			}
-			else{
-				//move player W
-			}
-		}
-		else if (backgroundRightEdge){
-			if (backgroundTopEdge){
-				//move player NE
-			}
-			else if(backgroundBottomEdge){
-				//move player SE
-			}
-			else{
-				//move player E
-			}
-		}
-		else if (backgroundTopEdge){
-			if(backgroundLeftEdge){
-				//move player NW
-			}
-			else if(backgroundRightEdge){
-				//move player NE
-			}
-			else{
-				//move player N
-			}
-		}
-		else if (backgroundBottomEdge){
-			if (backgroundLeftEdge){
-				//move player SW
-			}
-			else if(backgroundRightEdge){
-				//move player SE
-			}
-			else{
-				//move player S
-			}
-		}
-		
-		//////////////////////////////////////////////
-		//Otherwise the player stays put in the centre of the screen and 
-		//the background image moves as the camera moves  
-		//////////////////////////////////////////////
 		
 		if (playerUp == true && playerY >= 15) {
 			if (speedHeld) {
@@ -285,10 +212,6 @@ class Player {
 		}else{
 			playerDirection = Direction.NONE;
 		}
-		
-		
-		
-		
 		
 	}
 	public Direction getDirection() {

@@ -25,7 +25,6 @@ class Game extends JPanel implements Runnable {
 	private int heartX;
 
 	private int heartY;
-	private boolean newHeart;
 	private int numberOfEnemies;
 
 	private int pace;
@@ -163,7 +162,6 @@ class Game extends JPanel implements Runnable {
 			case KeyEvent.VK_RIGHT:
 				player.setPlayerRight(false);
 				break;
-			
 			case KeyEvent.VK_S:
 				speedHeld = false;
 				break;
@@ -181,18 +179,12 @@ class Game extends JPanel implements Runnable {
 	}
 
 	// Interface
-	@Override
 	public void paintComponent(Graphics gc) {
 		setOpaque(false);
 		super.paintComponent(gc);
 
 		g2d = (Graphics2D) gc;
 		bg.drawBackground(player.getDirection(),baseDistance,g2d,this);
-		//g2d.drawImage(background, -1600, -2750, this);
-		if (newHeart) {
-
-			g2d.drawImage(fullHeart, heartX, heartY, this);
-		}
 		for(Enemy enemy : enemies){
 		enemy.drawEnemy(this, g2d);
 		}
@@ -325,20 +317,35 @@ class Game extends JPanel implements Runnable {
 			difficultyWait();
 			player.setDirection();
 			player.movePlayer(this, speedHeld);
-
 			repaint();
-
+			if (bg.getCurrentLeft()==0  && player.getPlayerX() <= width/2-(player.getPlayerSize()/2)){
+				player.movePlayer=true;
+				player.setupDistances(baseDistance);
+				bg.drawBackground(Direction.NONE, baseDistance, g2d, this);
+				bg.getDisplayableBackground();
+			}
+			if (player.getPlayerX() >= width/2-(player.getPlayerSize()/2) && bg.getCurrentLeft()==bg.background.getWidth()-bg.displayableWidth){
+				player.movePlayer=true;
+				
+			}
+			if (player.getPlayerY() <= height/2-(player.getPlayerSize()/2) && bg.getCurrentTop()==0){
+				player.movePlayer=true;
+				player.setupDistances(baseDistance);
+			}
+			if (player.getPlayerY() >= height/2-(player.getPlayerSize()/2) && bg.getCurrentTop()==bg.background.getHeight()-bg.displayableHeight){
+				player.movePlayer=true;
+				player.setupDistances(baseDistance);
+			}
+			if(bg.getCurrentTop()!=0 && bg.getCurrentTop()!= bg.background.getHeight()-bg.displayableHeight && 
+			   bg.getCurrentLeft()!=0 && bg.getCurrentLeft()!=bg.background.getWidth()-bg.displayableWidth) {
+				player.movePlayer = false;
+				player.setupDistances(baseDistance);
+			}
+			System.out.println(player.movePlayer);
 			if (player.getLife() <= 0) {
 				game = false;
 				gameOver = true;
 			}
-
-			
-
-			
-
-		
-
 		}
 	}
 	

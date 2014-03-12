@@ -1,8 +1,8 @@
 package PenguinFish;
 
 class Collision {
-	int width;;   //need getter and setter for the width and heights of the console window
-	int height;   //make sure it's the active part if the window and not the entire window
+	int width;
+	int height;  
 	public Collision(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -46,7 +46,6 @@ class Collision {
     	 if (imageY >= (height - imageHeight)) {
     		 directionY = Direction.NORTH;
     	 }
-    	
     	 Direction[] directions = new Direction[2];
          directions[0] = directionX;
          directions[1] = directionY;
@@ -65,22 +64,6 @@ class Collision {
 		else return false;
 	}
 	public boolean collisionBulletEnemy(Bullet bullet, Enemy enemy){
-//		int bulletUpperEdge = bullet.getY();
-//		int bulletLowerEdge = bullet.getY() + bullet.getHeight();
-//		int bulletLeftEdge = bullet.getX();
-//		int bulletRightEdge = bullet.getX() + bullet.getWidth();
-//		
-//		int enemyUpperEdge = enemy.getY();
-//		int enemyLowerEdge = enemy.getY() + enemy.getWidth();
-//		int enemyLeftEdge = enemy.getX();
-//		int enemyRightEdge = enemy.getX() + enemy.getHeight();
-//		
-//		if(enemyUpperEdge <= bulletLowerEdge+5 && enemyUpperEdge >= bulletLowerEdge-5 && enemyLeftEdge >= bulletLeftEdge - bullet.getWidth() && enemyRightEdge <= bulletRightEdge + bullet.getWidth() ||
-//		   enemyLowerEdge <= bulletUpperEdge-5 && enemyLowerEdge >= bulletUpperEdge+5  && enemyLeftEdge >= bulletLeftEdge - bullet.getWidth() && enemyRightEdge <= bulletRightEdge + bullet.getWidth() ||
-//		   enemyLeftEdge <= bulletRightEdge+5 && enemyLeftEdge >= bulletRightEdge-5 && enemyLowerEdge >= bulletLowerEdge + bullet.getHeight() && enemyUpperEdge <= bulletUpperEdge - bullet.getHeight() ||
-//		   enemyRightEdge <= bulletLeftEdge-5 && enemyRightEdge >= bulletLeftEdge+5 && enemyLowerEdge >= bulletLowerEdge + bullet.getHeight() && enemyUpperEdge <= bulletUpperEdge - bullet.getHeight()){
-//			return true;
-//		}
 		int enemyX = enemy.getX()+(enemy.getWidth()/2);
 		int enemyY = enemy.getY()+(enemy.getHeight()/2);
 		
@@ -94,8 +77,5 @@ class Collision {
 			return true;
 		}
 		else return false;
-		
-		
 	}
-	
 }
