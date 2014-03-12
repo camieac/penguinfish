@@ -55,59 +55,62 @@ public class Background {
 		double sqrt2bd = Math.sqrt(2)*bd;
 		double changeX = 0,changeY = 0;
 		if(movingBackground){
-		switch(d){
-		case NORTH: 
-			if(moveY){
-			changeX = 0;
-			changeY = -bd;
-			}
-			break;
-		case NORTHEAST: 
-			if(moveX && moveY){
-			changeX = sqrt2bd;
-			changeY = -sqrt2bd;
-			}
-			break;
-		case EAST: 
-			if(moveX){
-			changeX = bd;
-			changeY = 0;
-			}
-			break;
-		case SOUTHEAST: 
-			if(moveX && moveY){
-			changeX = sqrt2bd;
-			changeY = sqrt2bd;
-			}
-			break;
-		case SOUTH: 
-			if(moveY){
-			changeX = 0;
-			changeY = bd;
-			}
-			break;
-		case SOUTHWEST: 
-			if(moveX && moveY){
-			changeX = -sqrt2bd;
-			changeY = sqrt2bd;
-			}
-			break;
-		case WEST: 
-			if(moveX){
-			changeX = -bd;
-			changeY = 0;
-			}
-			break;
-		case NORTHWEST: 
-			if(moveX && moveY){
-			changeX = -sqrt2bd;
-			changeY = -sqrt2bd;
-			}
-			break;
-		case NONE:
-			changeX = 0;
-			changeY = 0;
-		}
+			Movement movement = new Movement(d,bd);
+			changeX = movement.getX();
+			changeY = movement.getY();
+//		switch(d){
+//		case NORTH: 
+//			if(moveY){
+//			changeX = 0;
+//			changeY = -bd;
+//			}
+//			break;
+//		case NORTHEAST: 
+//			if(moveX && moveY){
+//			changeX = sqrt2bd;
+//			changeY = -sqrt2bd;
+//			}
+//			break;
+//		case EAST: 
+//			if(moveX){
+//			changeX = bd;
+//			changeY = 0;
+//			}
+//			break;
+//		case SOUTHEAST: 
+//			if(moveX && moveY){
+//			changeX = sqrt2bd;
+//			changeY = sqrt2bd;
+//			}
+//			break;
+//		case SOUTH: 
+//			if(moveY){
+//			changeX = 0;
+//			changeY = bd;
+//			}
+//			break;
+//		case SOUTHWEST: 
+//			if(moveX && moveY){
+//			changeX = -sqrt2bd;
+//			changeY = sqrt2bd;
+//			}
+//			break;
+//		case WEST: 
+//			if(moveX){
+//			changeX = -bd;
+//			changeY = 0;
+//			}
+//			break;
+//		case NORTHWEST: 
+//			if(moveX && moveY){
+//			changeX = -sqrt2bd;
+//			changeY = -sqrt2bd;
+//			}
+//			break;
+//		case NONE:
+//			changeX = 0;
+//			changeY = 0;
+//		}
 		}
 		if(speedHeld){
 			changeX *= 2;
