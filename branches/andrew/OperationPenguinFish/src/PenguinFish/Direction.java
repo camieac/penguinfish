@@ -3,59 +3,47 @@ package PenguinFish;
 import java.util.Random;
 
 enum Direction {
-	NORTH(),
-	NORTHEAST(),
-	EAST(),
-	SOUTHEAST(),
-	SOUTH(),
-	SOUTHWEST(),
-	WEST(),
-	NORTHWEST(),
-	NONE();
+	SOUTH(0, 180),
+	NORTH(1, 0),
+	WEST(2, 270),
+	EAST(3, 90),
+	NW(4, 315),
+	NE(5, 45),
+	SW(6, 225),
+	SE(7, 135),
+	DEAD(8, 0);		
+	private int direction;
+	private int angle;
 	
-	
-	private Direction(){
-		
+	public int getInt(){
+		return direction;
 	}
-	public Direction getRandom(){
+	public int getAngle(){
+		return angle;
+	}
+		
+	public static Direction getRandom(){
 		Random random = new Random();
-		int rand = random.nextInt(4);
+		int rand = random.nextInt(7);
+		
+		
 		switch(rand){
-		case 0: return NORTH;
-		case 1: return SOUTH;
+		case 0: return SOUTH;
+		case 1: return NORTH;
 		case 2: return WEST;
 		case 3: return EAST;
-		default: return null;
+		case 4: return NW;
+		case 5: return NE;
+		case 6: return SW;
+		case 7: return SE;
+		
+				
+		default: return SOUTH;
 		}
-		
-	}
-	public static Direction getRandomX(){
-		Random random = new Random();
-		int rand = random.nextInt(2);
-		switch(rand){
-		
-		case 0: return WEST;
-		case 1: return EAST;
-		default: return WEST;
-		}
-		
-	}
-	public static Direction getRandomY(){
-		Random random = new Random();
-		int rand = random.nextInt(2);
-		switch((rand)){
-		case 0: return NORTH;
-		case 1: return SOUTH;
-		default: return NORTH;
-		}
-		
-	}
+	}	
 	
-	public static void main(String[] args){
-		Direction n = Direction.SOUTH;
-		System.out.println(n.getRandomY());
-		System.out.println(n.getRandomX());
-		System.out.println(n.getRandom());
-		System.out.println();
+	private Direction(int direction, int angle){
+		this.direction = direction;	
+		this.angle = angle;
 	}
 }

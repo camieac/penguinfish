@@ -1,5 +1,6 @@
 package PenguinFish;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -30,8 +31,6 @@ public class Background {
 		}
 	}
 
-	
-
 	public BufferedImage getDisplayableBackground() {
 		BufferedImage image = null;
 		try{
@@ -47,29 +46,23 @@ public class Background {
 		return image;
 	}
 
-	public void drawBackground(Direction d, int bd,Graphics2D g2d,JPanel panel) {
-		double sqrt2bd = Math.sqrt(2)*bd;
+	public void drawBackground(Direction d, int bd,Graphics g,JPanel panel) {
+		double sqrt2bd = bd/Math.sqrt(2);
 		double changeX = 0,changeY = 0;
 		switch(d){
 		case NORTH: 
 			changeX = 0;
 			changeY = -bd;
 			break;
-		case NORTHEAST: 
+		case NE: 
 			changeX = sqrt2bd;
 			changeY = -sqrt2bd;
 			break;
-<<<<<<< .mine
-		case EAST: 
-			changeX = 0;
-			changeY = -5;
-=======
 		case EAST: 
 			changeX = bd;
 			changeY = 0;
->>>>>>> .r24
 			break;
-		case SOUTHEAST: 
+		case SE: 
 			changeX = sqrt2bd;
 			changeY = sqrt2bd;
 			break;
@@ -77,7 +70,7 @@ public class Background {
 			changeX = 0;
 			changeY = bd;
 			break;
-		case SOUTHWEST: 
+		case SW: 
 			changeX = -sqrt2bd;
 			changeY = sqrt2bd;
 			break;
@@ -85,24 +78,33 @@ public class Background {
 			changeX = -bd;
 			changeY = 0;
 			break;
-		case NORTHWEST: 
+		case NW: 
 			changeX = -sqrt2bd;
 			changeY = -sqrt2bd;
 			break;
-		case NONE:
+		case DEAD:
 			changeX = 0;
 			changeY = 0;
 		}
 		
-
 	currentTop += changeY;
 	currentLeft += changeX;
 	if(currentTop < 0) currentTop = 0;
 	if(currentLeft < 0) currentLeft = 0;
+	if (currentTop > background.getHeight()-displayableHeight) currentTop = background.getHeight()-displayableHeight;
+	if (currentLeft > background.getWidth()-displayableWidth) currentLeft = background.getWidth()-displayableWidth;
 	System.out.println("Current Top: " + currentTop + ", Current Left: " + currentLeft);
 	BufferedImage image = getDisplayableBackground();
 	if(image != null){
-	g2d.drawImage(image,0,0,panel);
+	g.drawImage(image,0,0,panel);
 	}
+	}
+
+	public int getCurrentLeft() {
+		return currentLeft;
+	}
+
+	public int getCurrentTop() {
+		return currentTop;
 	}
 }
