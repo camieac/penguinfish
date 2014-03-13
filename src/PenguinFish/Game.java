@@ -17,21 +17,13 @@ class Game extends JPanel implements Runnable {
 	private Collision collision;
 	private LinkedList<Enemy> enemies;
 	private LinkedList<Bullet> bullets;
-	private Image fullHeart, emptyHeart, background;
-
+	private Image fullHeart, emptyHeart;
 	private Graphics2D g2d;
 	private boolean game, gameOver;
-
-	private int heartX;
-
-	private int heartY;
 	private int numberOfEnemies;
-
 	private int pace;
-
 	private Player player;
 	private Random rand;
-
 	private boolean speedHeld;
 	private Thread thread;
 
@@ -175,7 +167,6 @@ class Game extends JPanel implements Runnable {
 
 		fullHeart = new ImageIcon("res/img/Heart01.png").getImage();
 		emptyHeart = new ImageIcon("res/img/Heart02.png").getImage();
-		background = new ImageIcon("res/img/Background.png").getImage();
 	}
 
 	// Interface
@@ -193,11 +184,31 @@ class Game extends JPanel implements Runnable {
 		// Draw instructions
 		gc.setColor(Color.black);
 		gc.drawString("Avoid the red enemy!", 10, 10);
-
-		//Draw difficulty
 		gc.drawString("Pace: " + pace, width / 2, 10);
-		// Draw player's life
 		gc.drawString("Life: ", width - 100, 10);
+		drawHearts(gc);
+		drawBullets();
+		// Draw "Game Over" screen when life = 0
+		if (gameOver) {
+			g2d.drawImage(player.getPlayerDeadImage(), player.getX(), player.getY(),
+					this);
+			gc.setColor(Color.black);
+			gc.drawString("Game Over", (width / 2) - 25, height / 2);
+		}
+		
+		}
+
+	private void drawBullets() {
+		Bullet tempBullet;
+		for(int i = 0; i < bullets.size();i++){
+			tempBullet = bullets.get(i);
+			tempBullet.drawBullet(g2d, this);
+			tempBullet.rotateBullet(g2d);
+			
+		}
+	}
+
+	private void drawHearts(Graphics gc) {
 		if (player.getLife() == 100) {
 			g2d.drawImage(fullHeart, width - 75, 1, this);
 		}
@@ -232,28 +243,12 @@ class Game extends JPanel implements Runnable {
 			gc.setColor(Color.red);
 			gc.drawString("DEAD!", width - 65, 10);
 		}
-		
-		Bullet tempBullet;
-		for(int i = 0; i < bullets.size();i++){
-			tempBullet = bullets.get(i);
-			tempBullet.drawBullet(g2d, this);
-			tempBullet.rotateBullet(g2d);
-			
-		}
-		// Draw "Game Over" screen when life = 0
-		if (gameOver) {
-			g2d.drawImage(player.getPlayerDeadImage(), player.getX(), player.getY(),
-					this);
-			gc.setColor(Color.black);
-			gc.drawString("Game Over", (width / 2) - 25, height / 2);
-		}
-		
-		}
+	}
 
 	public void reset() {
 		loadImages();
 		createGame();
-		//repaint();
+	
 		
 	}
 
@@ -261,7 +256,7 @@ class Game extends JPanel implements Runnable {
 		
 		while (game) {
 			periodsSinceFire++;
-			//System.out.println(periodsSinceFire);
+			
 			for(Enemy enemy : enemies){
 			enemy.moveEnemy(player,this);
 			enemy.hitWall(collision, player, this);
@@ -272,34 +267,10 @@ class Game extends JPanel implements Runnable {
 			}
 			ArrayList<Bullet> bulletFlags = new ArrayList<Bullet>();
 			ArrayList<Enemy> enemyFlags = new ArrayList<Enemy>();
-			//int i = 0; i < bullets.size(); i++
-			boolean col = false;
-			boolean wall = false;
+			
+			
 			try{
-			for(Bullet b : bullets){
-				wall = collision.collisionWallsAmmo(b);
-				
-				if(wall && !bulletFlags.contains(b)){
-					bulletFlags.add(b);
-				}
-				
-				//int j = 0; j < enemies.size(); j++
-				for (Enemy e : enemies){
-					col = collision.collisionBulletEnemy(b, e);
-					if (col){
-						//bullets.remove(b);
-						if (!bulletFlags.contains(b)){
-						bulletFlags.add(b);
-						}
-					//	System.out.println("Hit");
-						//enemies.remove(e);
-						if(!enemyFlags.contains(e)){
-						enemyFlags.add(e);
-						}
-					}
-					
-			}
-			}
+			detectBulletCollisions(bulletFlags, enemyFlags);
 			}
 			catch(ConcurrentModificationException e){
 				System.err.println("It broke");
@@ -312,41 +283,48 @@ class Game extends JPanel implements Runnable {
 			}
 			bulletFlags.removeAll(bullets);
 			enemyFlags.removeAll(enemies);
-			// repaint();
+			
 
 			difficultyWait();
 			player.findDirection();
 			player.movePlayer(this, speedHeld);
 			repaint();
-//			if (bg.getCurrentLeft()==0  && player.getPlayerX() <= width/2-(player.getPlayerSize()/2)){
-//				player.movePlayer=true;
-//				player.setupDistances(baseDistance);
-//				bg.drawBackground(Direction.NONE, baseDistance, g2d, this);
-//				bg.getDisplayableBackground();
-//			}
-//			if (player.getPlayerX() >= width/2-(player.getPlayerSize()/2) && bg.getCurrentLeft()==bg.background.getWidth()-bg.displayableWidth){
-//				player.movePlayer=true;
-//				
-//			}
-//			if (player.getPlayerY() <= height/2-(player.getPlayerSize()/2) && bg.getCurrentTop()==0){
-//				player.movePlayer=true;
-//				player.setupDistances(baseDistance);
-//			}
-//			if (player.getPlayerY() >= height/2-(player.getPlayerSize()/2) && bg.getCurrentTop()==bg.background.getHeight()-bg.displayableHeight){
-//				player.movePlayer=true;
-//				player.setupDistances(baseDistance);
-//			}
-//			if(bg.getCurrentTop()!=0 && bg.getCurrentTop()!= bg.background.getHeight()-bg.displayableHeight && 
-//			   bg.getCurrentLeft()!=0 && bg.getCurrentLeft()!=bg.background.getWidth()-bg.displayableWidth) {
-//				player.movePlayer = false;
-//				player.setupDistances(baseDistance);
-//			}
-//			System.out.println(player.movePlayer);
-//			if (player.getLife() <= 0) {
-//				game = false;
-//				gameOver = true;
-//			}
+
 		}
+	}
+
+	private void detectBulletCollisions(ArrayList<Bullet> bulletFlags,
+			ArrayList<Enemy> enemyFlags) {
+		boolean wall;
+		for(Bullet b : bullets){
+			wall = collision.collisionWallsAmmo(b);
+			
+			if(wall && !bulletFlags.contains(b)){
+				bulletFlags.add(b);
+			}
+			
+			
+			detectBulletEnemyCollisions(bulletFlags, enemyFlags, b);
+		}
+	}
+
+	private void detectBulletEnemyCollisions(ArrayList<Bullet> bulletFlags,
+			ArrayList<Enemy> enemyFlags, Bullet b) {
+		boolean col;
+		for (Enemy e : enemies){
+			col = collision.collisionBulletEnemy(b, e);
+			if (col){
+				
+				if (!bulletFlags.contains(b)){
+				bulletFlags.add(b);
+				}
+			
+				if(!enemyFlags.contains(e)){
+				enemyFlags.add(e);
+				}
+			}
+			
+}
 	}
 	
 	public void setBaseDistance(int baseDistance) {
