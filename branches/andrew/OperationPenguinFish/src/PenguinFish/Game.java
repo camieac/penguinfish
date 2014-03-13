@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -34,7 +33,7 @@ class Game extends JPanel implements Runnable {
 	private Random rand;
 	private BufferedImage[] playerImages;
 	private BufferedImage[] bulletImages;
-	private LinkedList buttons;
+	private LinkedList<KeyEvent> buttons;
 	private int width, height; 
 
 	public Game(int panelWidth, int panelHeight) {
@@ -45,7 +44,7 @@ class Game extends JPanel implements Runnable {
 		rand = new Random();
 		pace = 2;
 		baseSpeed = 5;
-		buttons = new LinkedList();
+		buttons = new LinkedList<KeyEvent>();
 		playerImages = new BufferedImage[17];
 		bulletImages = new BufferedImage[17];
 
@@ -58,12 +57,11 @@ class Game extends JPanel implements Runnable {
 		enemies = new LinkedList<Enemy>();
 		player = new Player(0, 0, Direction.SOUTH, playerImages);
 		player.resetLocation(width, height);
-
 		bullets = new LinkedList<Bullet>();
-
 		player.setSpeed(baseSpeed);
-
 		gameOver = false;
+		repaint();
+		
 	}
 
 	private void difficultyWait() {
