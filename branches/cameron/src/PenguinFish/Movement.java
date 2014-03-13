@@ -8,6 +8,12 @@ class Movement {
 	public Direction getDirection() {
 		return direction;
 	}
+//	public void setNoMovement(){
+//		this.x = 0;
+//		this.y = 0;
+//		setupDirection(this.x, this.y);
+//		setupDistance(this.x, this.y);
+//	}
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
@@ -19,6 +25,16 @@ class Movement {
 
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+	public void removeYMovement(){
+		this.y = 0;
+		setupDirection(x, y);
+		setupDistance(x, y);
+	}
+	public void removeXMovement(){
+		this.x = 0;
+		setupDirection(x, y);
+		setupDistance(x, y);
 	}
 
 	private double distance;

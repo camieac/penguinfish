@@ -17,6 +17,7 @@ public class Background {
 	boolean moveY = true;
 	Direction atEdge;
 	Direction direction;
+	Movement movement;
 	
 	int currentTop;
 	int currentLeft;
@@ -27,6 +28,7 @@ public class Background {
 		currentLeft = 0;
 		displayableWidth = w;
 		displayableHeight = h;
+		movement = new Movement(0,0);
 		try {
 			background = ImageIO.read(new File("res/img/Background.png"));
 		} catch (Exception e) {
@@ -55,62 +57,12 @@ public class Background {
 		double sqrt2bd = Math.sqrt(2)*bd;
 		double changeX = 0,changeY = 0;
 		if(movingBackground){
-			Movement movement = new Movement(d,bd);
+			//Movement movement = new Movement(d,bd);
+			movement.setDistance(bd);
+			movement.setDirection(d);
 			changeX = movement.getX();
 			changeY = movement.getY();
-//		switch(d){
-//		case NORTH: 
-//			if(moveY){
-//			changeX = 0;
-//			changeY = -bd;
-//			}
-//			break;
-//		case NORTHEAST: 
-//			if(moveX && moveY){
-//			changeX = sqrt2bd;
-//			changeY = -sqrt2bd;
-//			}
-//			break;
-//		case EAST: 
-//			if(moveX){
-//			changeX = bd;
-//			changeY = 0;
-//			}
-//			break;
-//		case SOUTHEAST: 
-//			if(moveX && moveY){
-//			changeX = sqrt2bd;
-//			changeY = sqrt2bd;
-//			}
-//			break;
-//		case SOUTH: 
-//			if(moveY){
-//			changeX = 0;
-//			changeY = bd;
-//			}
-//			break;
-//		case SOUTHWEST: 
-//			if(moveX && moveY){
-//			changeX = -sqrt2bd;
-//			changeY = sqrt2bd;
-//			}
-//			break;
-//		case WEST: 
-//			if(moveX){
-//			changeX = -bd;
-//			changeY = 0;
-//			}
-//			break;
-//		case NORTHWEST: 
-//			if(moveX && moveY){
-//			changeX = -sqrt2bd;
-//			changeY = -sqrt2bd;
-//			}
-//			break;
-//		case NONE:
-//			changeX = 0;
-//			changeY = 0;
-//		}
+
 		}
 		if(speedHeld){
 			changeX *= 2;
@@ -121,82 +73,80 @@ public class Background {
 	currentTop += changeY;
 	currentLeft += changeX;
 	boolean move = true;
-	
+	/* Make sure the camera never extends beyond the top edge*/
 	if(currentTop < 0){
 		currentTop = 0;
 		move = false;
-		moveY = false;
-		moveX = true;
+		movement.removeYMovement();
 		atEdge = Direction.NORTH;
 		
 	}
+	/* Make sure the camera never extends beyond the bottom edge*/
 	if(currentTop > background.getHeight() - displayableHeight){
 		currentTop = background.getHeight() - displayableHeight;
 		move = false;
 		atEdge = Direction.SOUTH;
-		moveY = false;
-		moveX = true;
+		movement.removeYMovement();
 	}
+	/* Make sure the camera never extends beyond the left edge*/
 	if(currentLeft < 0){
 		currentLeft = 0;
 		move = false;
 		if(atEdge == Direction.NORTH){
 			atEdge = Direction.NORTHWEST;
-			moveY = false;
-			moveX = false;	
+			movement.setZero();
 		}else if (atEdge == Direction.SOUTH){
 			atEdge = Direction.SOUTHWEST;
-			moveY = false;
-			moveX = false;
+			movement.setZero();
 		}else{
 			atEdge = Direction.WEST;
-			moveY = true;
-			moveX = false;
+			movement.removeXMovement();
 		}
 		
 	}
+	/*If the camera is at the left edge of the background image, prevent the camera from looking beyond the edge of the background image.
+	 * If the camera is at the south edge as well as the west edge, the current edge of the camera is set to SOUTHEAST...*/
 	if(currentLeft > background.getWidth() - displayableWidth){
 		currentLeft = background.getWidth() - displayableWidth;
 		move = false;
 		if(atEdge == Direction.SOUTH){
 			atEdge = Direction.SOUTHEAST;
-			moveY = false;
-			moveX = false;
+			//Camera cannot move as it is at the edge
+			movement.setZero();
+			
 		}else if(atEdge == Direction.NORTH){
 			atEdge = Direction.NORTHEAST;
-			moveY = false;
-			moveX = false;
+			movement.setZero();
 		}else{
 			atEdge = Direction.EAST;
-			moveY = true;
-			moveX = false;
+			movement.removeXMovement();
 		}
 	}
 	
-	if(atEdge == Direction.WEST && player.getX() < displayableWidth/2){
-		movingBackground = false;
-		//move = false;
-		
-	}
-	if(atEdge == Direction.NORTH && player.getY() < displayableHeight/2){
-		movingBackground = false;
-		//move = false;
-	}
-	if(move){
-		moveX = true;
-		moveY = true;
-	}
-	if(moveX && moveY){
-		atEdge = Direction.NONE;
-		movingBackground = true;
-		player.setMovePlayer(false);
-	}else{
-//		player.findDirection();
-//		player.movePlayer(panel, speedHeld);
-//		player.drawPlayer(g2d, panel);
-		player.setMovePlayer(true);
-		movingBackground = false;
-	}
+//	if(atEdge == Direction.WEST && player.getX() < displayableWidth/2){
+//		movingBackground = false;
+//		//move = false;
+//		
+//	}
+//	if(atEdge == Direction.NORTH && player.getY() < displayableHeight/2){
+//		movingBackground = false;
+//		//move = false;
+//	}
+//	if(move){
+//		moveX = true;
+//		moveY = true;
+//	}
+//	if(moveX && moveY){
+//		atEdge = Direction.NONE;
+//		movingBackground = true;
+//		player.setMovePlayer(false);
+//	}else{
+////		player.findDirection();
+////		player.movePlayer(panel, speedHeld);
+////		player.drawPlayer(g2d, panel);
+//		player.setMovePlayer(true);
+//		movingBackground = false;
+//	}
 	//if()
 	System.out.println("Moving background: " + movingBackground);
 	System.out.println("MoveX?: " + moveX + ", MoveY?: " + moveY);
