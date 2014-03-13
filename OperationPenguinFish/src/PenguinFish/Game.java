@@ -46,6 +46,8 @@ class Game extends JPanel implements Runnable {
 		pace = 2;
 		baseSpeed = 5;
 		buttons = new LinkedList();
+		playerImages = new BufferedImage[17];
+		bulletImages = new BufferedImage[17];
 
 		loadImages();
 		createGame();
@@ -145,41 +147,26 @@ class Game extends JPanel implements Runnable {
 
 	private BufferedImage getImage(String image) {
 		BufferedImage map = null;
-
 		try {
 			map = ImageIO.read(new File(image));
 			return toCompatibleImage(map);
 		} catch (IOException e) {
 			return map;
 		}
-
 	}
 
 	private BufferedImage toCompatibleImage(BufferedImage image) {
-		// obtain the current system graphical settings
 		GraphicsConfiguration gfx_config = GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 				.getDefaultConfiguration();
-
-		/*
-		 * if image is already compatible and optimized for current system
-		 * settings, simply return it
-		 */
 		if (image.getColorModel().equals(gfx_config.getColorModel()))
 			return image;
-
-		// image is not optimized, so create a new image that is
 		BufferedImage new_image = gfx_config.createCompatibleImage(
 				image.getWidth(), image.getHeight(), image.getTransparency());
 
-		// get the graphics context of the new image to draw the old image on
 		Graphics2D g2d = (Graphics2D) new_image.getGraphics();
-
-		// actually draw the image and dispose of context no longer needed
 		g2d.drawImage(image, 0, 0, null);
 		g2d.dispose();
-
-		// return the new optimized image
 		return new_image;
 	}
 
@@ -191,15 +178,10 @@ class Game extends JPanel implements Runnable {
 		for (Enemy enemy : enemies) {
 			enemy.draw(g, 0);
 		}
-		player.drawPlayer(this.g, this);
-
-		// Draw instructions
+		player.drawPlayer(g);
 		g.setColor(Color.black);
 		g.drawString("Avoid the red enemy!", 10, 10);
-
-		// Draw difficulty
 		g.drawString("Pace: " + pace, width / 2, 10);
-		// Draw player's life
 		g.drawString("Life: ", width - 100, 10);
 		if (player.getHealth() == 100) {
 			g.drawImage(fullHeart, width - 75, 1, this);

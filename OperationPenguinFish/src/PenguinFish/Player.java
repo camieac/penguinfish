@@ -1,8 +1,10 @@
 package PenguinFish;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 class Player extends Sprite {
@@ -21,15 +23,15 @@ class Player extends Sprite {
 		y = height / 2 - images[0].getHeight() / 2;
 	}
 
-	public void drawPlayer(Graphics2D g2d, JPanel panel) {
+	public void drawPlayer(Graphics g) {
 		Image image = images[0];
 		if (health >= 50) {
 			image = images[direction.getInt()];
 		}
 		if (health <= 50 && health > 0) {
-			image = images[direction.getInt() + 9];
+			image = images[direction.getInt()];
 		}
-		g2d.drawImage(image, x, y, panel);
+		g.drawImage(image, x, y, null);
 	}
 
 	public void setPlayerMoving(int baseDistance) {
