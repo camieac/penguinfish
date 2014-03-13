@@ -130,7 +130,7 @@ public class GUI extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == restartMenuItem){
-			game.reset();
+			//lolz
 		}else if(e.getSource() == paceIncreaseMenuItem){
 			game.incrementPace(1);
 		}else if(e.getSource() == paceDecreaseMenuItem){

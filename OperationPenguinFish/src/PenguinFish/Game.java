@@ -1,73 +1,66 @@
 package PenguinFish;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 class Game extends JPanel implements Runnable {
-	private Background bg;
-	int periodsSinceFire;
+	
+	
 	private static final long serialVersionUID = 1L;
-	private int baseDistance;
-	private Collision collision;
+	private Background bg;
+	private int periodsSinceFire;
+	private int baseSpeed;
 	private LinkedList<Enemy> enemies;
 	private LinkedList<Bullet> bullets;
-	private Image fullHeart, emptyHeart, background;
-
-	private Graphics2D g2d;
-	private boolean game, gameOver;
-
-	private int heartX;
-
-	private int heartY;
-	private int numberOfEnemies;
-
+	private Image fullHeart, emptyHeart;
+	private Graphics2D g;
+	private boolean gameOver;
 	private int pace;
-
 	private Player player;
 	private Random rand;
-
-	private boolean speedHeld;
-	private Thread thread;
-
-	private int width, height; // Size of the window
+	private BufferedImage[] playerImages;
+	private BufferedImage[] bulletImages;
+	private LinkedList buttons;
+	private int width, height; 
 
 	public Game(int panelWidth, int panelHeight) {
-		bg = new Background(panelWidth,panelHeight);
+		bg = new Background(panelWidth, panelHeight);
 		periodsSinceFire = 0;
-		numberOfEnemies = 0;
 		width = panelWidth;
 		height = panelHeight;
 		rand = new Random();
-		collision = new Collision(panelWidth, panelHeight);
-		baseDistance = 5;
+		pace = 2;
+		baseSpeed = 5;
+		buttons = new LinkedList();
 
 		loadImages();
 		createGame();
 	}
 
 	private void createGame() {
-		pace = 2;
-		enemies = new LinkedList<Enemy>();;
-		player = new Player(width,height);
+
+		enemies = new LinkedList<Enemy>();
+		player = new Player(0, 0, Direction.SOUTH, playerImages);
+		player.resetLocation(width, height);
+
 		bullets = new LinkedList<Bullet>();
-		//bullet = new Bullet(player.getPlayerX(),player.getPlayerY());
-		
-		for(int i = 0; i< numberOfEnemies;i++){
-		Enemy tempEnemy = new Enemy(rand.nextInt(width), rand.nextInt(height), new ImageIcon("res/img/Enemy01.png").getImage());
-		tempEnemy.setupDistances(baseDistance);
-		enemies.add(tempEnemy);
-		}
-		
-		player.setupDistances(baseDistance);
-		thread = new Thread(this);
-		thread.start();
-		game = true;
+
+		player.setSpeed(baseSpeed);
+
 		gameOver = false;
 	}
 
@@ -89,268 +82,225 @@ class Game extends JPanel implements Runnable {
 			case 5:
 				Thread.sleep(20);
 				break;
+			case 6:
+				Thread.sleep(10);
 			}
 		} catch (InterruptedException ex) {
 		}
 	}
-	
 
-	public int getBaseDistance() {
-		return baseDistance;
+	public void keyPressed(KeyEvent e) {
+		buttons.add(e);
 	}
 
-	public void incrementPace(int inc){
-		if(pace !=5 && inc >0 || pace != 1 && inc <0) pace += inc;
+	public void keyReleased(KeyEvent e) {
+		if (buttons.contains(e))
+			buttons.remove(e);
 	}
 
-	
-
-	public void keyPressed(KeyEvent evt) {
-		if (player.getLife() > 0) {
-			switch (evt.getKeyCode()) {
-
-			// Start moving player
-
-		
-			case KeyEvent.VK_UP:
-				player.setPlayerUp(true);
-				break;
-			case KeyEvent.VK_DOWN:
-				player.setPlayerDown(true);
-				break;
-			case KeyEvent.VK_LEFT:
-				player.setPlayerLeft(true);
-				break;
-			case KeyEvent.VK_RIGHT:
-				player.setPlayerRight(true);
-				break;
-			case KeyEvent.VK_F:
-				addBullet();
-				break;
-			case KeyEvent.VK_S:
-				speedHeld = true;
-				break;
-			}
-		}
-	}
-	
-	public void addBullet(){
-		
-		if(periodsSinceFire >= 3){
-		bullets.add(new Bullet(player.getPlayerX(),player.getPlayerY(),player.getDirection()));
-		periodsSinceFire = 0;
-		}
-		
+	private void processKeys() {
+		if (buttons.contains(KeyEvent.VK_UP)
+				&& buttons.contains(KeyEvent.VK_LEFT))
+			player.setDirection(Direction.NW);
+		else if (buttons.contains(KeyEvent.VK_UP)
+				&& buttons.contains(KeyEvent.VK_RIGHT))
+			player.setDirection(Direction.NE);
+		else if (buttons.contains(KeyEvent.VK_DOWN)
+				&& buttons.contains(KeyEvent.VK_LEFT))
+			player.setDirection(Direction.SW);
+		else if (buttons.contains(KeyEvent.VK_DOWN)
+				&& buttons.contains(KeyEvent.VK_RIGHT))
+			player.setDirection(Direction.SE);
+		else if (buttons.contains(KeyEvent.VK_UP))
+			player.setDirection(Direction.NORTH);
+		else if (buttons.contains(KeyEvent.VK_DOWN))
+			player.setDirection(Direction.SOUTH);
+		else if (buttons.contains(KeyEvent.VK_LEFT))
+			player.setDirection(Direction.WEST);
+		else if (buttons.contains(KeyEvent.VK_RIGHT))
+			player.setDirection(Direction.EAST);
 	}
 
-	
-	// Receive the key released
-	public void keyReleased(KeyEvent evt) {
+	public void addBullet() throws IOException {
 
-		if (player.getLife() > 0) {
-			switch (evt.getKeyCode()) {
-			// Stop moving player
-			case KeyEvent.VK_UP:
-				player.setPlayerUp(false);
-				break;
-			case KeyEvent.VK_DOWN:
-				player.setPlayerDown(false);
-				break;
-			case KeyEvent.VK_LEFT:
-				player.setPlayerLeft(false);
-				break;
-			case KeyEvent.VK_RIGHT:
-				player.setPlayerRight(false);
-				break;
-			case KeyEvent.VK_S:
-				speedHeld = false;
-				break;
-			}
+		if (periodsSinceFire >= 3) {
+
+			Bullet b = new Bullet(player.getX(), player.getY(),
+					player.getDirection(), bulletImages);
+			bullets.add(b);
+			periodsSinceFire = 0;
 		}
 	}
 
 	private void loadImages() {
-
-		
-
+		int numPlayerImages = 13;
+		for (int i = 0; i < numPlayerImages; i++) {
+			playerImages[i] = getImage("res/img/Character" + i + ".png");
+		}
 		fullHeart = new ImageIcon("res/img/Heart01.png").getImage();
 		emptyHeart = new ImageIcon("res/img/Heart02.png").getImage();
-		background = new ImageIcon("res/img/Background.png").getImage();
+		new ImageIcon("res/img/Background.png").getImage();
+		bulletImages[0] = getImage("res/img/FishSkeleton.png");
 	}
 
-	// Interface
-	public void paintComponent(Graphics gc) {
-		setOpaque(false);
-		super.paintComponent(gc);
+	private BufferedImage getImage(String image) {
+		BufferedImage map = null;
 
-		g2d = (Graphics2D) gc;
-		bg.drawBackground(player.getDirection(),baseDistance,g2d,this);
-		for(Enemy enemy : enemies){
-		enemy.drawEnemy(this, g2d);
+		try {
+			map = ImageIO.read(new File(image));
+			return toCompatibleImage(map);
+		} catch (IOException e) {
+			return map;
 		}
-		player.drawPlayer(this.g2d, this);
+
+	}
+
+	private BufferedImage toCompatibleImage(BufferedImage image) {
+		// obtain the current system graphical settings
+		GraphicsConfiguration gfx_config = GraphicsEnvironment
+				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+				.getDefaultConfiguration();
+
+		/*
+		 * if image is already compatible and optimized for current system
+		 * settings, simply return it
+		 */
+		if (image.getColorModel().equals(gfx_config.getColorModel()))
+			return image;
+
+		// image is not optimized, so create a new image that is
+		BufferedImage new_image = gfx_config.createCompatibleImage(
+				image.getWidth(), image.getHeight(), image.getTransparency());
+
+		// get the graphics context of the new image to draw the old image on
+		Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+
+		// actually draw the image and dispose of context no longer needed
+		g2d.drawImage(image, 0, 0, null);
+		g2d.dispose();
+
+		// return the new optimized image
+		return new_image;
+	}
+
+	public void paintComponent(Graphics g) {
+		setOpaque(false);
+		super.paintComponent(g);
+		
+		bg.drawBackground(player.getDirection(), baseSpeed, g, this);
+		for (Enemy enemy : enemies) {
+			enemy.draw(g, 0);
+		}
+		player.drawPlayer(this.g, this);
 
 		// Draw instructions
-		gc.setColor(Color.black);
-		gc.drawString("Avoid the red enemy!", 10, 10);
+		g.setColor(Color.black);
+		g.drawString("Avoid the red enemy!", 10, 10);
 
-		//Draw difficulty
-		gc.drawString("Pace: " + pace, width / 2, 10);
+		// Draw difficulty
+		g.drawString("Pace: " + pace, width / 2, 10);
 		// Draw player's life
-		gc.drawString("Life: ", width - 100, 10);
-		if (player.getLife() == 100) {
-			g2d.drawImage(fullHeart, width - 75, 1, this);
+		g.drawString("Life: ", width - 100, 10);
+		if (player.getHealth() == 100) {
+			g.drawImage(fullHeart, width - 75, 1, this);
 		}
-		if (player.getLife() < 100 && player.getLife() >= 90) {
-			g2d.drawImage(emptyHeart, width - 75, 1, this);
+		if (player.getHealth() < 100 && player.getHealth() >= 90) {
+			g.drawImage(emptyHeart, width - 75, 1, this);
 		}
-		if (player.getLife() >= 80) {
-			g2d.drawImage(fullHeart, width - 65, 1, this);
+		if (player.getHealth() >= 80) {
+			g.drawImage(fullHeart, width - 65, 1, this);
 		}
-		if (player.getLife() < 80 && player.getLife() >= 70) {
-			g2d.drawImage(emptyHeart, width - 65, 1, this);
+		if (player.getHealth() < 80 && player.getHealth() >= 70) {
+			g.drawImage(emptyHeart, width - 65, 1, this);
 		}
-		if (player.getLife() >= 60) {
-			g2d.drawImage(fullHeart, width - 55, 1, this);
+		if (player.getHealth() >= 60) {
+			g.drawImage(fullHeart, width - 55, 1, this);
 		}
-		if (player.getLife() < 60 && player.getLife() >= 50) {
-			g2d.drawImage(emptyHeart, width - 55, 1, this);
+		if (player.getHealth() < 60 && player.getHealth() >= 50) {
+			g.drawImage(emptyHeart, width - 55, 1, this);
 		}
-		if (player.getLife() >= 40) {
-			g2d.drawImage(fullHeart, width - 45, 1, this);
+		if (player.getHealth() >= 40) {
+			g.drawImage(fullHeart, width - 45, 1, this);
 		}
-		if (player.getLife() < 40 && player.getLife() >= 30) {
-			g2d.drawImage(emptyHeart, width - 45, 1, this);
+		if (player.getHealth() < 40 && player.getHealth() >= 30) {
+			g.drawImage(emptyHeart, width - 45, 1, this);
 		}
-		if (player.getLife() >= 20) {
-			g2d.drawImage(fullHeart, width - 35, 1, this);
+		if (player.getHealth() >= 20) {
+			g.drawImage(fullHeart, width - 35, 1, this);
 		}
-		if (player.getLife() < 20 && player.getLife() >= 10) {
-			g2d.drawImage(emptyHeart, width - 35, 1, this);
+		if (player.getHealth() < 20 && player.getHealth() >= 10) {
+			g.drawImage(emptyHeart, width - 35, 1, this);
 		}
-		if (player.getLife() < 10) {
-			gc.setColor(Color.red);
-			gc.drawString("DEAD!", width - 65, 10);
+		if (player.getHealth() < 10) {
+			g.setColor(Color.red);
+			g.drawString("DEAD!", width - 65, 10);
 		}
 		
-		Bullet tempBullet;
-		for(int i = 0; i < bullets.size();i++){
-			tempBullet = bullets.get(i);
-			tempBullet.drawBullet(g2d, this);
-			tempBullet.rotateBullet(g2d);
-			
+		for (Bullet b : bullets) {
+			b.draw(g, 0);
 		}
-		// Draw "Game Over" screen when life = 0
+		
 		if (gameOver) {
-			g2d.drawImage(player.getPlayerDeadImage(), player.getPlayerX(), player.getPlayerY(),
-					this);
-			gc.setColor(Color.black);
-			gc.drawString("Game Over", (width / 2) - 25, height / 2);
-		}
-		
+			player.draw(g, 8);
+			g.setColor(Color.black);
+			g.drawString("Game Over", (width / 2) - 25, height / 2);
 		}
 
-	public void reset() {
-		loadImages();
-		createGame();
-		//repaint();
-		
-	}
+	}	
 
 	public void run() {
-		
-		while (game) {
+
+		while (!gameOver) {
 			periodsSinceFire++;
-			//System.out.println(periodsSinceFire);
-			for(Enemy enemy : enemies){
-			enemy.moveEnemy(player,this);
-			enemy.hitWall(collision, player, this);
-			enemy.hitPlayer(collision, player, this);
-			enemy.enemyHitsEnemy(collision);
+			processKeys();
+			player.run();
 			
-			
-			}
-			ArrayList<Bullet> bulletFlags = new ArrayList<Bullet>();
-			ArrayList<Enemy> enemyFlags = new ArrayList<Enemy>();
-			//int i = 0; i < bullets.size(); i++
-			boolean col = false;
-			boolean wall = false;
-			try{
-			for(Bullet b : bullets){
-				wall = collision.collisionWallsAmmo(b);
-				
-				if(wall && !bulletFlags.contains(b)){
-					bulletFlags.add(b);
+			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
+			for (Enemy enemy : enemies) {
+				enemy.run();
+				enemy.collideWalls(width, height);
+				if(enemy.collide(player.getRect())){
+					player.damage(10);
+				}
+				for(Enemy e : enemies){
+					enemy.collide(e.getRect());
+				}
+				if(enemy.direction == Direction.DEAD){
+					removeEnemies.add(enemy);
 				}
 				
-				//int j = 0; j < enemies.size(); j++
-				for (Enemy e : enemies){
-					col = collision.collisionBulletEnemy(b, e);
-					if (col){
-						//bullets.remove(b);
-						if (!bulletFlags.contains(b)){
-						bulletFlags.add(b);
-						}
-					//	System.out.println("Hit");
-						//enemies.remove(e);
-						if(!enemyFlags.contains(e)){
-						enemyFlags.add(e);
-						}
-					}
-					
 			}
-			}
-			}
-			catch(ConcurrentModificationException e){
-				System.err.println("It broke");
-			}
-			for(Bullet b : bulletFlags){
-				bullets.remove(b);
-			}
-			for(Enemy e : enemyFlags){
-				enemies.remove(e);
-			}
-			bulletFlags.removeAll(bullets);
-			enemyFlags.removeAll(enemies);
-			// repaint();
-
-			difficultyWait();
-			player.setDirection();
-			player.movePlayer(this, speedHeld);
-			repaint();
-			if (bg.getCurrentLeft()==0  && player.getPlayerX() <= width/2-(player.getPlayerSize()/2)){
-				player.movePlayer=true;
-				player.setupDistances(baseDistance);
-				bg.drawBackground(Direction.NONE, baseDistance, g2d, this);
-				bg.getDisplayableBackground();
-			}
-			if (player.getPlayerX() >= width/2-(player.getPlayerSize()/2) && bg.getCurrentLeft()==bg.background.getWidth()-bg.displayableWidth){
-				player.movePlayer=true;
+			
+			
+			LinkedList<Bullet> removeBullets = new LinkedList<Bullet>();
+			for (Bullet bullet : bullets) {
+				bullet.run();
+				bullet.collideWalls(width, height);
+				if(bullet.collide(player.getRect())){
+					player.damage(10);
+				}
+				for(Enemy e : enemies){
+					bullet.collide(e.getRect());
+					bullet.direction = Direction.DEAD;
+					e.damage(10);					
+				}
+				if(bullet.direction == Direction.DEAD){
+					removeBullets.add(bullet);
+				}
 				
 			}
-			if (player.getPlayerY() <= height/2-(player.getPlayerSize()/2) && bg.getCurrentTop()==0){
-				player.movePlayer=true;
-				player.setupDistances(baseDistance);
-			}
-			if (player.getPlayerY() >= height/2-(player.getPlayerSize()/2) && bg.getCurrentTop()==bg.background.getHeight()-bg.displayableHeight){
-				player.movePlayer=true;
-				player.setupDistances(baseDistance);
-			}
-			if(bg.getCurrentTop()!=0 && bg.getCurrentTop()!= bg.background.getHeight()-bg.displayableHeight && 
-			   bg.getCurrentLeft()!=0 && bg.getCurrentLeft()!=bg.background.getWidth()-bg.displayableWidth) {
-				player.movePlayer = false;
-				player.setupDistances(baseDistance);
-			}
-			System.out.println(player.movePlayer);
-			if (player.getLife() <= 0) {
-				game = false;
-				gameOver = true;
-			}
+			bullets.removeAll(removeBullets);
+			enemies.removeAll(removeEnemies);
+			
+
+			difficultyWait();
+			repaint();
 		}
 	}
-	
-	public void setBaseDistance(int baseDistance) {
-		this.baseDistance = baseDistance;
+
+	public void incrementPace(int i) {
+		pace += i;		
 	}
+	
 
 }
