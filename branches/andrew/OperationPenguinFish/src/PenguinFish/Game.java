@@ -272,8 +272,9 @@ class Game extends JPanel implements Runnable {
 			bullets.removeAll(removeBullets);
 			enemies.removeAll(removeEnemies);
 			
-
+			processKeys();
 			difficultyWait();
+			processKeys();
 			repaint();
 		}
 	}

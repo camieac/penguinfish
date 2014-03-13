@@ -19,8 +19,7 @@ public class GUI {
 
 		JFrame frame = new JFrame("Penguin Fish");
 		
-		frame.setResizable(false);
-		frame.setBounds(new Rectangle(312, 184, panelWidth, panelHeight));
+		frame.setResizable(false);		
 		game = new Game(panelWidth, panelHeight);
 		frame.getContentPane().add(game, BorderLayout.CENTER);
 		frame.addKeyListener(new KeyAdapter() {
@@ -33,8 +32,10 @@ public class GUI {
 			}
 		});
 		frame.pack();
+		frame.setSize(panelWidth,panelHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		
 		game.run();
 		
 	}
