@@ -5,53 +5,77 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 public class Sprite {
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private BufferedImage image;
+	protected int x;
+	protected int y;
+	protected int width;
+	protected int height;
+	protected int health;
+	protected BufferedImage[] images;
 	Direction direction;
-	
-	public Sprite(int x, int y, int width, int height, Direction d, BufferedImage image){
+
+	public Sprite(int x, int y, Direction d, BufferedImage[] images) {
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.image = image;
+		this.images = images;
+		this.width = images[0].getWidth();
+		this.height = images[0].getHeight();
 		this.direction = d;
+		this.health = 0;
 	}
-	
-	public int getX(){
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void damage(int amount) {
+		health -= amount;
+	}
+
+	public int getX() {
 		return x;
 	}
-	public int getY(){
+
+	public int getY() {
 		return y;
 	}
-	public int getWidth(){
-	return width;	
+
+	public int getWidth() {
+		return width;
 	}
-	public int getHeight(){
+
+	public int getHeight() {
 		return height;
 	}
-	public void draw(Graphics g){
-		g.drawImage(image, x, y, null);
+
+	public void draw(Graphics g, int i) {
+		g.drawImage(images[i], x, y, null);
 	}
-	public void setX(int x){
+
+	public void setX(int x) {
 		this.x = x;
 	}
-	public void setY(int y){
+
+	public void setY(int y) {
 		this.y = y;
 	}
-	public void setWidth(int w){
+
+	public void setWidth(int w) {
 		this.width = w;
 	}
-	public void setHeight(int h){
+
+	public void setHeight(int h) {
 		this.height = h;
 	}
-	public Direction getDirection(){
+
+	public Direction getDirection() {
 		return direction;
 	}
-	public void setDirection(Direction d){
+
+	public void setDirection(Direction d) {
 		this.direction = d;
 	}
 }
