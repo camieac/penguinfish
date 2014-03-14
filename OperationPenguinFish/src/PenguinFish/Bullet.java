@@ -19,7 +19,6 @@ class Bullet extends Sprite {
 		bounces = false;
 	}
 
-	@Override
 	public void draw(Graphics g, int i) {
 		g.drawImage(images[i], x, y, null);
 	}
@@ -27,10 +26,8 @@ class Bullet extends Sprite {
 	public void rotateBullet(Graphics g2d, int i) {
 		double dir = setRotation(direction.getAngle());
 		if (rotatedImage == null) {
-			AffineTransform tx = AffineTransform.getRotateInstance(dir,
-					images[i].getWidth() / 2, images[i].getHeight() / 2);
-			AffineTransformOp op = new AffineTransformOp(tx,
-					AffineTransformOp.TYPE_BILINEAR);
+			AffineTransform tx = AffineTransform.getRotateInstance(dir,images[i].getWidth() / 2, images[i].getHeight() / 2);
+			AffineTransformOp op = new AffineTransformOp(tx,AffineTransformOp.TYPE_BILINEAR);
 			rotatedImage = op.filter(images[i], null);
 		}
 		g2d.drawImage(rotatedImage, x, y, null);
