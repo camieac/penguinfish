@@ -34,10 +34,10 @@ public class Background {
 	public BufferedImage getDisplayableBackground() {
 		BufferedImage image = null;
 		try{
-			System.out.println("Trying to render from " + currentLeft + " , " + currentTop);
+			//System.out.println("Trying to render from " + currentLeft + " , " + currentTop);
 		image = background.getSubimage(currentLeft, currentTop,
 				displayableWidth, displayableHeight);
-		System.out.println("                     RENDERED");
+		//System.out.println("                     RENDERED");
 		movingBackground = true;
 		}catch(RasterFormatException e){
 			movingBackground = false;
@@ -93,7 +93,7 @@ public class Background {
 	if(currentLeft < 0) currentLeft = 0;
 	if (currentTop > background.getHeight()-displayableHeight) currentTop = background.getHeight()-displayableHeight;
 	if (currentLeft > background.getWidth()-displayableWidth) currentLeft = background.getWidth()-displayableWidth;
-	System.out.println("Current Top: " + currentTop + ", Current Left: " + currentLeft);
+	//System.out.println("Current Top: " + currentTop + ", Current Left: " + currentLeft);
 	BufferedImage image = getDisplayableBackground();
 	if(image != null){
 	g.drawImage(image,0,0,panel);

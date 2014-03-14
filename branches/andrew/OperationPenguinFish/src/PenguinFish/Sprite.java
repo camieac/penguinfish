@@ -16,6 +16,7 @@ public class Sprite {
 	protected Rectangle rect;
 	protected boolean bounces;
 
+
 	public Sprite(int x, int y, Direction d, BufferedImage[] images) {
 		this.x = x;
 		this.y = y;
@@ -24,6 +25,7 @@ public class Sprite {
 		this.height = images[0].getHeight();
 		this.direction = d;
 		this.health = 0;
+		
 	}
 
 	public void calcVelocity() {
@@ -65,37 +67,38 @@ public class Sprite {
 			dy = 0;
 		}
 	}
-	
-	public boolean collide(Rectangle rect2){
+
+	public boolean collide(Rectangle rect2) {
 		rect = new Rectangle(x, y, width, height);
-		if (rect.intersects(rect2)){
-			dx = -dx;
-			dy = -dy;
-			return true;	
+		if (rect.intersects(rect2)) {
+			direction = direction.getOpposite(direction);
+			return true;
 		}
 		return false;
 	}
-	
-	public void collideWalls(int xMax, int yMax){
-		if(bounces){
-			if(x < 0 || x+width > xMax || y < 0 || y+height > yMax){
-				dx = -dx;
-				dy = -dy;
+
+	public void collideWalls(int xMax, int yMax) {
+		
+			if (x < 0 || x + width > xMax || y < 0 || y + height > yMax) {
+				int i = 0;
+				if (bounces) {					
+					direction = direction.getOpposite(direction);
+				} else {
+					direction = Direction.DEAD;
+				}
 			}
-		}else{
-			direction = Direction.DEAD;
-		}
+		
 	}
-	
-	public void run(){
+
+	public void run() {
 		calcVelocity();
 		x += dx;
 		y += dy;
-		if(health == 0){
-			direction = Direction.DEAD;			
+		if (health == 0) {
+			direction = Direction.DEAD;
 		}
 	}
-	
+
 	public void draw(Graphics g, int i) {
 		g.drawImage(images[i], x, y, null);
 	}
@@ -103,11 +106,11 @@ public class Sprite {
 	public void damage(int amount) {
 		health -= amount;
 	}
-		
+
 	public void setX(int x) {
 		this.x = x;
 	}
-	
+
 	public void setY(int y) {
 		this.y = y;
 	}
@@ -119,7 +122,7 @@ public class Sprite {
 	public void setHeight(int h) {
 		this.height = h;
 	}
-	
+
 	public void setDx(int dx) {
 		this.dx = dx;
 	}
@@ -131,17 +134,17 @@ public class Sprite {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
+
 	public void setHealth(int health) {
 		this.health = health;
 	}
-	
+
 	public void setDirection(Direction d) {
 		this.direction = d;
 		this.width = images[d.getInt()].getWidth();
-		this.height = images[d.getInt()].getHeight();		
+		this.height = images[d.getInt()].getHeight();
 	}
-	
+
 	public int getX() {
 		return x;
 	}
@@ -169,12 +172,12 @@ public class Sprite {
 	public int getHealth() {
 		return health;
 	}
-	
+
 	public Direction getDirection() {
 		return direction;
 	}
-	
-	public Rectangle getRect(){
+
+	public Rectangle getRect() {
 		return new Rectangle(x, y, width, height);
 	}
 }
