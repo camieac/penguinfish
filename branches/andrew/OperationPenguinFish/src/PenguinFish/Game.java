@@ -18,42 +18,39 @@ import javax.swing.JPanel;
 
 class Game extends JPanel implements Runnable {
 	
-	
 	private static final long serialVersionUID = 1L;
 	private Background bg;
 	private int periodsSinceFire;
 	private int baseSpeed;
+	private LinkedList<KeyEvent> buttons;
 	private LinkedList<Enemy> enemies;
 	private LinkedList<Bullet> bullets;
+	private Player player;
+	private BufferedImage[] playerImages;
+	private BufferedImage[] bulletImages;
 	private Image fullHeart, emptyHeart;
 	private Graphics2D g;
 	private boolean gameOver;
 	private int pace;
-	private Player player;
-	private Random rand;
-	private BufferedImage[] playerImages;
-	private BufferedImage[] bulletImages;
-	private LinkedList<KeyEvent> buttons;
 	private int width, height; 
+	private Random rand;
 
 	public Game(int panelWidth, int panelHeight) {
 		bg = new Background(panelWidth, panelHeight);
-		periodsSinceFire = 0;
-		width = panelWidth;
-		height = panelHeight;
-		rand = new Random();
-		pace = 2;
-		baseSpeed = 5;
-		buttons = new LinkedList<KeyEvent>();
 		playerImages = new BufferedImage[17];
 		bulletImages = new BufferedImage[17];
-
+		buttons = new LinkedList<KeyEvent>();
+		rand = new Random();
+		width = panelWidth;
+		height = panelHeight;
+		periodsSinceFire = 0;
+		baseSpeed = 5;
+		pace = 2;
 		loadImages();
 		createGame();
 	}
 
 	private void createGame() {
-
 		enemies = new LinkedList<Enemy>();
 		player = new Player(0, 0, Direction.SOUTH, playerImages);
 		player.resetLocation(width, height);
@@ -61,7 +58,6 @@ class Game extends JPanel implements Runnable {
 		player.setSpeed(baseSpeed);
 		gameOver = false;
 		repaint();
-		
 	}
 
 	private void difficultyWait() {
@@ -122,9 +118,7 @@ class Game extends JPanel implements Runnable {
 	}
 
 	public void addBullet() throws IOException {
-
 		if (periodsSinceFire >= 3) {
-
 			Bullet b = new Bullet(player.getX(), player.getY(),
 					player.getDirection(), bulletImages);
 			bullets.add(b);
@@ -154,14 +148,9 @@ class Game extends JPanel implements Runnable {
 	}
 
 	private BufferedImage toCompatibleImage(BufferedImage image) {
-		GraphicsConfiguration gfx_config = GraphicsEnvironment
-				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-				.getDefaultConfiguration();
-		if (image.getColorModel().equals(gfx_config.getColorModel()))
-			return image;
-		BufferedImage new_image = gfx_config.createCompatibleImage(
-				image.getWidth(), image.getHeight(), image.getTransparency());
-
+		GraphicsConfiguration gfx_config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+		if (image.getColorModel().equals(gfx_config.getColorModel()))return image;
+		BufferedImage new_image = gfx_config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
 		Graphics2D g2d = (Graphics2D) new_image.getGraphics();
 		g2d.drawImage(image, 0, 0, null);
 		g2d.dispose();
@@ -171,7 +160,6 @@ class Game extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		setOpaque(false);
 		super.paintComponent(g);
-		
 		bg.drawBackground(player.getDirection(), baseSpeed, g, this);
 		for (Enemy enemy : enemies) {
 			enemy.draw(g, 0);
@@ -215,26 +203,21 @@ class Game extends JPanel implements Runnable {
 			g.setColor(Color.red);
 			g.drawString("DEAD!", width - 65, 10);
 		}
-		
 		for (Bullet b : bullets) {
 			b.draw(g, 0);
 		}
-		
 		if (gameOver) {
 			player.draw(g, 8);
 			g.setColor(Color.black);
 			g.drawString("Game Over", (width / 2) - 25, height / 2);
 		}
-
 	}	
 
 	public void run() {
-
 		while (!gameOver) {
 			periodsSinceFire++;
 			processKeys();
-			player.run();
-			
+			player.run();	
 			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
 			for (Enemy enemy : enemies) {
 				enemy.run();
@@ -247,10 +230,8 @@ class Game extends JPanel implements Runnable {
 				}
 				if(enemy.direction == Direction.DEAD){
 					removeEnemies.add(enemy);
-				}
-				
+				}	
 			}
-			
 			
 			LinkedList<Bullet> removeBullets = new LinkedList<Bullet>();
 			for (Bullet bullet : bullets) {
@@ -266,12 +247,10 @@ class Game extends JPanel implements Runnable {
 				}
 				if(bullet.direction == Direction.DEAD){
 					removeBullets.add(bullet);
-				}
-				
+				}			
 			}
 			bullets.removeAll(removeBullets);
-			enemies.removeAll(removeEnemies);
-			
+			enemies.removeAll(removeEnemies);	
 			processKeys();
 			difficultyWait();
 			processKeys();
@@ -282,6 +261,4 @@ class Game extends JPanel implements Runnable {
 	public void incrementPace(int i) {
 		pace += i;		
 	}
-	
-
 }

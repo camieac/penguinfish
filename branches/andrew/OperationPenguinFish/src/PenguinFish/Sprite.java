@@ -24,86 +24,6 @@ public class Sprite {
 		this.height = images[0].getHeight();
 		this.direction = d;
 		this.health = 0;
-		
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void damage(int amount) {
-		health -= amount;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void draw(Graphics g, int i) {
-		g.drawImage(images[i], x, y, null);
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public void setWidth(int w) {
-		this.width = w;
-	}
-
-	public void setHeight(int h) {
-		this.height = h;
-	}
-
-	public Direction getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Direction d) {
-		this.direction = d;
-		this.width = images[d.getInt()].getWidth();
-		this.height = images[d.getInt()].getHeight();		
-	}
-
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
-
-	public void setDy(int dy) {
-		this.dy = dy;
-	}
-
-	public int getDx() {
-		return dx;
-	}
-
-	public int getDy() {
-		return dy;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
 	}
 
 	public void calcVelocity() {
@@ -140,23 +60,12 @@ public class Sprite {
 			dx = -(int) (speed / Math.sqrt(2));
 			dy = -(int) (speed / Math.sqrt(2));
 			break;
-
 		default:
 			dx = 0;
 			dy = 0;
-
 		}
 	}
 	
-	public void run(){
-		calcVelocity();
-		x += dx;
-		y += dy;
-		if(health == 0){
-			direction = Direction.DEAD;			
-		}
-	}
-
 	public boolean collide(Rectangle rect2){
 		rect = new Rectangle(x, y, width, height);
 		if (rect.intersects(rect2)){
@@ -178,8 +87,94 @@ public class Sprite {
 		}
 	}
 	
+	public void run(){
+		calcVelocity();
+		x += dx;
+		y += dy;
+		if(health == 0){
+			direction = Direction.DEAD;			
+		}
+	}
+	
+	public void draw(Graphics g, int i) {
+		g.drawImage(images[i], x, y, null);
+	}
+
+	public void damage(int amount) {
+		health -= amount;
+	}
+		
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void setWidth(int w) {
+		this.width = w;
+	}
+
+	public void setHeight(int h) {
+		this.height = h;
+	}
+	
+	public void setDx(int dx) {
+		this.dx = dx;
+	}
+
+	public void setDy(int dy) {
+		this.dy = dy;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public void setDirection(Direction d) {
+		this.direction = d;
+		this.width = images[d.getInt()].getWidth();
+		this.height = images[d.getInt()].getHeight();		
+	}
+	
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getDx() {
+		return dx;
+	}
+
+	public int getDy() {
+		return dy;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+	
+	public Direction getDirection() {
+		return direction;
+	}
+	
 	public Rectangle getRect(){
 		return new Rectangle(x, y, width, height);
 	}
-
 }
