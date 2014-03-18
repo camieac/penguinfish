@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class GUI {
 	int panelWidth, panelHeight;
 	private Game game;
-
+//
 	public GUI() {
 		panelWidth = 500;
 		panelHeight = 500;
