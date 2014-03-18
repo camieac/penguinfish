@@ -37,7 +37,6 @@ class Game extends JPanel implements Runnable {
 	private int maxEnemies;
 
 	public Game(int panelWidth, int panelHeight) {
-		background = new Background(panelWidth, panelHeight);
 		playerImages = new BufferedImage[17];
 		bulletImages = new BufferedImage[1];
 		enemyImages = new BufferedImage[17];
@@ -48,9 +47,10 @@ class Game extends JPanel implements Runnable {
 		periodsSinceFire = 0;
 		baseSpeed = 5;
 		pace = 5;
-		maxEnemies = 2;
+		maxEnemies = 0;
 		loadImages();
 		createGame();
+		background = new Background(panelWidth, panelHeight, player);
 	}
 
 	private void createGame() {
@@ -235,7 +235,8 @@ class Game extends JPanel implements Runnable {
 		while (!gameOver) {
 			periodsSinceFire++;
 			processKeys();
-			player.run();	
+			player.setPlayerMoving(background.getMoveX(),background.getMoveY());
+			player.run2();	
 			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
 			for (Enemy enemy : enemies) {
 				enemy.run();
