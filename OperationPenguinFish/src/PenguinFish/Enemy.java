@@ -12,6 +12,6 @@ public class Enemy extends Sprite {
 		direction = Direction.getRandom();
 		bounces = true;
 		health = 100;
-		speed = 10;
+		speed = 4;
 	}
 }

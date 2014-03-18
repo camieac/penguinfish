@@ -14,6 +14,7 @@ public class Background{
 	BufferedImage background;
 	int displayableWidth, displayableHeight;
 	boolean movingBackground = true;
+	boolean moveX, moveY;
 	Direction direction;
 	int speed;
 	int currentTop;
@@ -26,7 +27,7 @@ public class Background{
 		displayableHeight = h;
 		speed = 0;
 		try {
-			background = ImageIO.read(new File("res/img/Background.png"));
+			background = ImageIO.read(new File("res/img/back.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,7 +65,7 @@ public class Background{
 			changeX = 0;
 			changeY = -speed;
 			break;
-		case NE: 
+		case NORTHEAST: 
 			changeX = sqrt2speed;
 			changeY = -sqrt2speed;
 			break;
@@ -72,7 +73,7 @@ public class Background{
 			changeX = speed;
 			changeY = 0;
 			break;
-		case SE: 
+		case SOUTHEAST: 
 			changeX = sqrt2speed;
 			changeY = sqrt2speed;
 			break;
@@ -80,7 +81,7 @@ public class Background{
 			changeX = 0;
 			changeY = speed;
 			break;
-		case SW: 
+		case SOUTHWEST: 
 			changeX = -sqrt2speed;
 			changeY = sqrt2speed;
 			break;
@@ -88,18 +89,55 @@ public class Background{
 			changeX = -speed;
 			changeY = 0;
 			break;
-		case NW: 
+		case NORTHWEST: 
 			changeX = -sqrt2speed;
 			changeY = -sqrt2speed;
 			break;
 		}
-		
 	currentTop += changeY;
 	currentLeft += changeX;
-	if(currentTop < 0) currentTop = 0;
-	if(currentLeft < 0) currentLeft = 0;
-	if (currentTop > background.getHeight()-displayableHeight) currentTop = background.getHeight()-displayableHeight;
-	if (currentLeft > background.getWidth()-displayableWidth) currentLeft = background.getWidth()-displayableWidth;
+	if(currentTop <= 0) {
+		currentTop = 0; 
+		moveY = false;
+		if(currentLeft <= 0 || currentLeft >= background.getWidth()-displayableWidth){
+			currentLeft = 0;
+			moveX = false;
+		}
+		else moveX = true;
+	}
+	else if(currentLeft <= 0){
+		currentLeft = 0;
+		moveX = false;
+		if(currentTop <= 0 || currentTop >= background.getHeight()-displayableHeight){
+			currentTop = 0; 
+			moveY = false;
+		}
+		else moveY = true;
+	}
+	else if (currentTop >= background.getHeight()-displayableHeight){
+		currentTop = background.getHeight()-displayableHeight;
+		moveY = false;
+		if(currentLeft <= 0 || currentLeft >= background.getWidth()-displayableWidth){
+			currentLeft = 0;
+			moveX = false;
+		}
+		else moveX = true;
+	}
+	else if (currentLeft >= background.getWidth()-displayableWidth){
+		currentLeft = background.getWidth()-displayableWidth;
+		moveX = false;
+		if (currentTop <= 0 || currentTop >= background.getHeight()-displayableHeight){
+			currentTop = background.getHeight()-displayableHeight;
+			moveY = false;
+		}
+		else moveY = true;
+	}
+	else {
+		moveY = true;
+		moveX = true;
+	}
+	
+	System.out.println("MoveX: " + moveX + ", " + "MoveY: " + moveY);
 	BufferedImage image = getDisplayableBackground();
 	if(image != null){
 	g.drawImage(image,0,0,panel);
