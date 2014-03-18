@@ -19,8 +19,10 @@ public class Background{
 	int speed;
 	int currentTop;
 	int currentLeft;
+	Player player;
 
-	public Background(int w, int h) {
+	public Background(int w, int h, Player player) {
+		this.player = player;
 		currentTop = 0;
 		currentLeft = 0;
 		displayableWidth = w;
@@ -99,8 +101,12 @@ public class Background{
 	if(currentTop <= 0) {
 		currentTop = 0; 
 		moveY = false;
-		if(currentLeft <= 0 || currentLeft >= background.getWidth()-displayableWidth){
+		if(currentLeft <= 0){ 
 			currentLeft = 0;
+			moveX = false;
+		}
+		else if (currentLeft >= background.getWidth()-displayableWidth){
+			currentLeft = background.getWidth()-displayableWidth;
 			moveX = false;
 		}
 		else moveX = true;
@@ -108,8 +114,12 @@ public class Background{
 	else if(currentLeft <= 0){
 		currentLeft = 0;
 		moveX = false;
-		if(currentTop <= 0 || currentTop >= background.getHeight()-displayableHeight){
+		if(currentTop <= 0){
 			currentTop = 0; 
+			moveY = false;
+		}
+		else if (currentTop >= background.getHeight()-displayableHeight){
+			currentTop = background.getHeight()-displayableHeight;
 			moveY = false;
 		}
 		else moveY = true;
@@ -117,8 +127,12 @@ public class Background{
 	else if (currentTop >= background.getHeight()-displayableHeight){
 		currentTop = background.getHeight()-displayableHeight;
 		moveY = false;
-		if(currentLeft <= 0 || currentLeft >= background.getWidth()-displayableWidth){
+		if(currentLeft <= 0){
 			currentLeft = 0;
+			moveX = false;
+		}
+		else if (currentLeft >= background.getWidth()-displayableWidth){
+			currentLeft = background.getWidth()-displayableWidth;
 			moveX = false;
 		}
 		else moveX = true;
@@ -136,6 +150,12 @@ public class Background{
 		moveY = true;
 		moveX = true;
 	}
+	 if(player.getY() < displayableHeight/2-player.getHeight()/2 || player.getY() > displayableHeight/2-player.getHeight()/2){
+		 moveY = false;
+	 }
+	 if(player.getX() < displayableWidth/2-player.getWidth()/2 || player.getX() > displayableWidth/2-player.getWidth()/2){
+		 moveX = false;
+	 }
 	
 	System.out.println("MoveX: " + moveX + ", " + "MoveY: " + moveY);
 	BufferedImage image = getDisplayableBackground();
@@ -144,6 +164,14 @@ public class Background{
 	}
 	}
 
+	public boolean getMoveX(){
+		return moveX;
+	}
+	
+	public boolean getMoveY(){
+		return moveY;
+	}
+	
 	public int getCurrentLeft() {
 		return currentLeft;
 	}

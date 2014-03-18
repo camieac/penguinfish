@@ -7,12 +7,12 @@ import java.awt.image.BufferedImage;
 class Player extends Sprite {
 	int distance;
 	boolean playerUp, playerDown, playerLeft, playerRight;
-	boolean movePlayer;
 	boolean moveX, moveY;
 
 	public Player(int x, int y, Direction d, BufferedImage[] i) {
 		super(x, y, d, i);
-		movePlayer = false;
+		moveX = false;
+		moveY = false;
 		setHealth(100);
 		speed = 5;
 	}
@@ -32,11 +32,26 @@ class Player extends Sprite {
 		}
 		g.drawImage(image, x, y, null);
 	}
-
-	public void setPlayerMoving(int baseDistance) {
-		if (moveX || moveY)
-			this.distance = baseDistance;
-		else
-			this.distance = 0;
+	
+	public void run2() {
+		calcVelocity();
+		if(moveX){
+			speed = 5;
+			x += dx;
+		}
+		if(moveY){
+			speed = 5;
+			y += dy;
+		}
+		if (health <= 0) {
+			dead = true;
+		}
+		System.out.println("moveX is :" + moveX);
+		System.out.println("moveY is :" + moveY);
+	}
+	
+	public void setPlayerMoving(boolean xMove, boolean yMove) {
+		moveX = !xMove;
+		moveY = !yMove;
 	}
 }
