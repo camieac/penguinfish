@@ -47,8 +47,8 @@ class Game extends JPanel implements Runnable {
 		height = panelHeight;
 		periodsSinceFire = 0;
 		baseSpeed = 5;
-		pace = 6;
-		maxEnemies = 0;
+		pace = 5;
+		maxEnemies = 2;
 		loadImages();
 		createGame();
 	}
@@ -105,16 +105,16 @@ class Game extends JPanel implements Runnable {
 	private void processKeys() {
 		if (buttons.contains(KeyEvent.VK_UP)
 				&& buttons.contains(KeyEvent.VK_LEFT))
-			player.setDirection(Direction.NW);
+			player.setDirection(Direction.NORTHWEST);
 		else if (buttons.contains(KeyEvent.VK_UP)
 				&& buttons.contains(KeyEvent.VK_RIGHT))
-			player.setDirection(Direction.NE);
+			player.setDirection(Direction.NORTHEAST);
 		else if (buttons.contains(KeyEvent.VK_DOWN)
 				&& buttons.contains(KeyEvent.VK_LEFT))
-			player.setDirection(Direction.SW);
+			player.setDirection(Direction.SOUTHWEST);
 		else if (buttons.contains(KeyEvent.VK_DOWN)
 				&& buttons.contains(KeyEvent.VK_RIGHT))
-			player.setDirection(Direction.SE);
+			player.setDirection(Direction.SOUTHEAST);
 		else if (buttons.contains(KeyEvent.VK_UP))
 			player.setDirection(Direction.NORTH);
 		else if (buttons.contains(KeyEvent.VK_DOWN))
@@ -239,7 +239,7 @@ class Game extends JPanel implements Runnable {
 			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
 			for (Enemy enemy : enemies) {
 				enemy.run();
-				enemy.collideWalls(width, height);
+				enemy.collideWalls(width, height, background);
 				if(enemy.collide(player.getRect())){
 					player.damage(10);
 				}
@@ -256,7 +256,7 @@ class Game extends JPanel implements Runnable {
 			LinkedList<Bullet> removeBullets = new LinkedList<Bullet>();
 			for (Bullet bullet : bullets) {
 				bullet.run();
-				bullet.collideWalls(width, height);
+				bullet.collideWalls(width, height, background);
 				//if(bullet.collide(player.getRect())){
 				//	player.damage(10);
 				//}

@@ -8,6 +8,7 @@ class Player extends Sprite {
 	int distance;
 	boolean playerUp, playerDown, playerLeft, playerRight;
 	boolean movePlayer;
+	boolean moveX, moveY;
 
 	public Player(int x, int y, Direction d, BufferedImage[] i) {
 		super(x, y, d, i);
@@ -33,7 +34,7 @@ class Player extends Sprite {
 	}
 
 	public void setPlayerMoving(int baseDistance) {
-		if (movePlayer)
+		if (moveX || moveY)
 			this.distance = baseDistance;
 		else
 			this.distance = 0;

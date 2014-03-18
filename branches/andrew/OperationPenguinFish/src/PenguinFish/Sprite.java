@@ -12,6 +12,7 @@ public class Sprite {
 	protected int health;
 	protected BufferedImage[] images;
 	protected Direction direction;
+	protected Direction directionHit;
 	protected int dx, dy, speed;
 	protected Rectangle rect;
 	protected boolean bounces;
@@ -34,7 +35,7 @@ public class Sprite {
 			dx = 0;
 			dy = -speed;
 			break;
-		case NE:
+		case NORTHEAST:
 			dx = (int) (speed / Math.sqrt(2));
 			dy = -(int) (speed / Math.sqrt(2));
 			break;
@@ -42,7 +43,7 @@ public class Sprite {
 			dx = speed;
 			dy = 0;
 			break;
-		case SE:
+		case SOUTHEAST:
 			dx = (int) (speed / Math.sqrt(2));
 			dy = (int) (speed / Math.sqrt(2));
 			break;
@@ -50,7 +51,7 @@ public class Sprite {
 			dx = 0;
 			dy = speed;
 			break;
-		case SW:
+		case SOUTHWEST:
 			dx = -(int) (speed / Math.sqrt(2));
 			dy = (int) (speed / Math.sqrt(2));
 			break;
@@ -58,7 +59,7 @@ public class Sprite {
 			dx = -speed;
 			dy = 0;
 			break;
-		case NW:
+		case NORTHWEST:
 			dx = -(int) (speed / Math.sqrt(2));
 			dy = -(int) (speed / Math.sqrt(2));
 			break;
@@ -71,22 +72,32 @@ public class Sprite {
 	public boolean collide(Rectangle rect2) {
 		rect = new Rectangle(x, y, width, height);
 		if (rect.intersects(rect2)) {
-			direction = direction.getOpposite(direction);
+			direction = direction.getOpposite(direction, directionHit);
 			return true;
 		}
 		return false;
 	}
 
-	public void collideWalls(int xMax, int yMax) {
-		
-			if (x < 0 || x + width > xMax || y < 0 || y + height > yMax) {
+	public void collideWalls(int xMax, int yMax, Background background) {
+			
+			if (x < 0){
+				directionHit = Direction.WEST;				
+			}
+			else if (x + width > xMax){
+				directionHit = Direction.EAST;	
+			}
+			else if (y < 0){
+				directionHit = Direction.NORTH;	
+			}
+			else if (y + height > yMax){
+				directionHit = Direction.SOUTH;	
+			}
 				if (bounces) {					
-					direction = direction.getOpposite(direction);
+					direction = direction.getOpposite(direction,directionHit);
 				} else {
 					dead = true;
 				}
 			}
-	}
 
 	public void run() {
 		calcVelocity();
