@@ -10,9 +10,7 @@ enum Direction {
 	NW(4, 315, 7),
 	NE(5, 45, 6),
 	SW(6, 225, 5),
-	SE(7, 135, 4),
-	DEAD(8, 0, 8),
-	NONE(0,180, 0);
+	SE(7, 135, 4);
 	private int direction;
 	private int angle;
 	private int opposite;
@@ -39,9 +37,6 @@ enum Direction {
 		case 5: return NE;
 		case 6: return SW;
 		case 7: return SE;
-		case 8: return DEAD;
-		case 9: return NONE;
-				
 		default: return SOUTH;
 		}
 	}

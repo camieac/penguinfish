@@ -1,11 +1,8 @@
 package PenguinFish;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 
 class Player extends Sprite {
 	int distance;
@@ -16,6 +13,7 @@ class Player extends Sprite {
 		super(x, y, d, i);
 		movePlayer = false;
 		setHealth(100);
+		speed = 5;
 	}
 
 	public void resetLocation(int width, int height) {
