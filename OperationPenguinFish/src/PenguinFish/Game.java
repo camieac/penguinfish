@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 class Game extends JPanel implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
-	private Background bg;
+	private Background background;
 	private int periodsSinceFire;
 	private int baseSpeed;
 	private LinkedList<Integer> buttons;
@@ -30,7 +30,6 @@ class Game extends JPanel implements Runnable {
 	private BufferedImage[] bulletImages;
 	private BufferedImage[] enemyImages;
 	private Image fullHeart, emptyHeart;
-	private Graphics2D g;
 	private boolean gameOver;
 	private int pace;
 	private int width, height; 
@@ -38,9 +37,9 @@ class Game extends JPanel implements Runnable {
 	private int maxEnemies;
 
 	public Game(int panelWidth, int panelHeight) {
-		bg = new Background(panelWidth, panelHeight);
+		background = new Background(panelWidth, panelHeight);
 		playerImages = new BufferedImage[17];
-		bulletImages = new BufferedImage[17];
+		bulletImages = new BufferedImage[1];
 		enemyImages = new BufferedImage[17];
 		buttons = new LinkedList<Integer>();
 		rand = new Random();
@@ -49,7 +48,7 @@ class Game extends JPanel implements Runnable {
 		periodsSinceFire = 0;
 		baseSpeed = 5;
 		pace = 6;
-		maxEnemies = 10;
+		maxEnemies = 0;
 		loadImages();
 		createGame();
 	}
@@ -124,19 +123,19 @@ class Game extends JPanel implements Runnable {
 			player.setDirection(Direction.WEST);
 		else if (buttons.contains(KeyEvent.VK_RIGHT))
 			player.setDirection(Direction.EAST);
-		
 		else{
-			player.setDirection(Direction.NONE);
+			player.setSpeed(0);
+			background.setSpeed(0);
+			background.setMovingBackground(false);
 		}
-		if (buttons.contains(KeyEvent.VK_F)){
-			if(player.direction != Direction.NONE)
-				addBullet();
-		}
+		
+		if (buttons.contains(KeyEvent.VK_F)) addBullet();
+
 	}
 
 	public void addBullet() {
 		if (periodsSinceFire >= 3) {
-			Bullet b = new Bullet(player.getX(), player.getY(),
+			Bullet b = new Bullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2,
 					player.getDirection(), bulletImages);
 			bullets.add(b);
 			b.rotateBullet(0);
@@ -179,7 +178,7 @@ class Game extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		setOpaque(false);
 		super.paintComponent(g);
-		bg.drawBackground(player.getDirection(), baseSpeed, g, this);
+		background.drawBackground(player.getDirection(), g, this);
 		for (Enemy enemy : enemies) {
 			enemy.draw(g, 0);
 		}
@@ -249,7 +248,7 @@ class Game extends JPanel implements Runnable {
 						enemy.collide(e.getRect());
 					}
 				}
-				if(enemy.direction == Direction.DEAD){
+				if(enemy.getDead()){
 					removeEnemies.add(enemy);
 				}	
 			}
@@ -263,10 +262,10 @@ class Game extends JPanel implements Runnable {
 				//}
 				for(Enemy e : enemies){
 					bullet.collide(e.getRect());
-					bullet.direction = Direction.DEAD;
+					bullet.setDead(true);
 					e.damage(10);					
 				}
-				if(bullet.direction == Direction.DEAD){
+				if(bullet.getDead()){
 					removeBullets.add(bullet);
 				}			
 			}
@@ -274,7 +273,6 @@ class Game extends JPanel implements Runnable {
 			enemies.removeAll(removeEnemies);				
 			difficultyWait();			
 			repaint();
-			System.out.println("time since last fire: " + periodsSinceFire);
 		}
 	}
 

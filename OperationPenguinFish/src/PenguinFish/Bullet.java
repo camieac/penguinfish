@@ -17,7 +17,7 @@ class Bullet extends Sprite {
 		super(x, y, d, i);
 		rotatedImage = null;
 		bounces = false;
-		speed = 5;
+		speed = 10;
 		health = 1;
 	}
 	@Override

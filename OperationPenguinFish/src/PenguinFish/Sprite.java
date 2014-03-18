@@ -15,7 +15,7 @@ public class Sprite {
 	protected int dx, dy, speed;
 	protected Rectangle rect;
 	protected boolean bounces;
-
+	protected boolean dead;
 
 	public Sprite(int x, int y, Direction d, BufferedImage[] images) {
 		this.x = x;
@@ -25,7 +25,7 @@ public class Sprite {
 		this.height = images[0].getHeight();
 		this.direction = d;
 		this.health = 0;
-		
+		this.dead = false;
 	}
 
 	public void calcVelocity() {
@@ -80,22 +80,20 @@ public class Sprite {
 	public void collideWalls(int xMax, int yMax) {
 		
 			if (x < 0 || x + width > xMax || y < 0 || y + height > yMax) {
-				int i = 0;
 				if (bounces) {					
 					direction = direction.getOpposite(direction);
 				} else {
-					direction = Direction.DEAD;
+					dead = true;
 				}
 			}
-		
 	}
 
 	public void run() {
 		calcVelocity();
 		x += dx;
 		y += dy;
-		if (health == 0) {
-			direction = Direction.DEAD;
+		if (health <= 0) {
+			dead = true;
 		}
 	}
 
@@ -134,9 +132,16 @@ public class Sprite {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
+	public int getSpeed() {
+		return this.speed;
+	}
 
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public void setDead(boolean dead) {
+		this.dead = dead;
 	}
 
 	public void setDirection(Direction d) {
@@ -173,6 +178,10 @@ public class Sprite {
 		return health;
 	}
 
+	public boolean getDead() {
+		return dead;
+	}
+	
 	public Direction getDirection() {
 		return direction;
 	}

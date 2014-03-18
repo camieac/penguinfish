@@ -10,12 +10,12 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class Background {
+public class Background{
 	BufferedImage background;
 	int displayableWidth, displayableHeight;
 	boolean movingBackground = true;
 	Direction direction;
-	
+	int speed;
 	int currentTop;
 	int currentLeft;
 
@@ -24,20 +24,23 @@ public class Background {
 		currentLeft = 0;
 		displayableWidth = w;
 		displayableHeight = h;
+		speed = 0;
 		try {
 			background = ImageIO.read(new File("res/img/Background.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public void setSpeed(int speed){
+		this.speed = speed;
+	}
+	
 	public BufferedImage getDisplayableBackground() {
 		BufferedImage image = null;
 		try{
-			//System.out.println("Trying to render from " + currentLeft + " , " + currentTop);
 		image = background.getSubimage(currentLeft, currentTop,
 				displayableWidth, displayableHeight);
-		//System.out.println("                     RENDERED");
 		movingBackground = true;
 		}catch(RasterFormatException e){
 			movingBackground = false;
@@ -46,45 +49,49 @@ public class Background {
 		return image;
 	}
 
-	public void drawBackground(Direction d, int bd,Graphics g,JPanel panel) {
-		double sqrt2bd = bd/Math.sqrt(2);
+	public int getSpeed(){
+		return speed;
+	}
+	
+	public void drawBackground(Direction d,Graphics g,JPanel panel) {
+		double sqrt2speed = speed/Math.sqrt(2);
 		double changeX = 0,changeY = 0;
+		if(movingBackground){
+			speed = 5;
+		}
 		switch(d){
 		case NORTH: 
 			changeX = 0;
-			changeY = -bd;
+			changeY = -speed;
 			break;
 		case NE: 
-			changeX = sqrt2bd;
-			changeY = -sqrt2bd;
+			changeX = sqrt2speed;
+			changeY = -sqrt2speed;
 			break;
 		case EAST: 
-			changeX = bd;
+			changeX = speed;
 			changeY = 0;
 			break;
 		case SE: 
-			changeX = sqrt2bd;
-			changeY = sqrt2bd;
+			changeX = sqrt2speed;
+			changeY = sqrt2speed;
 			break;
 		case SOUTH: 
 			changeX = 0;
-			changeY = bd;
+			changeY = speed;
 			break;
 		case SW: 
-			changeX = -sqrt2bd;
-			changeY = sqrt2bd;
+			changeX = -sqrt2speed;
+			changeY = sqrt2speed;
 			break;
 		case WEST: 
-			changeX = -bd;
+			changeX = -speed;
 			changeY = 0;
 			break;
 		case NW: 
-			changeX = -sqrt2bd;
-			changeY = -sqrt2bd;
+			changeX = -sqrt2speed;
+			changeY = -sqrt2speed;
 			break;
-		case DEAD:
-			changeX = 0;
-			changeY = 0;
 		}
 		
 	currentTop += changeY;
@@ -93,7 +100,6 @@ public class Background {
 	if(currentLeft < 0) currentLeft = 0;
 	if (currentTop > background.getHeight()-displayableHeight) currentTop = background.getHeight()-displayableHeight;
 	if (currentLeft > background.getWidth()-displayableWidth) currentLeft = background.getWidth()-displayableWidth;
-	//System.out.println("Current Top: " + currentTop + ", Current Left: " + currentLeft);
 	BufferedImage image = getDisplayableBackground();
 	if(image != null){
 	g.drawImage(image,0,0,panel);
@@ -106,5 +112,9 @@ public class Background {
 
 	public int getCurrentTop() {
 		return currentTop;
+	}
+
+	public void setMovingBackground(boolean b) {
+		movingBackground = b;
 	}
 }
