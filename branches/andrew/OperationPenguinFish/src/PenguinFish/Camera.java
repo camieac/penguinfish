@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 public class Camera{
 	BufferedImage camera;
-	int displayableWidth, displayableHeight;
+	int cameraWidth, cameraHeight;
 	boolean movingCamera= true;
 	boolean moveX, moveY;
 	int width, height;
@@ -20,14 +20,12 @@ public class Camera{
 	int speed;
 	int currentTop;
 	int currentLeft;
-	Player player;
 
-	public Camera(int w, int h, Player player) {
-		this.player = player;
+	public Camera(int w, int h) {
 		currentTop = 0;
 		currentLeft = 0;
-		displayableWidth = w;
-		displayableHeight = h;
+		cameraWidth = w;
+		cameraHeight = h;
 		speed = 0;
 		try {
 			camera = ImageIO.read(new File("res/img/back.png"));
@@ -62,7 +60,7 @@ public class Camera{
 		BufferedImage image = null;
 		try{
 		image = camera.getSubimage(currentLeft, currentTop,
-				displayableWidth, displayableHeight);
+				cameraWidth, cameraHeight);
 		movingCamera = true;
 		}catch(RasterFormatException e){
 			movingCamera = false;
@@ -126,8 +124,8 @@ public class Camera{
 			currentLeft = 0;
 			moveX = false;
 		}
-		else if (currentLeft >= camera.getWidth()-displayableWidth){
-			currentLeft = camera.getWidth()-displayableWidth;
+		else if (currentLeft >= camera.getWidth()-cameraWidth){
+			currentLeft = camera.getWidth()-cameraWidth;
 			moveX = false;
 		}
 		else moveX = true;
@@ -139,30 +137,30 @@ public class Camera{
 			currentTop = 0; 
 			moveY = false;
 		}
-		else if (currentTop >= camera.getHeight()-displayableHeight){
-			currentTop = camera.getHeight()-displayableHeight;
+		else if (currentTop >= camera.getHeight()-cameraHeight){
+			currentTop = camera.getHeight()-cameraHeight;
 			moveY = false;
 		}
 		else moveY = true;
 	}
-	else if (currentTop >= camera.getHeight()-displayableHeight){
-		currentTop = camera.getHeight()-displayableHeight;
+	else if (currentTop >= camera.getHeight()-cameraHeight){
+		currentTop = camera.getHeight()-cameraHeight;
 		moveY = false;
 		if(currentLeft <= 0){
 			currentLeft = 0;
 			moveX = false;
 		}
-		else if (currentLeft >= camera.getWidth()-displayableWidth){
-			currentLeft = camera.getWidth()-displayableWidth;
+		else if (currentLeft >= camera.getWidth()-cameraWidth){
+			currentLeft = camera.getWidth()-cameraWidth;
 			moveX = false;
 		}
 		else moveX = true;
 	}
-	else if (currentLeft >= camera.getWidth()-displayableWidth){
-		currentLeft = camera.getWidth()-displayableWidth;
+	else if (currentLeft >= camera.getWidth()-cameraWidth){
+		currentLeft = camera.getWidth()-cameraWidth;
 		moveX = false;
-		if (currentTop <= 0 || currentTop >= camera.getHeight()-displayableHeight){
-			currentTop = camera.getHeight()-displayableHeight;
+		if (currentTop <= 0 || currentTop >= camera.getHeight()-cameraHeight){
+			currentTop = camera.getHeight()-cameraHeight;
 			moveY = false;
 		}
 		else moveY = true;
@@ -171,12 +169,12 @@ public class Camera{
 		moveY = true;
 		moveX = true;
 	}
-	 if(player.getY() < displayableHeight/2-player.getHeight()/2 || player.getY() > displayableHeight/2-player.getHeight()/2){
-		 moveY = false;
-	 }
-	 if(player.getX() < displayableWidth/2-player.getWidth()/2 || player.getX() > displayableWidth/2-player.getWidth()/2){
-		 moveX = false;
-	 }
+//	 if(player.getY() < cameraHeight/2-player.getHeight()/2 || player.getY() > cameraHeight/2-player.getHeight()/2){
+//		 moveY = false;
+//	 }
+//	 if(player.getX() < cameraWidth/2-player.getWidth()/2 || player.getX() > cameraWidth/2-player.getWidth()/2){
+//		 moveX = false;
+//	 }
 	
 	System.out.println("MoveX: " + moveX + ", " + "MoveY: " + moveY);
 	BufferedImage image = getDisplayableBackground();
@@ -203,5 +201,12 @@ public class Camera{
 
 	public void setMovingCamera(boolean b) {
 		movingCamera = b;
+	}
+	public boolean isInFrame(int x, int y, int w, int h){
+		if(x + w < currentLeft) return false;
+		else if(x > currentLeft + cameraWidth) return false;
+		else if(y + h < currentTop) return false;
+		else if(y > currentTop + cameraHeight) return false;
+		else return true;
 	}
 }
