@@ -22,6 +22,7 @@ public class SessileSprite {
 		this.images = images;
 		this.width = images[0].getWidth();
 		this.height = images[0].getHeight();
+		this.rect = getRect();
 	}
 	
 	public int getAbsoluteX() {
