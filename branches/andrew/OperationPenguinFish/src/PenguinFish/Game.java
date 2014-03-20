@@ -19,16 +19,18 @@ import javax.swing.JPanel;
 class Game extends JPanel implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
-	private Background background;
+	private Camera camera;
 	private int periodsSinceFire;
 	private int baseSpeed;
 	private LinkedList<Integer> buttons;
 	private LinkedList<Enemy> enemies;
 	private LinkedList<Bullet> bullets;
+	private LinkedList<SessileSprite> sessileSprites;
 	private Player player;
 	private BufferedImage[] playerImages;
 	private BufferedImage[] bulletImages;
 	private BufferedImage[] enemyImages;
+	private BufferedImage[] sessileSpriteImages;
 	private Image fullHeart, emptyHeart;
 	private boolean gameOver;
 	private int pace;
@@ -37,9 +39,11 @@ class Game extends JPanel implements Runnable {
 	private int maxEnemies;
 
 	public Game(int panelWidth, int panelHeight) {
+		sessileSprites = new LinkedList<SessileSprite>();
 		playerImages = new BufferedImage[17];
 		bulletImages = new BufferedImage[1];
 		enemyImages = new BufferedImage[17];
+		sessileSpriteImages = new BufferedImage[4];
 		buttons = new LinkedList<Integer>();
 		rand = new Random();
 		width = panelWidth;
@@ -50,7 +54,7 @@ class Game extends JPanel implements Runnable {
 		maxEnemies = 0;
 		loadImages();
 		createGame();
-		background = new Background(panelWidth, panelHeight, player);
+		
 	}
 
 	private void createGame() {
@@ -59,12 +63,19 @@ class Game extends JPanel implements Runnable {
 		for(int i =0; i< maxEnemies; i++){
 			enemies.add(new Enemy(rand.nextInt(width), rand.nextInt(height), Direction.getRandom(), enemyImages));
 		}
-		
 		player = new Player(0, 0, Direction.SOUTH, playerImages);
+		
 		player.resetLocation(width, height);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		gameOver = false;
+		camera = new Camera(width, height, player);
+		for(int i = 0; i < sessileSpriteImages.length; i++){
+		SessileSprite tree = new SessileSprite(400,(400*i), sessileSpriteImages);
+		tree.setAbsoluteX(400);
+		tree.setAbsoluteY(64*i);
+		sessileSprites.add(tree);
+		}
 		repaint();
 	}
 
@@ -125,8 +136,8 @@ class Game extends JPanel implements Runnable {
 			player.setDirection(Direction.EAST);
 		else{
 			player.setSpeed(0);
-			background.setSpeed(0);
-			background.setMovingBackground(false);
+			camera.setSpeed(0);
+			camera.setMovingCamera(false);
 		}
 		
 		if (buttons.contains(KeyEvent.VK_F)) addBullet();
@@ -148,11 +159,13 @@ class Game extends JPanel implements Runnable {
 		for (int i = 0; i < numPlayerImages; i++) {
 			playerImages[i] = getImage("res/img/Character" + i + ".png");
 		}
+		BufferedImage spriteSheet = getImage("res/img/SpriteSheet1.png");
 		fullHeart = new ImageIcon("res/img/Heart01.png").getImage();
 		emptyHeart = new ImageIcon("res/img/Heart02.png").getImage();
-		new ImageIcon("res/img/Background.png").getImage();
+		new ImageIcon("res/img/camera.png").getImage();
 		bulletImages[0] = getImage("res/img/FishSkeleton.png");
 		enemyImages[0] = getImage("res/img/Enemy00.png");
+		sessileSpriteImages[0] = spriteSheet.getSubimage(0,0,64,64);
 	}
 
 	private BufferedImage getImage(String image) {
@@ -178,9 +191,15 @@ class Game extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		setOpaque(false);
 		super.paintComponent(g);
-		background.drawBackground(player.getDirection(), g, this);
+		camera.drawCamera(player.getDirection(), g, this);
 		for (Enemy enemy : enemies) {
 			enemy.draw(g, 0);
+		}
+		for(SessileSprite s: sessileSprites){
+			System.out.println(s.getX() + ", " + s.getY());
+			s.setX(s.getAbsoluteX()-camera.getCurrentLeft());
+			s.setY(s.getAbsoluteY()-camera.getCurrentTop());
+			s.draw(g, 0);
 		}
 		player.drawPlayer(g);
 		g.setColor(Color.black);
@@ -235,12 +254,12 @@ class Game extends JPanel implements Runnable {
 		while (!gameOver) {
 			periodsSinceFire++;
 			processKeys();
-			player.setPlayerMoving(background.getMoveX(),background.getMoveY());
+			player.setPlayerMoving(camera.getMoveX(),camera.getMoveY());
 			player.run2();	
 			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
 			for (Enemy enemy : enemies) {
 				enemy.run();
-				enemy.collideWalls(width, height, background);
+				enemy.collideWalls(width, height, camera);
 				if(enemy.collide(player.getRect())){
 					player.damage(10);
 				}
@@ -253,11 +272,15 @@ class Game extends JPanel implements Runnable {
 					removeEnemies.add(enemy);
 				}	
 			}
-			
+			for (SessileSprite s: sessileSprites){
+				if (player.collide(s.getRect())){
+					player.setSpeed(0);
+				}
+			}
 			LinkedList<Bullet> removeBullets = new LinkedList<Bullet>();
 			for (Bullet bullet : bullets) {
 				bullet.run();
-				bullet.collideWalls(width, height, background);
+				bullet.collideWalls(width, height, camera);
 				//if(bullet.collide(player.getRect())){
 				//	player.damage(10);
 				//}

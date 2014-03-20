@@ -1,29 +1,18 @@
 package PenguinFish;
 
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class Sprite {
-	protected int x;
-	protected int y;
-	protected int width;
-	protected int height;
+public class Sprite extends SessileSprite{
 	protected int health;
-	protected BufferedImage[] images;
 	protected Direction direction;
 	protected Direction directionHit;
 	protected int dx, dy, speed;
-	protected Rectangle rect;
 	protected boolean bounces;
 	protected boolean dead;
 
 	public Sprite(int x, int y, Direction d, BufferedImage[] images) {
-		this.x = x;
-		this.y = y;
-		this.images = images;
-		this.width = images[0].getWidth();
-		this.height = images[0].getHeight();
+		super(x,y, images);
 		this.direction = d;
 		this.health = 0;
 		this.dead = false;
@@ -70,7 +59,7 @@ public class Sprite {
 	}
 
 	public boolean collide(Rectangle rect2) {
-		rect = new Rectangle(x, y, width, height);
+		rect = new Rectangle(relativeX, relativeY, width, height);
 		if (rect.intersects(rect2)) {
 			direction = direction.getOpposite(direction, directionHit);
 			return true;
@@ -78,18 +67,18 @@ public class Sprite {
 		return false;
 	}
 
-	public void collideWalls(int xMax, int yMax, Background background) {
+	public void collideWalls(int xMax, int yMax, Camera background) {
 			
-			if (x < 0){
+			if (relativeX < 0){
 				directionHit = Direction.WEST;				
 			}
-			else if (x + width > xMax){
+			else if (relativeX + width > xMax){
 				directionHit = Direction.EAST;	
 			}
-			else if (y < 0){
+			else if (relativeY < 0){
 				directionHit = Direction.NORTH;	
 			}
-			else if (y + height > yMax){
+			else if (relativeY + height > yMax){
 				directionHit = Direction.SOUTH;	
 			}
 				if (bounces) {					
@@ -101,35 +90,15 @@ public class Sprite {
 
 	public void run() {
 		calcVelocity();
-		x += dx;
-		y += dy;
+		relativeX += dx;
+		relativeY += dy;
 		if (health <= 0) {
 			dead = true;
 		}
 	}
 
-	public void draw(Graphics g, int i) {
-		g.drawImage(images[i], x, y, null);
-	}
-
 	public void damage(int amount) {
 		health -= amount;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public void setWidth(int w) {
-		this.width = w;
-	}
-
-	public void setHeight(int h) {
-		this.height = h;
 	}
 
 	public void setDx(int dx) {
@@ -161,22 +130,6 @@ public class Sprite {
 		this.height = images[d.getInt()].getHeight();
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
 	public int getDx() {
 		return dx;
 	}
@@ -196,8 +149,28 @@ public class Sprite {
 	public Direction getDirection() {
 		return direction;
 	}
-
-	public Rectangle getRect() {
-		return new Rectangle(x, y, width, height);
+	
+	public void collisionA(Rectangle rectA, Rectangle rectB){
+		if(rectA.intersects(rectB)){
+			//A bounces off B 
+		}
+	}
+	
+	public void collisionB(Rectangle rectA, Rectangle rectB){
+		if(rectA.intersects(rectB)){
+			//A is destroyed
+		}
+	}
+	
+	public void collisionC(Rectangle rectA, Rectangle rectB){
+		if(rectA.intersects(rectB)){
+			//A stops moving (this is collision walls)
+		}
+	}
+	
+	public void collisionD(Rectangle rectA, Rectangle rectB){
+		if(rectA.intersects(rectB)){
+			//A slows down
+		}
 	}
 }
