@@ -22,7 +22,7 @@ class Bullet extends Sprite {
 	}
 	@Override
 	public void draw(Graphics g, int i) {
-		g.drawImage(rotatedImage, x, y, null);
+		g.drawImage(rotatedImage, relativeX, relativeY, null);
 	}
 
 	public void rotateBullet(int i) {

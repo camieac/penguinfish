@@ -10,18 +10,19 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class Background{
-	BufferedImage background;
+public class Camera{
+	BufferedImage camera;
 	int displayableWidth, displayableHeight;
-	boolean movingBackground = true;
+	boolean movingCamera= true;
 	boolean moveX, moveY;
+	int width, height;
 	Direction direction;
 	int speed;
 	int currentTop;
 	int currentLeft;
 	Player player;
 
-	public Background(int w, int h, Player player) {
+	public Camera(int w, int h, Player player) {
 		this.player = player;
 		currentTop = 0;
 		currentLeft = 0;
@@ -29,12 +30,30 @@ public class Background{
 		displayableHeight = h;
 		speed = 0;
 		try {
-			background = ImageIO.read(new File("res/img/back.png"));
+			camera = ImageIO.read(new File("res/img/back.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		width = camera.getWidth();
+		height = camera.getHeight();
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
 	public void setSpeed(int speed){
 		this.speed = speed;
 	}
@@ -42,12 +61,12 @@ public class Background{
 	public BufferedImage getDisplayableBackground() {
 		BufferedImage image = null;
 		try{
-		image = background.getSubimage(currentLeft, currentTop,
+		image = camera.getSubimage(currentLeft, currentTop,
 				displayableWidth, displayableHeight);
-		movingBackground = true;
+		movingCamera = true;
 		}catch(RasterFormatException e){
-			movingBackground = false;
-			return background;
+			movingCamera = false;
+			return camera;
 		}
 		return image;
 	}
@@ -56,10 +75,10 @@ public class Background{
 		return speed;
 	}
 	
-	public void drawBackground(Direction d,Graphics g,JPanel panel) {
+	public void drawCamera(Direction d,Graphics g,JPanel panel) {
 		double sqrt2speed = speed/Math.sqrt(2);
 		double changeX = 0,changeY = 0;
-		if(movingBackground){
+		if(movingCamera){
 			speed = 5;
 		}
 		switch(d){
@@ -98,6 +117,8 @@ public class Background{
 		}
 	currentTop += changeY;
 	currentLeft += changeX;
+	
+	
 	if(currentTop <= 0) {
 		currentTop = 0; 
 		moveY = false;
@@ -105,8 +126,8 @@ public class Background{
 			currentLeft = 0;
 			moveX = false;
 		}
-		else if (currentLeft >= background.getWidth()-displayableWidth){
-			currentLeft = background.getWidth()-displayableWidth;
+		else if (currentLeft >= camera.getWidth()-displayableWidth){
+			currentLeft = camera.getWidth()-displayableWidth;
 			moveX = false;
 		}
 		else moveX = true;
@@ -118,30 +139,30 @@ public class Background{
 			currentTop = 0; 
 			moveY = false;
 		}
-		else if (currentTop >= background.getHeight()-displayableHeight){
-			currentTop = background.getHeight()-displayableHeight;
+		else if (currentTop >= camera.getHeight()-displayableHeight){
+			currentTop = camera.getHeight()-displayableHeight;
 			moveY = false;
 		}
 		else moveY = true;
 	}
-	else if (currentTop >= background.getHeight()-displayableHeight){
-		currentTop = background.getHeight()-displayableHeight;
+	else if (currentTop >= camera.getHeight()-displayableHeight){
+		currentTop = camera.getHeight()-displayableHeight;
 		moveY = false;
 		if(currentLeft <= 0){
 			currentLeft = 0;
 			moveX = false;
 		}
-		else if (currentLeft >= background.getWidth()-displayableWidth){
-			currentLeft = background.getWidth()-displayableWidth;
+		else if (currentLeft >= camera.getWidth()-displayableWidth){
+			currentLeft = camera.getWidth()-displayableWidth;
 			moveX = false;
 		}
 		else moveX = true;
 	}
-	else if (currentLeft >= background.getWidth()-displayableWidth){
-		currentLeft = background.getWidth()-displayableWidth;
+	else if (currentLeft >= camera.getWidth()-displayableWidth){
+		currentLeft = camera.getWidth()-displayableWidth;
 		moveX = false;
-		if (currentTop <= 0 || currentTop >= background.getHeight()-displayableHeight){
-			currentTop = background.getHeight()-displayableHeight;
+		if (currentTop <= 0 || currentTop >= camera.getHeight()-displayableHeight){
+			currentTop = camera.getHeight()-displayableHeight;
 			moveY = false;
 		}
 		else moveY = true;
@@ -180,7 +201,7 @@ public class Background{
 		return currentTop;
 	}
 
-	public void setMovingBackground(boolean b) {
-		movingBackground = b;
+	public void setMovingCamera(boolean b) {
+		movingCamera = b;
 	}
 }

@@ -18,8 +18,8 @@ class Player extends Sprite {
 	}
 
 	public void resetLocation(int width, int height) {
-		x = width / 2 - images[0].getWidth() / 2;
-		y = height / 2 - images[0].getHeight() / 2;
+		relativeX = width / 2 - images[0].getWidth() / 2;
+		relativeY = height / 2 - images[0].getHeight() / 2;
 	}
 
 	public void drawPlayer(Graphics g) {
@@ -30,18 +30,18 @@ class Player extends Sprite {
 		if (health <= 50 && health > 0) {
 			image = images[direction.getInt()];
 		}
-		g.drawImage(image, x, y, null);
+		g.drawImage(image, relativeX, relativeY, null);
 	}
 	
 	public void run2() {
 		calcVelocity();
 		if(moveX){
 			speed = 5;
-			x += dx;
+			relativeX += dx;
 		}
 		if(moveY){
 			speed = 5;
-			y += dy;
+			relativeY += dy;
 		}
 		if (health <= 0) {
 			dead = true;
