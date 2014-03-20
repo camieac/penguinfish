@@ -46,7 +46,7 @@ class Game extends JPanel implements Runnable {
 		periodsSinceFire = 0;
 		baseSpeed = 5;
 		pace = 5;
-		maxEnemies = 10;
+		maxEnemies = 0;
 		createGame();
 
 	}
