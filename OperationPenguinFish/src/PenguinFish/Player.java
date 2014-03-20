@@ -46,8 +46,8 @@ class Player extends Sprite {
 		if (health <= 0) {
 			dead = true;
 		}
-		System.out.println("moveX is :" + moveX);
-		System.out.println("moveY is :" + moveY);
+		System.out.println("player moveX:" + moveX + " moveY:" + moveY);
+		
 	}
 	
 	public void setPlayerMoving(boolean xMove, boolean yMove) {

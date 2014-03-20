@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 class Game extends JPanel implements Runnable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Camera camera;
 	private int periodsSinceFire;
@@ -25,25 +25,20 @@ class Game extends JPanel implements Runnable {
 	private LinkedList<Integer> buttons;
 	private LinkedList<Enemy> enemies;
 	private LinkedList<Bullet> bullets;
-	private LinkedList<SessileSprite> sessileSprites;
+	private Images images;
+
 	private Player player;
-	private BufferedImage[] playerImages;
-	private BufferedImage[] bulletImages;
-	private BufferedImage[] enemyImages;
-	private BufferedImage[] sessileSpriteImages;
-	private Image fullHeart, emptyHeart;
+	private Map map;
+
 	private boolean gameOver;
 	private int pace;
-	private int width, height; 
+	private int width, height;
 	private Random rand;
 	private int maxEnemies;
 
 	public Game(int panelWidth, int panelHeight) {
-		sessileSprites = new LinkedList<SessileSprite>();
-		playerImages = new BufferedImage[17];
-		bulletImages = new BufferedImage[1];
-		enemyImages = new BufferedImage[17];
-		sessileSpriteImages = new BufferedImage[4];
+		images = new Images();
+
 		buttons = new LinkedList<Integer>();
 		rand = new Random();
 		width = panelWidth;
@@ -51,32 +46,32 @@ class Game extends JPanel implements Runnable {
 		periodsSinceFire = 0;
 		baseSpeed = 5;
 		pace = 5;
-		maxEnemies = 0;
-		loadImages();
+		maxEnemies = 10;
 		createGame();
-		
+
 	}
 
 	private void createGame() {
+		map = new Map(images.getMapImage(0));
+		map.createSessileSprites();
 		enemies = new LinkedList<Enemy>();
-		
-		for(int i =0; i< maxEnemies; i++){
-			enemies.add(new Enemy(rand.nextInt(width), rand.nextInt(height), Direction.getRandom(), enemyImages));
-		}
-		player = new Player(0, 0, Direction.SOUTH, playerImages);
-		
+		createEnemies();
+		player = new Player(0, 0, Direction.SOUTH, images.getPlayerImages());
+
 		player.resetLocation(width, height);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		gameOver = false;
-		camera = new Camera(width, height, player);
-		for(int i = 0; i < sessileSpriteImages.length; i++){
-		SessileSprite tree = new SessileSprite(400,(400*i), sessileSpriteImages);
-		tree.setAbsoluteX(400);
-		tree.setAbsoluteY(64*i);
-		sessileSprites.add(tree);
-		}
+		camera = new Camera(width, height);
+
 		repaint();
+	}
+
+	private void createEnemies() {
+		for (int i = 0; i < maxEnemies; i++) {
+			enemies.add(new Enemy(rand.nextInt(width), rand.nextInt(height),
+					Direction.getRandom(), images.getEnemyImages()));
+		}
 	}
 
 	private void difficultyWait() {
@@ -110,7 +105,7 @@ class Game extends JPanel implements Runnable {
 
 	public void keyReleased(KeyEvent e) {
 		if (buttons.contains(e.getKeyCode()))
-			buttons.remove(buttons.indexOf(e.getKeyCode()));			
+			buttons.remove(buttons.indexOf(e.getKeyCode()));
 	}
 
 	private void processKeys() {
@@ -134,58 +129,26 @@ class Game extends JPanel implements Runnable {
 			player.setDirection(Direction.WEST);
 		else if (buttons.contains(KeyEvent.VK_RIGHT))
 			player.setDirection(Direction.EAST);
-		else{
+		else {
 			player.setSpeed(0);
 			camera.setSpeed(0);
 			camera.setMovingCamera(false);
 		}
-		
-		if (buttons.contains(KeyEvent.VK_F)) addBullet();
+
+		if (buttons.contains(KeyEvent.VK_F))
+			addBullet();
 
 	}
 
 	public void addBullet() {
 		if (periodsSinceFire >= 3) {
-			Bullet b = new Bullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2,
-					player.getDirection(), bulletImages);
+			Bullet b = new Bullet(player.getX() + player.getWidth() / 2,
+					player.getY() + player.getHeight() / 2,
+					player.getDirection(), images.getBulletImages());
 			bullets.add(b);
 			b.rotateBullet(0);
 			periodsSinceFire = 0;
 		}
-	}
-
-	private void loadImages() {
-		int numPlayerImages = 13;
-		for (int i = 0; i < numPlayerImages; i++) {
-			playerImages[i] = getImage("res/img/Character" + i + ".png");
-		}
-		BufferedImage spriteSheet = getImage("res/img/SpriteSheet1.png");
-		fullHeart = new ImageIcon("res/img/Heart01.png").getImage();
-		emptyHeart = new ImageIcon("res/img/Heart02.png").getImage();
-		new ImageIcon("res/img/camera.png").getImage();
-		bulletImages[0] = getImage("res/img/FishSkeleton.png");
-		enemyImages[0] = getImage("res/img/Enemy00.png");
-		sessileSpriteImages[0] = spriteSheet.getSubimage(0,0,64,64);
-	}
-
-	private BufferedImage getImage(String image) {
-		BufferedImage map = null;
-		try {
-			map = ImageIO.read(new File(image));
-			return toCompatibleImage(map);
-		} catch (IOException e) {
-			return map;
-		}
-	}
-
-	private BufferedImage toCompatibleImage(BufferedImage image) {
-		GraphicsConfiguration gfx_config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-		if (image.getColorModel().equals(gfx_config.getColorModel()))return image;
-		BufferedImage new_image = gfx_config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
-		Graphics2D g2d = (Graphics2D) new_image.getGraphics();
-		g2d.drawImage(image, 0, 0, null);
-		g2d.dispose();
-		return new_image;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -195,17 +158,38 @@ class Game extends JPanel implements Runnable {
 		for (Enemy enemy : enemies) {
 			enemy.draw(g, 0);
 		}
-		for(SessileSprite s: sessileSprites){
-			System.out.println(s.getX() + ", " + s.getY());
-			s.setX(s.getAbsoluteX()-camera.getCurrentLeft());
-			s.setY(s.getAbsoluteY()-camera.getCurrentTop());
-			s.draw(g, 0);
-		}
+		map.paintSessileSprites(g,camera);
 		player.drawPlayer(g);
+		paintText(g);
+		paintHealth(g);
+		if (player.getHealth() < 10) {
+			g.setColor(Color.red);
+			g.drawString("DEAD!", width - 65, 10);
+		}
+		for (Bullet b : bullets) {
+			b.draw(g, 0);
+		}
+		if (gameOver) {
+			paintGameOver(g);
+		}
+	}
+
+	private void paintGameOver(Graphics g) {
+		player.draw(g, 8);
+		g.setColor(Color.black);
+		g.drawString("Game Over", (width / 2) - 25, height / 2);
+	}
+
+	private void paintText(Graphics g) {
 		g.setColor(Color.black);
 		g.drawString("Avoid the red enemy!", 10, 10);
 		g.drawString("Pace: " + pace, width / 2, 10);
 		g.drawString("Life: ", width - 100, 10);
+	}
+
+	private void paintHealth(Graphics g) {
+		BufferedImage fullHeart = images.getFullHeart();
+		BufferedImage emptyHeart = images.getEmptyHeart();
 		if (player.getHealth() == 100) {
 			g.drawImage(fullHeart, width - 75, 1, this);
 		}
@@ -236,71 +220,64 @@ class Game extends JPanel implements Runnable {
 		if (player.getHealth() < 20 && player.getHealth() >= 10) {
 			g.drawImage(emptyHeart, width - 35, 1, this);
 		}
-		if (player.getHealth() < 10) {
-			g.setColor(Color.red);
-			g.drawString("DEAD!", width - 65, 10);
-		}
-		for (Bullet b : bullets) {
-			b.draw(g, 0);
-		}
-		if (gameOver) {
-			player.draw(g, 8);
-			g.setColor(Color.black);
-			g.drawString("Game Over", (width / 2) - 25, height / 2);
-		}
-	}	
+	}
 
 	public void run() {
 		while (!gameOver) {
 			periodsSinceFire++;
 			processKeys();
-			player.setPlayerMoving(camera.getMoveX(),camera.getMoveY());
-			player.run2();	
+			player.setPlayerMoving(camera.getMoveX(), camera.getMoveY());
+			player.run2();
 			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
-			for (Enemy enemy : enemies) {
-				enemy.run();
-				enemy.collideWalls(width, height, camera);
-				if(enemy.collide(player.getRect())){
-					player.damage(10);
-				}
-				for(Enemy e : enemies){
-					if(!e.equals(enemy)){
-						enemy.collide(e.getRect());
-					}
-				}
-				if(enemy.getDead()){
-					removeEnemies.add(enemy);
-				}	
-			}
-			for (SessileSprite s: sessileSprites){
-				if (player.collide(s.getRect())){
-					player.setSpeed(0);
-				}
-			}
+			detectEnemyCollisions(removeEnemies);
+			map.tickSessileSprites(player);
+
 			LinkedList<Bullet> removeBullets = new LinkedList<Bullet>();
-			for (Bullet bullet : bullets) {
-				bullet.run();
-				bullet.collideWalls(width, height, camera);
-				//if(bullet.collide(player.getRect())){
-				//	player.damage(10);
-				//}
-				for(Enemy e : enemies){
-					bullet.collide(e.getRect());
-					bullet.setDead(true);
-					e.damage(10);					
-				}
-				if(bullet.getDead()){
-					removeBullets.add(bullet);
-				}			
-			}
+			detectBulletCollisions(removeBullets);
 			bullets.removeAll(removeBullets);
-			enemies.removeAll(removeEnemies);				
-			difficultyWait();			
+			enemies.removeAll(removeEnemies);
+			difficultyWait();
 			repaint();
 		}
 	}
 
+	private void detectEnemyCollisions(LinkedList<Enemy> removeEnemies) {
+		for (Enemy enemy : enemies) {
+			enemy.run();
+			enemy.collideWalls(width, height, camera);
+			if (enemy.collide(player.getRect())) {
+				player.damage(10);
+			}
+			for (Enemy e : enemies) {
+				if (!e.equals(enemy)) {
+					enemy.collide(e.getRect());
+				}
+			}
+			if (enemy.getDead()) {
+				removeEnemies.add(enemy);
+			}
+		}
+	}
+
+	private void detectBulletCollisions(LinkedList<Bullet> removeBullets) {
+		for (Bullet bullet : bullets) {
+			bullet.run();
+			bullet.collideWalls(width, height, camera);
+			// if(bullet.collide(player.getRect())){
+			// player.damage(10);
+			// }
+			for (Enemy e : enemies) {
+				bullet.collide(e.getRect());
+				bullet.setDead(true);
+				e.damage(10);
+			}
+			if (bullet.getDead()) {
+				removeBullets.add(bullet);
+			}
+		}
+	}
+
 	public void incrementPace(int i) {
-		pace += i;		
+		pace += i;
 	}
 }

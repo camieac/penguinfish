@@ -165,6 +165,7 @@ public class Sprite extends SessileSprite{
 	public void collisionC(Rectangle rectA, Rectangle rectB){
 		if(rectA.intersects(rectB)){
 			//A stops moving (this is collision walls)
+			
 		}
 	}
 	
