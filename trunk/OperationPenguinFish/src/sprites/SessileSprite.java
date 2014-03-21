@@ -1,23 +1,21 @@
 package sprites;
 
+import main.Boundary;
+import graphics.Images;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import main.Boundary;
-
 public class SessileSprite extends Boundary{
-	protected int width;
-	protected int height;
-	protected BufferedImage[] images;
+	protected BufferedImage image;
 	
-	public SessileSprite(int absoluteX, int absoluteY, BufferedImage[] images) {
+	public SessileSprite(int absoluteX, int absoluteY, Images images, int i) {
 		super(absoluteX, absoluteY);
-		this.images = images;
-		this.width = images[0].getWidth();
-		this.height = images[0].getHeight();
+		this.image = images.getSessileImage(i);
+		this.width = this.image.getWidth();
+		this.height = this.image.getHeight();
 	}
 	
 	public void draw(Graphics g, int i) {
-		g.drawImage(images[i], absoluteX,absoluteY, null);
+		g.drawImage(image, absoluteX, absoluteY, null);
 	}
 }
