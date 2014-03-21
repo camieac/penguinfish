@@ -5,6 +5,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,8 +15,8 @@ class Images {
 	private BufferedImage[] players;
 	private BufferedImage[] bullets;
 	private BufferedImage[] enemies;
-
-	private  BufferedImage[] maps;
+	private BufferedImage background;
+	private BufferedImage[] maps;
 	private BufferedImage fullHeart, emptyHeart;
 	
 	public Images(){
@@ -32,7 +33,7 @@ class Images {
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
 		enemies[0] = getImage("res/img/Enemy00.png");
-		
+		background = getImage("res/img/back.png");
 
 		int numPlayerImages = 13;
 		for (int i = 0; i < numPlayerImages; i++) {
@@ -49,6 +50,16 @@ class Images {
 		} catch (IOException e) {
 			return map;
 		}
+	}
+	
+	public BufferedImage getDisplayableBackground(int currentLeft, int currentTop) {
+		BufferedImage image = null;
+		try{
+		image = background.getSubimage(currentLeft, currentTop,background.getWidth(), background.getHeight());
+		}catch(RasterFormatException e){
+			return background;
+		}
+		return image;
 	}
 	private static BufferedImage toCompatibleImage(BufferedImage image) {
 		GraphicsConfiguration gfx_config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();

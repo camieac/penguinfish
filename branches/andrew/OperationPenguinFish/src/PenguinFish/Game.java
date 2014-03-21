@@ -30,7 +30,7 @@ class Game extends JPanel {
 	private Destroyer destroyer;
 	
 	private Player player;
-	private Map map;
+	private Background background;
 
 	private boolean gameOver;
 	private int pace;
@@ -54,8 +54,8 @@ class Game extends JPanel {
 	}
 
 	private void createGame() {
-		map = new Map(images.getMapImage(0));
-		map.createSessileSprites();
+		background = new Background(images.getMapImage(0));
+		background.createSessileSprites();
 		enemies = new LinkedList<Enemy>();
 		createEnemies();
 		player = new Player(0, 0, Direction.SOUTH, images.getPlayerImages());
@@ -64,7 +64,7 @@ class Game extends JPanel {
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		gameOver = false;
-		camera = new Camera(width, height);
+		camera = new Camera(width, height,background,images);
 
 		repaint();
 	}
@@ -149,8 +149,8 @@ class Game extends JPanel {
 
 	public void addBullet() {
 		if (periodsSinceFire >= 3) {
-			Bullet b = new Bullet(player.getX() + player.getWidth(),
-					player.getY() + player.getHeight(),
+			Bullet b = new Bullet(player.getAbsoluteX() + player.getWidth(),
+					player.getAbsoluteY() + player.getHeight(),
 					player.getDirection(), images.getBulletImages());
 			bullets.add(b);
 			b.rotateBullet(0);
@@ -165,7 +165,7 @@ class Game extends JPanel {
 		for (Enemy enemy : enemies) {
 			enemy.draw(g, 0);
 		}
-		map.paintSessileSprites(g,camera);
+		background.paintSessileSprites(g,camera);
 		player.drawPlayer(g);
 		paintText(g);
 		paintHealth(g);
@@ -240,7 +240,7 @@ class Game extends JPanel {
 			destroyer.destroyBullets(bullets);
 			destroyer.destroyEnemies(enemies);
 			//System.out.println(bullets);
-			map.tick(player);
+			background.tick(player);
 			difficultyWait();
 			repaint();
 		}
@@ -253,12 +253,12 @@ class Game extends JPanel {
 		for (Enemy enemy : enemies) {
 			enemy.run();
 			enemy.collideWalls(width, height, camera);
-			if (enemy.collide(player.getRect())) {
+			if (enemy.collide(player.createRect())) {
 				player.damage(10);
 			}
 			for (Enemy e : enemies) {
 				if (!e.equals(enemy)) {
-					if(enemy.collide(e.getRect())){
+					if(enemy.collide(e.createRect())){
 						enemy.setDead(true);
 					}
 						
@@ -278,7 +278,7 @@ class Game extends JPanel {
 			// player.damage(10);
 			// }
 			for (Enemy e : enemies) {
-				if(bullet.collide(e.getRect())){
+				if(bullet.collide(e.createRect())){
 					bullet.setDead(true);
 					e.damage(10);
 				}
