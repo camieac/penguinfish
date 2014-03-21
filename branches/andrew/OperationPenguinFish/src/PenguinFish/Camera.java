@@ -176,7 +176,7 @@ public class Camera{
 //		 moveX = false;
 //	 }
 	
-	System.out.println("MoveX: " + moveX + ", " + "MoveY: " + moveY);
+	//System.out.println("MoveX: " + moveX + ", " + "MoveY: " + moveY);
 	BufferedImage image = getDisplayableBackground();
 	if(image != null){
 	g.drawImage(image,0,0,panel);

@@ -27,7 +27,7 @@ public class GUI {
 		frame.setSize(panelWidth,panelHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);	
-		game.run();
+		
 	}
 
 	private void formKeyPressed(KeyEvent evt) {
@@ -40,5 +40,6 @@ public class GUI {
 
 	public static void main(String[] args) {
 		GUI g = new GUI();
+		g.game.run();
 	}
 }

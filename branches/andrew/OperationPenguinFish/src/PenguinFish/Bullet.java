@@ -15,6 +15,7 @@ class Bullet extends Sprite {
 
 	public Bullet(int x, int y, Direction d, BufferedImage[] i) {
 		super(x, y, d, i);
+		setDead(false);
 		rotatedImage = null;
 		bounces = false;
 		speed = 10;

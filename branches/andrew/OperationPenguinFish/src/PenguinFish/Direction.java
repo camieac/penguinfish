@@ -1,5 +1,6 @@
 package PenguinFish;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 enum Direction {
@@ -14,6 +15,8 @@ enum Direction {
 	private int direction;
 	private int angle;
 	private int opposite;
+
+	protected LinkedList<Direction> disabledDirections = new LinkedList<Direction>();;
 	
 	public int getInt(){
 		return direction;
@@ -73,10 +76,46 @@ enum Direction {
 		return d;
 	}
 	
+	public Direction getNormalOpposite(Direction d){
+		switch(d){
+		case NORTH: return SOUTH;
+		case NORTHEAST: return SOUTHWEST;
+		case EAST: return WEST;
+		case SOUTHEAST: return NORTHWEST;
+		case SOUTH: return NORTH;
+		case SOUTHWEST: return NORTHEAST;
+		case WEST: return EAST;
+		case NORTHWEST: return SOUTHEAST;
+		default: return null;
+		}
+		
+	}
 	private Direction(int direction, int angle, int d){
 		this.direction = direction;	
 		this.angle = angle;
 		this.opposite = d;
 		
+	}
+	public void disableDirection(Direction d){
+		
+		if(!disabledDirections.contains(d)){
+		disabledDirections.add(d);
+		//System.out.println(d + " has been disabled");
+		}
+	}
+	public void enableDirection(Direction d){
+		if(!disabledDirections.contains(d)){
+			disabledDirections.remove(d);
+			//System.out.println(d + " has been enabled");
+			}
+	}
+	public boolean checkDisabled(Direction d){
+		boolean result = disabledDirections.contains(d);
+		//System.out.println(d + " is being checked in " + disabledDirections + " and is " + result);
+		return result;
+		
+	}
+	public void clearDisabledDirections(){
+		disabledDirections.clear();
 	}
 }
