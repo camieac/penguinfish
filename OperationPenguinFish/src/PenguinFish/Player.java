@@ -3,11 +3,13 @@ package PenguinFish;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 class Player extends Sprite {
 	int distance;
 	boolean playerUp, playerDown, playerLeft, playerRight;
 	boolean moveX, moveY;
+	
 
 	public Player(int x, int y, Direction d, BufferedImage[] i) {
 		super(x, y, d, i);
@@ -15,6 +17,7 @@ class Player extends Sprite {
 		moveY = false;
 		setHealth(100);
 		speed = 5;
+		
 	}
 
 	public void resetLocation(int width, int height) {
@@ -32,21 +35,25 @@ class Player extends Sprite {
 		}
 		g.drawImage(image, relativeX, relativeY, null);
 	}
+	public void tick(Camera camera){
+		setPlayerMoving(camera.getMoveX(), camera.getMoveY());
+		runAtEdges();
+	}
 	
-	public void run2() {
+	public void runAtEdges() {
 		calcVelocity();
 		if(moveX){
-			speed = 5;
+			speed = 4;
 			relativeX += dx;
 		}
 		if(moveY){
-			speed = 5;
+			speed = 4;
 			relativeY += dy;
 		}
 		if (health <= 0) {
 			dead = true;
 		}
-		System.out.println("player moveX:" + moveX + " moveY:" + moveY);
+		//System.out.println("player moveX:" + moveX + " moveY:" + moveY);
 		
 	}
 	
@@ -54,4 +61,5 @@ class Player extends Sprite {
 		moveX = !xMove;
 		moveY = !yMove;
 	}
+	
 }

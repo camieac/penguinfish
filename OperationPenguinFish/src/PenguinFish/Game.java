@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-class Game extends JPanel implements Runnable {
+class Game extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Camera camera;
@@ -27,6 +27,8 @@ class Game extends JPanel implements Runnable {
 	private LinkedList<Bullet> bullets;
 	private Images images;
 
+	private Destroyer destroyer;
+	
 	private Player player;
 	private Map map;
 
@@ -38,7 +40,7 @@ class Game extends JPanel implements Runnable {
 
 	public Game(int panelWidth, int panelHeight) {
 		images = new Images();
-
+		destroyer = new Destroyer();
 		buttons = new LinkedList<Integer>();
 		rand = new Random();
 		width = panelWidth;
@@ -46,7 +48,7 @@ class Game extends JPanel implements Runnable {
 		periodsSinceFire = 0;
 		baseSpeed = 5;
 		pace = 5;
-		maxEnemies = 0;
+		maxEnemies = 10;
 		createGame();
 
 	}
@@ -137,13 +139,18 @@ class Game extends JPanel implements Runnable {
 
 		if (buttons.contains(KeyEvent.VK_F))
 			addBullet();
+		
+		if(player.getDirection().checkDisabled(player.getDirection())){
+			//player.setDirection(player.getDirection().getNormalOpposite(player.getDirection()));
+			player.setSpeed(0);
+		}
 
 	}
 
 	public void addBullet() {
 		if (periodsSinceFire >= 3) {
-			Bullet b = new Bullet(player.getX() + player.getWidth() / 2,
-					player.getY() + player.getHeight() / 2,
+			Bullet b = new Bullet(player.getX() + player.getWidth(),
+					player.getY() + player.getHeight(),
 					player.getDirection(), images.getBulletImages());
 			bullets.add(b);
 			b.rotateBullet(0);
@@ -226,22 +233,23 @@ class Game extends JPanel implements Runnable {
 		while (!gameOver) {
 			periodsSinceFire++;
 			processKeys();
-			player.setPlayerMoving(camera.getMoveX(), camera.getMoveY());
-			player.run2();
-			LinkedList<Enemy> removeEnemies = new LinkedList<Enemy>();
-			detectEnemyCollisions(removeEnemies);
-			map.tickSessileSprites(player);
-
-			LinkedList<Bullet> removeBullets = new LinkedList<Bullet>();
-			detectBulletCollisions(removeBullets);
-			bullets.removeAll(removeBullets);
-			enemies.removeAll(removeEnemies);
+			player.tick(camera);
+			
+			detectEnemyCollisions();
+			detectBulletCollisions();
+			destroyer.destroyBullets(bullets);
+			destroyer.destroyEnemies(enemies);
+			//System.out.println(bullets);
+			map.tick(player);
 			difficultyWait();
 			repaint();
 		}
 	}
+	private void tickAll(){
+		
+	}
 
-	private void detectEnemyCollisions(LinkedList<Enemy> removeEnemies) {
+	private void detectEnemyCollisions() {
 		for (Enemy enemy : enemies) {
 			enemy.run();
 			enemy.collideWalls(width, height, camera);
@@ -250,16 +258,19 @@ class Game extends JPanel implements Runnable {
 			}
 			for (Enemy e : enemies) {
 				if (!e.equals(enemy)) {
-					enemy.collide(e.getRect());
+					if(enemy.collide(e.getRect())){
+						enemy.setDead(true);
+					}
+						
 				}
 			}
 			if (enemy.getDead()) {
-				removeEnemies.add(enemy);
+				destroyer.mark(enemy);
 			}
 		}
 	}
 
-	private void detectBulletCollisions(LinkedList<Bullet> removeBullets) {
+	private void detectBulletCollisions() {
 		for (Bullet bullet : bullets) {
 			bullet.run();
 			bullet.collideWalls(width, height, camera);
@@ -267,12 +278,19 @@ class Game extends JPanel implements Runnable {
 			// player.damage(10);
 			// }
 			for (Enemy e : enemies) {
-				bullet.collide(e.getRect());
-				bullet.setDead(true);
-				e.damage(10);
+				if(bullet.collide(e.getRect())){
+					bullet.setDead(true);
+					e.damage(10);
+				}
+				
+				
+				
 			}
+			
+			System.out.println(bullet.getDead());
 			if (bullet.getDead()) {
-				removeBullets.add(bullet);
+				destroyer.mark(bullet);
+				System.out.println("Bullet marked");
 			}
 		}
 	}

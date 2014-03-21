@@ -19,6 +19,8 @@ public class Sprite extends SessileSprite{
 	}
 
 	public void calcVelocity() {
+		
+		if(!direction.checkDisabled(direction)){
 		switch (direction) {
 		case NORTH:
 			dx = 0;
@@ -56,18 +58,27 @@ public class Sprite extends SessileSprite{
 			dx = 0;
 			dy = 0;
 		}
+		}else{
+			speed = 0;
+			dx = 0;
+			dy = 0;
+		}
 	}
 
 	public boolean collide(Rectangle rect2) {
 		rect = new Rectangle(relativeX, relativeY, width, height);
 		if (rect.intersects(rect2)) {
 			direction = direction.getOpposite(direction, directionHit);
+			dy = 0;
+			dx = 0;
+			speed = 0;
+			System.out.println("                        STOPPPPP");
 			return true;
 		}
 		return false;
 	}
 
-	public void collideWalls(int xMax, int yMax, Camera background) {
+	public void collideWalls(int xMax, int yMax, Camera camera) {
 			
 			if (relativeX < 0){
 				directionHit = Direction.WEST;				
@@ -162,12 +173,13 @@ public class Sprite extends SessileSprite{
 		}
 	}
 	
-	public void collisionC(Rectangle rectA, Rectangle rectB){
-		if(rectA.intersects(rectB)){
-			//A stops moving (this is collision walls)
-			
-		}
-	}
+//	public void collisionC(Rectangle rectB){
+//		if(this.rect.intersects(rectB)){
+//			//A stops moving (this is collision walls)
+//			Direction playerDHit = direction;
+//			
+//		}
+//	}
 	
 	public void collisionD(Rectangle rectA, Rectangle rectB){
 		if(rectA.intersects(rectB)){
