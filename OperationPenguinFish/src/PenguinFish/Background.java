@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-class Map {
+class Background {
 	protected int width, height;
 	protected BufferedImage image;
 	private BufferedImage[] sessileSpriteImages;
@@ -14,7 +14,7 @@ class Map {
 	BufferedImage spriteSheet;
 	protected Rectangle boundaries[];
 
-	public Map(BufferedImage image) {
+	public Background(BufferedImage image) {
 		this.width = image.getWidth();
 		this.height = image.getHeight();
 		this.image = image;
@@ -33,8 +33,7 @@ class Map {
 
 	public void createSessileSprites() {
 		for (int i = 0; i < sessileSpriteImages.length; i++) {
-			SessileSprite tree = new SessileSprite(400, (400 * i),
-					sessileSpriteImages);
+			SessileSprite tree = new SessileSprite(400, (400 * i),sessileSpriteImages);
 			tree.setAbsoluteX(400);
 			tree.setAbsoluteY(64 * i);
 			sessileSprites.add(tree);
@@ -47,8 +46,8 @@ class Map {
 		for (SessileSprite s : sessileSprites) {
 		int absX = s.getAbsoluteX();
 		int absY = s.getAbsoluteY();
-			s.setX (absX- cameraLeft);
-			s.setY(absY - cameraTop);
+			s.setAbsoluteX (absX- cameraLeft);
+			s.setAbsoluteY(absY - cameraTop);
 			if(camera.isInFrame(absX, absY, s.getWidth(), s.getHeight())){
 				s.draw(g, 0);
 			}
@@ -58,7 +57,7 @@ class Map {
 	public void tickSessileSprites(Player player) {
 		for (SessileSprite s : sessileSprites) {
 			Direction d = player.getDirection();
-			if (player.collide(s.getRect())) {
+			if (player.collide(s.createRect())) {
 				System.out.println(d);
 				player.getDirection().disableDirection(d);
 				player.setSpeed(0);
@@ -73,5 +72,13 @@ class Map {
 	public void tick(Player player) {
 		tickSessileSprites(player);
 		
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
 	}
 }

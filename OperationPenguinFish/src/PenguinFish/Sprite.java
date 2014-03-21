@@ -66,13 +66,12 @@ public class Sprite extends SessileSprite{
 	}
 
 	public boolean collide(Rectangle rect2) {
-		rect = new Rectangle(relativeX, relativeY, width, height);
+		rect = new Rectangle(absoluteX, absoluteY, width, height);
 		if (rect.intersects(rect2)) {
 			direction = direction.getOpposite(direction, directionHit);
 			dy = 0;
 			dx = 0;
 			speed = 0;
-			System.out.println("                        STOPPPPP");
 			return true;
 		}
 		return false;
@@ -80,16 +79,16 @@ public class Sprite extends SessileSprite{
 
 	public void collideWalls(int xMax, int yMax, Camera camera) {
 			
-			if (relativeX < 0){
+			if (absoluteX < 0){
 				directionHit = Direction.WEST;				
 			}
-			else if (relativeX + width > xMax){
+			else if (absoluteX + width > xMax){
 				directionHit = Direction.EAST;	
 			}
-			else if (relativeY < 0){
+			else if (absoluteY < 0){
 				directionHit = Direction.NORTH;	
 			}
-			else if (relativeY + height > yMax){
+			else if (absoluteY + height > yMax){
 				directionHit = Direction.SOUTH;	
 			}
 				if (bounces) {					
@@ -101,8 +100,8 @@ public class Sprite extends SessileSprite{
 
 	public void run() {
 		calcVelocity();
-		relativeX += dx;
-		relativeY += dy;
+		absoluteX += dx;
+		absoluteY += dy;
 		if (health <= 0) {
 			dead = true;
 		}

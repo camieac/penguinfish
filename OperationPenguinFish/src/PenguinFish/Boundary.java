@@ -3,19 +3,15 @@ package PenguinFish;
 import java.awt.Rectangle;
 
 public class Boundary {
-	protected int relativeX;
-	protected int relativeY;
 	protected int absoluteX;
 	protected int absoluteY;
 	protected int width;
 	protected int height;
 	protected Rectangle rect;
 	
-	public Boundary(int relX, int relY, int absX, int absY) {
-		this.relativeX = relX;
-		this.relativeY = relY;
-		this.absoluteX = absX;
-		this.absoluteY = absY;
+	public Boundary(int absoluteX, int absoluteY) {
+		this.absoluteX = absoluteX;
+		this.absoluteY = absoluteY;
 		this.rect = createRect();
 	}
 	
@@ -35,28 +31,12 @@ public class Boundary {
 		this.absoluteY = absoluteY;
 	}
 	
-	public void setX(int x) {
-		this.relativeX = x;
-	}
-
-	public void setY(int y) {
-		this.relativeY = y;
-	}
-
 	public void setWidth(int w) {
 		this.width = w;
 	}
 
 	public void setHeight(int h) {
 		this.height = h;
-	}
-	
-	public int getX() {
-		return relativeX;
-	}
-
-	public int getY() {
-		return relativeY;
 	}
 
 	public int getWidth() {
@@ -68,6 +48,6 @@ public class Boundary {
 	}
 	
 	public Rectangle createRect() {
-		return new Rectangle(relativeX, relativeY, width, height);
+		return new Rectangle(absoluteX, absoluteY, width, height);
 	}
 }

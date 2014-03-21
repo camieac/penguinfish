@@ -21,9 +21,9 @@ class Bullet extends Sprite {
 		speed = 10;
 		health = 1;
 	}
-	@Override
+	
 	public void draw(Graphics g, int i) {
-		g.drawImage(rotatedImage, relativeX, relativeY, null);
+		g.drawImage(rotatedImage, absoluteX, absoluteY, null);
 	}
 
 	public void rotateBullet(int i) {

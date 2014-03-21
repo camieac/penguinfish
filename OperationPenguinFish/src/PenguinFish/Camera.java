@@ -11,62 +11,31 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Camera{
-	BufferedImage camera;
+	
 	int cameraWidth, cameraHeight;
 	boolean movingCamera= true;
 	boolean moveX, moveY;
-	int width, height;
 	Direction direction;
 	int speed;
 	int currentTop;
 	int currentLeft;
+	int backgroundWidth, backgroundHeight;
+	Images images;
 
-	public Camera(int w, int h) {
+	public Camera(int w, int h, Background background,Images images) {
 		currentTop = 0;
 		currentLeft = 0;
 		cameraWidth = w;
 		cameraHeight = h;
 		speed = 0;
-		try {
-			camera = ImageIO.read(new File("res/img/back.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		width = camera.getWidth();
-		height = camera.getHeight();
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
+		backgroundHeight = background.getHeight();
+		backgroundWidth = background.getWidth();
+		this.images = images;
+		
 	}
 
 	public void setSpeed(int speed){
 		this.speed = speed;
-	}
-	
-	public BufferedImage getDisplayableBackground() {
-		BufferedImage image = null;
-		try{
-		image = camera.getSubimage(currentLeft, currentTop,
-				cameraWidth, cameraHeight);
-		movingCamera = true;
-		}catch(RasterFormatException e){
-			movingCamera = false;
-			return camera;
-		}
-		return image;
 	}
 
 	public int getSpeed(){
@@ -124,8 +93,8 @@ public class Camera{
 			currentLeft = 0;
 			moveX = false;
 		}
-		else if (currentLeft >= camera.getWidth()-cameraWidth){
-			currentLeft = camera.getWidth()-cameraWidth;
+		else if (currentLeft >= backgroundWidth-cameraWidth){
+			currentLeft = backgroundWidth-cameraWidth;
 			moveX = false;
 		}
 		else moveX = true;
@@ -137,30 +106,30 @@ public class Camera{
 			currentTop = 0; 
 			moveY = false;
 		}
-		else if (currentTop >= camera.getHeight()-cameraHeight){
-			currentTop = camera.getHeight()-cameraHeight;
+		else if (currentTop >= backgroundHeight-cameraHeight){
+			currentTop = backgroundHeight-cameraHeight;
 			moveY = false;
 		}
 		else moveY = true;
 	}
-	else if (currentTop >= camera.getHeight()-cameraHeight){
-		currentTop = camera.getHeight()-cameraHeight;
+	else if (currentTop >= backgroundHeight-cameraHeight){
+		currentTop = backgroundHeight-cameraHeight;
 		moveY = false;
 		if(currentLeft <= 0){
 			currentLeft = 0;
 			moveX = false;
 		}
-		else if (currentLeft >= camera.getWidth()-cameraWidth){
-			currentLeft = camera.getWidth()-cameraWidth;
+		else if (currentLeft >= backgroundWidth-cameraWidth){
+			currentLeft = backgroundWidth-cameraWidth;
 			moveX = false;
 		}
 		else moveX = true;
 	}
-	else if (currentLeft >= camera.getWidth()-cameraWidth){
-		currentLeft = camera.getWidth()-cameraWidth;
+	else if (currentLeft >= backgroundWidth-cameraWidth){
+		currentLeft = backgroundWidth-cameraWidth;
 		moveX = false;
-		if (currentTop <= 0 || currentTop >= camera.getHeight()-cameraHeight){
-			currentTop = camera.getHeight()-cameraHeight;
+		if (currentTop <= 0 || currentTop >= backgroundHeight-cameraHeight){
+			currentTop = backgroundHeight-cameraHeight;
 			moveY = false;
 		}
 		else moveY = true;
@@ -177,7 +146,7 @@ public class Camera{
 //	 }
 	
 	//System.out.println("MoveX: " + moveX + ", " + "MoveY: " + moveY);
-	BufferedImage image = getDisplayableBackground();
+	BufferedImage image = images.getDisplayableBackground(currentLeft,currentTop);
 	if(image != null){
 	g.drawImage(image,0,0,panel);
 	}
