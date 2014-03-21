@@ -1,5 +1,7 @@
 package sprites;
 
+import graphics.Images;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -11,14 +13,15 @@ import main.Direction;
 public class Bullet extends Sprite {
 
 	protected Image rotatedImage;
-
-	public Bullet(int x, int y, Direction d, BufferedImage[] i) {
-		super(x, y, d, i);
+	private Images images;
+	public Bullet(int x, int y, Direction d, Images images, int i) {
+		super(x, y, d, images, i);
 		setDead(false);
 		rotatedImage = null;
 		bounces = false;
 		speed = 10;
 		health = 1;
+		this.images = images;
 	}
 	
 	public void draw(Graphics g, int i) {
@@ -28,9 +31,10 @@ public class Bullet extends Sprite {
 	public void rotateBullet(int i) {
 		double dir = setRotation(direction.getAngle());
 		if (rotatedImage == null) {
-			AffineTransform tx = AffineTransform.getRotateInstance(dir,images[i].getWidth() / 2, images[i].getHeight() / 2);
+			BufferedImage bulletImage = images.getBulletImage(i);
+			AffineTransform tx = AffineTransform.getRotateInstance(dir,bulletImage.getWidth() / 2, bulletImage.getHeight() / 2);
 			AffineTransformOp op = new AffineTransformOp(tx,AffineTransformOp.TYPE_BILINEAR);
-			rotatedImage = op.filter(images[i], null);
+			rotatedImage = op.filter(bulletImage, null);
 		}		
 	}
 

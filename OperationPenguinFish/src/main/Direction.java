@@ -4,14 +4,15 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public enum Direction {
-	SOUTH(0, 180, 1),
-	NORTH(1, 0, 0),
-	WEST(2, 270, 3),
-	EAST(3, 90, 2),
-	NORTHWEST(4, 315, 7),
-	NORTHEAST(5, 45, 6),
-	SOUTHWEST(6, 225, 5),
-	SOUTHEAST(7, 135, 4);
+	NORTH(1, 0),
+	NORTHEAST(5, 45),
+	EAST(3, 90),
+	SOUTHEAST(7, 135),
+	SOUTH(0, 180),
+	SOUTHWEST(6, 225),
+	WEST(2, 270),
+	NORTHWEST(4, 315);
+
 	protected int direction;
 	protected int angle;
 	protected int opposite;
@@ -98,10 +99,9 @@ public enum Direction {
 		}
 		
 	}
-	private Direction(int direction, int angle, int d){
+	private Direction(int direction, int angle){
 		this.direction = direction;	
 		this.angle = angle;
-		this.opposite = d;
 		
 	}
 	public void disableDirection(Direction d){

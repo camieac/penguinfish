@@ -1,21 +1,17 @@
 package sprites;
 
+import graphics.Images;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-
 import main.Camera;
 import main.Direction;
 
 public class Sprite extends SessileSprite{
-	protected int health;
-	protected Direction direction;
-	protected Direction directionHit;
-	protected int dx, dy, speed;
-	protected boolean bounces;
-	protected boolean dead;
+	protected Direction direction, directionHit;
+	protected int dx, dy, speed, health;
+	protected boolean bounces, dead;
 
-	public Sprite(int x, int y, Direction d, BufferedImage[] images) {
-		super(x,y, images);
+	public Sprite(int x, int y, Direction d, Images images, int i) {
+		super(x,y, images, i);
 		this.direction = d;
 		this.health = 0;
 		this.dead = false;
@@ -125,9 +121,6 @@ public class Sprite extends SessileSprite{
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public int getSpeed() {
-		return this.speed;
-	}
 
 	public void setHealth(int health) {
 		this.health = health;
@@ -139,10 +132,12 @@ public class Sprite extends SessileSprite{
 
 	public void setDirection(Direction d) {
 		this.direction = d;
-		this.width = images[d.getInt()].getWidth();
-		this.height = images[d.getInt()].getHeight();
 	}
 
+	public int getSpeed() {
+		return this.speed;
+	}
+	
 	public int getDx() {
 		return dx;
 	}
@@ -175,13 +170,11 @@ public class Sprite extends SessileSprite{
 		}
 	}
 	
-//	public void collisionC(Rectangle rectB){
-//		if(this.rect.intersects(rectB)){
-//			//A stops moving (this is collision walls)
-//			Direction playerDHit = direction;
-//			
-//		}
-//	}
+	public void collisionC(Rectangle rectB){
+		if(rect.intersects(rectB)){
+			//A stops moving (this is collision walls)	
+		}
+	}
 	
 	public void collisionD(Rectangle rectA, Rectangle rectB){
 		if(rectA.intersects(rectB)){

@@ -15,16 +15,8 @@ public class Boundary {
 		this.rect = createRect();
 	}
 	
-	public int getAbsoluteX() {
-		return absoluteX;
-	}
-
 	public void setAbsoluteX(int absoluteX) {
 		this.absoluteX = absoluteX;
-	}
-
-	public int getAbsoluteY() {
-		return absoluteY;
 	}
 
 	public void setAbsoluteY(int absoluteY) {
@@ -39,6 +31,14 @@ public class Boundary {
 		this.height = h;
 	}
 
+	public int getAbsoluteX() {
+		return absoluteX;
+	}
+
+	public int getAbsoluteY() {
+		return absoluteY;
+	}
+	
 	public int getWidth() {
 		return width;
 	}

@@ -13,31 +13,22 @@ import sprites.SessileSprite;
 class Background {
 	protected int width, height;
 	protected BufferedImage image;
-	protected BufferedImage[] sessileSpriteImages;
 	protected LinkedList<SessileSprite> sessileSprites;
-	protected BufferedImage spriteSheet;
 	protected Rectangle boundaries[];
-
-	public Background(BufferedImage image) {
+	private Images images;
+	
+	public Background(Images images) {
+		this.image = images.getBackground();
 		this.width = image.getWidth();
 		this.height = image.getHeight();
-		this.image = image;
-		sessileSpriteImages = new BufferedImage[4];
+		this.images = images;
 		sessileSprites = new LinkedList<SessileSprite>();
-		spriteSheet = Images.getImage("res/img/SpriteSheet1.png");
-		sessileSpriteImages[0] = spriteSheet.getSubimage(0, 0, 64, 64);
 		boundaries = new Rectangle[3];
 	}
-//	public void createBoundaries(Rectangle camera){
-//		boundaries[0] = new Rectangle(0,0,0,camera.height);	//left
-//		boundaries[1] = new Rectangle(0,0,camera.width,0);	//top
-//		boundaries[2] = new Rectangle(0,camera.height);	//right
-//		boundaries[3] = new Rectangle(camera.width,0);	//down	
-//	}
 
 	public void createSessileSprites() {
-		for (int i = 0; i < sessileSpriteImages.length; i++) {
-			SessileSprite tree = new SessileSprite(400, (400 * i),sessileSpriteImages);
+		for (int i = 0; i < 4; i++) {
+			SessileSprite tree = new SessileSprite(400, (400 * i),images, 0);
 			tree.setAbsoluteX(400);
 			tree.setAbsoluteY(64 * i);
 			sessileSprites.add(tree);
@@ -75,7 +66,6 @@ class Background {
 
 	public void tick(Player player) {
 		tickSessileSprites(player);
-		
 	}
 
 	public int getHeight() {

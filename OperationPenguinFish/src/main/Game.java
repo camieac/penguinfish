@@ -18,24 +18,17 @@ import sprites.Player;
 public class Game extends JPanel {
 
 	protected static final long serialVersionUID = 1L;
-	protected Camera camera;
-	protected int periodsSinceFire;
-	protected int baseSpeed;
 	protected LinkedList<Integer> buttons;
 	protected LinkedList<Enemy> enemies;
 	protected LinkedList<Bullet> bullets;
 	protected Images images;
-
 	protected Destroyer destroyer;
-	
 	protected Player player;
+	protected Camera camera;
 	protected Background background;
-
 	protected boolean gameOver;
-	protected int pace;
-	protected int width, height;
+	protected int width, height,pace, numberOfEnemies, baseSpeed,periodsSinceFire;
 	protected Random rand;
-	protected int maxEnemies;
 
 	public Game(int panelWidth, int panelHeight) {
 		images = new Images();
@@ -47,18 +40,16 @@ public class Game extends JPanel {
 		periodsSinceFire = 0;
 		baseSpeed = 5;
 		pace = 5;
-		maxEnemies = 10;
+		numberOfEnemies = 0;
 		createGame();
-
 	}
 
 	protected void createGame() {
-		background = new Background(images.getMapImage(0));
+		background = new Background(images);
 		background.createSessileSprites();
 		enemies = new LinkedList<Enemy>();
 		createEnemies();
-		player = new Player(0, 0, Direction.SOUTH, images.getPlayerImages());
-
+		player = new Player(0, 0, Direction.SOUTH, images, 0);
 		player.resetLocation(width, height);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
@@ -69,9 +60,8 @@ public class Game extends JPanel {
 	}
 
 	protected void createEnemies() {
-		for (int i = 0; i < maxEnemies; i++) {
-			enemies.add(new Enemy(rand.nextInt(width), rand.nextInt(height),
-					Direction.getRandom(), images.getEnemyImages()));
+		for (int i = 0; i < numberOfEnemies; i++) {
+			enemies.add(new Enemy(rand.nextInt(width), rand.nextInt(height),Direction.getRandom(), images, 0));
 		}
 	}
 
@@ -148,9 +138,7 @@ public class Game extends JPanel {
 
 	public void addBullet() {
 		if (periodsSinceFire >= 3) {
-			Bullet b = new Bullet(player.getAbsoluteX() + player.getWidth(),
-					player.getAbsoluteY() + player.getHeight(),
-					player.getDirection(), images.getBulletImages());
+			Bullet b = new Bullet(player.getAbsoluteX() + player.getWidth(), player.getAbsoluteY() + player.getHeight(), player.getDirection(), images, 0);
 			bullets.add(b);
 			b.rotateBullet(0);
 			periodsSinceFire = 0;
@@ -230,22 +218,20 @@ public class Game extends JPanel {
 
 	public void run() {
 		while (!gameOver) {
-			periodsSinceFire++;
-			processKeys();
-			player.tick(camera);
-			
-			detectEnemyCollisions();
-			detectBulletCollisions();
-			destroyer.destroyBullets(bullets);
-			destroyer.destroyEnemies(enemies);
-			//System.out.println(bullets);
-			background.tick(player);
-			difficultyWait();
-			repaint();
+		 tickAll();
 		}
 	}
 	protected void tickAll(){
-		
+		periodsSinceFire++;
+		processKeys();
+		player.tick(camera);
+		detectEnemyCollisions();
+		detectBulletCollisions();
+		destroyer.destroyBullets(bullets);
+		destroyer.destroyEnemies(enemies);
+		background.tick(player);
+		difficultyWait();
+		repaint();
 	}
 
 	protected void detectEnemyCollisions() {

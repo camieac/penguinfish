@@ -1,20 +1,20 @@
 package sprites;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-
 import main.Camera;
 import main.Direction;
+import graphics.Images;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class Player extends Sprite {
 	protected int distance;
 	protected boolean playerUp, playerDown, playerLeft, playerRight;
 	protected boolean moveX, moveY;
-	
+	private Images images;
+	private BufferedImage image;
 
-	public Player(int x, int y, Direction d, BufferedImage[] i) {
-		super(x, y, d, i);
+	public Player(int x, int y, Direction d, Images images, int i) {
+		super(x, y, d, images, i);this.image = images.getPlayer(i);
 		moveX = false;
 		moveY = false;
 		setHealth(100);
@@ -23,18 +23,12 @@ public class Player extends Sprite {
 	}
 
 	public void resetLocation(int width, int height) {
-		absoluteX = width / 2 - images[0].getWidth() / 2;
-		absoluteY = height / 2 - images[0].getHeight() / 2;
+		absoluteX = width / 2 - image.getWidth() / 2;
+		absoluteY = height / 2 - image.getHeight() / 2;
 	}
 
 	public void drawPlayer(Graphics g) {
-		Image image = images[0];
-		if (health >= 50) {
-			image = images[direction.getInt()];
-		}
-		if (health <= 50 && health > 0) {
-			image = images[direction.getInt()];
-		}
+		image = images.getPlayer(0);//direction.getInt()
 		g.drawImage(image, absoluteX, absoluteY, null);
 	}
 	public void tick(Camera camera){
@@ -55,13 +49,10 @@ public class Player extends Sprite {
 		if (health <= 0) {
 			dead = true;
 		}
-		//System.out.println("player moveX:" + moveX + " moveY:" + moveY);
-		
 	}
 	
 	public void setPlayerMoving(boolean xMove, boolean yMove) {
 		moveX = !xMove;
 		moveY = !yMove;
 	}
-	
 }
