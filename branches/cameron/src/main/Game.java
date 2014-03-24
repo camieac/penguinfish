@@ -297,7 +297,7 @@ public class Game extends JPanel {
 			}
 		}
 	}
-
+ 
 	protected void detectBulletCollisions() {
 		for (Bullet bullet : bullets) {
 			bullet.run();
