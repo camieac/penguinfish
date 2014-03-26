@@ -22,8 +22,10 @@ public class DataStore {
 	public boolean cameraAttachedToPlayer;
 	public double maxWidth, maxHeight;
 	public int periodSinceLastFire;
-	public ArrayList<Level> levels;
-
+	
+	public LevelReader levelReader;
+	public Level level;
+	
 	public static DataStore instance;
 
 	private DataStore() {
@@ -44,7 +46,9 @@ public class DataStore {
 		maxWidth = images.getBackground().getWidth();
 		maxHeight = images.getBackground().getHeight();
 		periodSinceLastFire = 0;
-		levels = new ArrayList<Level>();
+		levelReader = new LevelReader();
+		//level = levelReader.getNextLevel();
+		
 	}
 
 	static {

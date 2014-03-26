@@ -13,8 +13,18 @@ begin:
 startLevel:
 Level 1: Tutorial
 0
-20,20,0,0
-20,40,0,0
+startSessileSprite:
+20,20,0
+endSessileSprite:
+startSessileSprite:
+20,20,0
+endSessileSprite:
+startSessileSprite:
+20,20,0
+endSessileSprite:
+startSessileSprite:
+20,20,0
+endSessileSprite:
 endLevel:
 
 startLevel:

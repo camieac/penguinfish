@@ -3,28 +3,26 @@ package main;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import sprites.Enemy;
+import sprites.SessileSprite;
+
 public class Level implements Serializable{
-	private ArrayList<ArrayList<Integer>> initialEnemyCoordinates;
-	private ArrayList<Integer> initialPlayerCoordinates;
+	
+	private ArrayList<Enemy> enemies;
+	private ArrayList<SessileSprite> sessileSprites;
 	private int levelID;
 	private String name;
 	Level(){
 		
 	}
-	public ArrayList<ArrayList<Integer>> getInitialEnemyCoordinates() {
-		return initialEnemyCoordinates;
+	public void addSessileSprite(SessileSprite s){
+		sessileSprites.add(s);
 	}
-	public void setInitialEnemyCoordinates(
-			ArrayList<ArrayList<Integer>> initialEnemyCoordinates) {
-		this.initialEnemyCoordinates = initialEnemyCoordinates;
+	public void addEnemy(Enemy e){
+		enemies.add(e);
 	}
-	public ArrayList<Integer> getInitialPlayerCoordinates() {
-		return initialPlayerCoordinates;
-	}
-	public void setInitialPlayerCoordinates(
-			ArrayList<Integer> initialPlayerCoordinates) {
-		this.initialPlayerCoordinates = initialPlayerCoordinates;
-	}
+	
+	
 	public int getLevelID() {
 		return levelID;
 	}
