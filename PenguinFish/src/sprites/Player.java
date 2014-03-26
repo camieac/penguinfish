@@ -27,10 +27,38 @@ public class Player extends Sprite {
 	}
 
 	public void tick() {
-		calcVelocity();
+		checkBoundary();
+		calcStep();
+		
 		if (health <= 0) {
 			dead = true;
 		}
 	}
+
+	private void checkBoundary() {
+		
+		if (x < 0){
+			direction.disableDirection(Direction.WEST);
+			direction.disableDirection(Direction.NORTHWEST);
+			direction.disableDirection(Direction.SOUTHWEST);
+		}
+		if (y < 0){
+			direction.disableDirection(Direction.NORTH);
+			direction.disableDirection(Direction.NORTHEAST);
+			direction.disableDirection(Direction.NORTHWEST);
+		}
+		if (x > DataStore.getInstance().images.getBackground().getWidth() - (width/2)){
+			direction.disableDirection(Direction.EAST);
+			direction.disableDirection(Direction.NORTHEAST);
+			direction.disableDirection(Direction.SOUTHEAST);
+		}
+		if (y > DataStore.getInstance().images.getBackground().getHeight() - (height/2)){
+			direction.disableDirection(Direction.SOUTH);
+			direction.disableDirection(Direction.SOUTHWEST);
+			direction.disableDirection(Direction.SOUTHEAST);
+		}
+		
+	}
+
 
 }

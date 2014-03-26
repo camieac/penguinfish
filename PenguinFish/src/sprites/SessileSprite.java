@@ -21,5 +21,13 @@ public class SessileSprite extends Rectangle {
 		g.drawImage(DataStore.getInstance().images.getSessileImage(id),
 				(int) x, (int) y, null);
 	}
+	public void setX(int x) {
+		this.x = x;
+		
+	}
+	public void setY(int y) {
+		this.y = y;
+		
+	}
 
 }
