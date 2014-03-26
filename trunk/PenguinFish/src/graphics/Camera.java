@@ -73,52 +73,51 @@ public class Camera extends JComponent {
 
 	}
 
-
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
 		g.setColor(Color.BLACK);
 		DataStore.getInstance().background.draw(g, camX, camY);
-try{
-		// If attached make the cam x and y be relative to the player's
-		if (attached) {
-			camX = DataStore.getInstance().player.getX() - width / 2;
-			camY = DataStore.getInstance().player.getY() - height / 2;
-			// g.drawString("Camera x: " + camX + ", Y: " + camY, 100, 100);
-		}
-
-		// Draw the enemies in the correct position in the world
-		for (Enemy enemy : DataStore.getInstance().enemies) {
-			if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),
-					enemy.getHeight())) {
-				enemy.draw(enemy.getX() - camX, enemy.getY() - camY, g, 0);
+		try {
+			// If attached make the cam x and y be relative to the player's
+			if (attached) {
+				camX = DataStore.getInstance().player.getX() - width / 2;
+				camY = DataStore.getInstance().player.getY() - height / 2;
+				// g.drawString("Camera x: " + camX + ", Y: " + camY, 100, 100);
 			}
-		}
 
-		// Draw the background sprites in the correct position in the world
-		for (SessileSprite s : DataStore.getInstance().background.sessileSprites) {
-			// if the sprite is in the camera area
-			if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
-				s.draw(s.getX() - camX, s.getY() - camY, g, 0);
+			// Draw the enemies in the correct position in the world
+			for (Enemy enemy : DataStore.getInstance().enemies) {
+				if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),
+						enemy.getHeight())) {
+					enemy.draw(enemy.getX() - camX, enemy.getY() - camY, g, 0);
+				}
 			}
-		}
 
-		DataStore.getInstance().player.drawPlayer(g,
-				DataStore.getInstance().player.x - camX,
-				DataStore.getInstance().player.y - camY);
-		paintText(g);
-		paintHealth(g);
-		if (DataStore.getInstance().player.getHealth() < 10) {
-			g.setColor(Color.red);
-			g.drawString("DEAD!", (int) width - 65, 10);
+			// Draw the background sprites in the correct position in the world
+			for (SessileSprite s : DataStore.getInstance().background.sessileSprites) {
+				// if the sprite is in the camera area
+				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
+					s.draw(s.getX() - camX, s.getY() - camY, g, 0);
+				}
+			}
+
+			DataStore.getInstance().player.drawPlayer(g,
+					DataStore.getInstance().player.x - camX,
+					DataStore.getInstance().player.y - camY);
+			paintText(g);
+			paintHealth(g);
+			if (DataStore.getInstance().player.getHealth() < 10) {
+				g.setColor(Color.red);
+				g.drawString("DEAD!", (int) width - 65, 10);
+			}
+			for (Bullet b : DataStore.getInstance().bullets) {
+				b.draw(g, 0);
+			}
+		} catch (Exception e) {
+			// erm...
 		}
-		for (Bullet b : DataStore.getInstance().bullets) {
-			b.draw(g, 0);
-		}
-}catch(Exception e){
-	//erm...
-}
 
 	}
 
@@ -244,6 +243,7 @@ try{
 		}
 	}
 
+	
 }
 
 // Stuff that might be used

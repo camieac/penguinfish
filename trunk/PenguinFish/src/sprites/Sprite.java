@@ -20,8 +20,9 @@ public class Sprite extends SessileSprite {
 		this.dead = false;
 	}
 
-	public void calcVelocity() {
-
+	public void calcStep() {
+		dx = 0;
+		dy = 0;
 		boolean directionEnabled = !direction.checkDisabled(direction);
 		if (directionEnabled) {
 			switch (direction) {
@@ -63,12 +64,7 @@ public class Sprite extends SessileSprite {
 			}
 
 		}
-		// else{
-		// speed = 0;
-		// dx = 0;
-		// dy = 0;
-		// }
-		// System.out.println("Enabled: " + directionEnabled);
+		
 
 	}
 
@@ -106,7 +102,7 @@ public class Sprite extends SessileSprite {
 	}
 
 	public void run() {
-		calcVelocity();
+		calcStep();
 		x += dx;
 		y += dy;
 		if (health <= 0) {
