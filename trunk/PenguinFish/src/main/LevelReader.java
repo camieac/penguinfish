@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import sprites.SessileSprite;
+
 public class LevelReader{
 	private FileOutputStream fos;
 	private ObjectOutputStream oos;
@@ -61,18 +63,29 @@ public class LevelReader{
 		boolean endOfLevel = false;
 			try {
 				while ((line = levelReader.readLine()) != null && !endOfLevel){
+					Level level = new Level();
 					System.out.println("Line: " + line);
 					if(line.contains("startLevel:")){
-						Level level = new Level();
+						level = new Level();
 						level.setName(levelReader.readLine());
 						level.setLevelID(Integer.parseInt(levelReader.readLine()));
 						//DataStore.getInstance().levels.add(level);
-						tempLevels.add(level.getLevelID(),level);
-						oos.writeObject(level);
+						/*sessile sprites*/
+						
+						
 						//System.out.println("Level Name set to: " + level.getName());
 					}if(line.contains("endLevel:")){
+						tempLevels.add(level.getLevelID(),level);
+						oos.writeObject(level);
 						endOfLevel = true;
+					}if(line.contains("startSessileSprite:")){
+						
+						String[] data = levelReader.readLine().split(",");
+						SessileSprite s = new SessileSprite(Integer.parseInt(data[0]),Integer.parseInt(data[1]),Integer.parseInt(data[2]));
+						level.addSessileSprite(s);
+						
 					}
+					
 					
 				}
 			
@@ -113,6 +126,8 @@ public class LevelReader{
 	}
 
 	public static void main(String[] args) {
+		DataStore.getInstance();
+		DataStore.getInstance().setEverything();
 		LevelReader levelReader = new LevelReader();
 		levelReader.readLevel();
 		System.out.println("\n\n\n");
