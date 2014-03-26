@@ -21,18 +21,15 @@ public class Bullet extends Sprite {
 		bounces = false;
 		speed = 10;
 		health = 1;
-
+		rotateBullet(degreesToRadians(direction.getAngle()));
 	}
 
-	public void draw(Graphics g, int i) {
-		g.drawImage(rotatedImage, x, y, null);
-	}
+	
 
-	public void rotateBullet(int i) {
-		double dir = setRotation(direction.getAngle());
+	public void rotateBullet(double dir) {
 		if (rotatedImage == null) {
 			BufferedImage bulletImage = DataStore.getInstance().images
-					.getBulletImage(i);
+					.getBulletImage(0);
 			AffineTransform tx = AffineTransform.getRotateInstance(dir,
 					bulletImage.getWidth() / 2, bulletImage.getHeight() / 2);
 			AffineTransformOp op = new AffineTransformOp(tx,
@@ -41,7 +38,13 @@ public class Bullet extends Sprite {
 		}
 	}
 
-	public double setRotation(int degree) {
+	public double degreesToRadians(int degree) {
 		return Math.PI / 180 * degree;
+	}
+
+
+
+	public Image getImage() {
+		return rotatedImage;
 	}
 }
