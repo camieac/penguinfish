@@ -14,7 +14,7 @@ public class SoundManager implements Runnable {
 
 		addToQueue(new Sound("res/Sound/PenguinFish D01 End.wav", false));
 		addToQueue(new Sound("res/Sound/PenguinFish D01Repeat.wav", true));
-		addToQueue(new Sound("res/Sound/PenguinFish D01 Intro.wav", false));
+		//addToQueue(new Sound("res/Sound/PenguinFish D01 Intro.wav", false));
 
 	}
 

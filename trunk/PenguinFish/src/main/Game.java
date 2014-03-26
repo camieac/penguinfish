@@ -109,13 +109,15 @@ public class Game implements Runnable {
 				}
 
 			}
-			if(bullet.isDead()){
-				dead.add(bullet);
-			}
+//			if(bullet.isDead()){
+//			dead.add(bullet);
+//			}
 
 			
 			
 		}
+		System.out.println("Bullets: " + DataStore.getInstance().bullets);
+		System.out.println("Dead Bullets: " + dead);
 		DataStore.getInstance().bullets.removeAll(dead);
 	}
 

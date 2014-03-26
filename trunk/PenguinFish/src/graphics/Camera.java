@@ -102,7 +102,7 @@ public class Camera extends JComponent {
 					s.draw(s.getX() - camX, s.getY() - camY, g, 0);
 				}
 			}
-
+			// Draw Player
 			DataStore.getInstance().player.drawPlayer(g,
 					DataStore.getInstance().player.x - camX,
 					DataStore.getInstance().player.y - camY);
@@ -112,8 +112,9 @@ public class Camera extends JComponent {
 				g.setColor(Color.red);
 				g.drawString("DEAD!", (int) width - 65, 10);
 			}
+			// Draw Bullets
 			for (Bullet b : DataStore.getInstance().bullets) {
-				b.draw(g, 0);
+				g.drawImage(b.getImage(), (int) b.getX(), (int) b.getY(), null);
 			}
 		} catch (Exception e) {
 			// erm...
@@ -230,11 +231,10 @@ public class Camera extends JComponent {
 			// TODO: bullets seem to get deleted as soon as they spawn,
 			// so they are probably colliding with the player instantly
 			// and getting added to the remove array.
-			Bullet b = new Bullet(DataStore.getInstance().player.getX()
-					+ DataStore.getInstance().player.getWidth(),
-					DataStore.getInstance().player.getY()
-							+ DataStore.getInstance().player.getHeight(),
+			Bullet b = new Bullet(DataStore.getInstance().player.getX() - camX,
+					DataStore.getInstance().player.getY() - camY,
 					DataStore.getInstance().player.getDirection(), 0);
+
 			DataStore.getInstance().bullets.add(b);
 			// TODO: Why are bullets rotated to 0? Just set the direction in the
 			// constructor since they don't bounce.
@@ -243,7 +243,6 @@ public class Camera extends JComponent {
 		}
 	}
 
-	
 }
 
 // Stuff that might be used
