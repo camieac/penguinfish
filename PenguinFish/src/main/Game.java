@@ -109,9 +109,9 @@ public class Game implements Runnable {
 				}
 
 			}
-//			if(bullet.isDead()){
-//			dead.add(bullet);
-//			}
+			if(bullet.isDead()){
+			dead.add(bullet);
+			}
 
 			
 			

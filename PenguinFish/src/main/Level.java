@@ -1,8 +1,9 @@
 package main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Level {
+public class Level implements Serializable{
 	private ArrayList<ArrayList<Integer>> initialEnemyCoordinates;
 	private ArrayList<Integer> initialPlayerCoordinates;
 	private int levelID;
@@ -35,5 +36,11 @@ public class Level {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String toString(){
+		StringBuffer sb = new StringBuffer();
+		sb.append("Name: " + name + "\n");
+		sb.append("ID: " + levelID + "\n");
+		return sb.toString();
 	}
 }
