@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 import main.Direction;
 
 public class Sprite extends SessileSprite {
-	protected Direction direction, directionHit;
+	protected Direction direction, wallHit;
 	protected double dx, dy, speed;
 	protected int health;
 	protected boolean bounces, dead;
@@ -76,7 +76,7 @@ public class Sprite extends SessileSprite {
 	public boolean collide(Rectangle rect2) {
 
 		if (this.intersects(rect2)) {
-			direction = direction.getOpposite(direction, directionHit);
+			direction = direction.getOpposite(direction, wallHit);
 
 			return true;
 		}
@@ -86,16 +86,16 @@ public class Sprite extends SessileSprite {
 	public void collideWalls(double xMax, double yMax) {
 
 		if (x < 0) {
-			directionHit = Direction.WEST;
+			wallHit = Direction.WEST;
 		} else if (x + width > xMax) {
-			directionHit = Direction.EAST;
+			wallHit = Direction.EAST;
 		} else if (x < 0) {
-			directionHit = Direction.NORTH;
+			wallHit = Direction.NORTH;
 		} else if (x + height > yMax) {
-			directionHit = Direction.SOUTH;
+			wallHit = Direction.SOUTH;
 		}
 		if (bounces) {
-			direction = direction.getOpposite(direction, directionHit);
+			direction = direction.getOpposite(direction, wallHit);
 		} else {
 			dead = true;
 		}

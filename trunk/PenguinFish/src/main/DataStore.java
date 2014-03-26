@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import graphics.World;
@@ -21,6 +22,7 @@ public class DataStore {
 	public boolean cameraAttachedToPlayer;
 	public double maxWidth, maxHeight;
 	public int periodSinceLastFire;
+	public ArrayList<Level> levels;
 
 	public static DataStore instance;
 
@@ -42,6 +44,7 @@ public class DataStore {
 		maxWidth = images.getBackground().getWidth();
 		maxHeight = images.getBackground().getHeight();
 		periodSinceLastFire = 0;
+		levels = new ArrayList<Level>();
 	}
 
 	static {

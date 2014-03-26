@@ -1,22 +1,55 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LevelReader {
+public class LevelReader{
+	private FileOutputStream fos;
+	private ObjectOutputStream oos;
+	FileInputStream fis;
+    ObjectInputStream ois;
 	private BufferedReader levelReader;
-	private ArrayList<Integer> curLevel = new ArrayList<Integer>();
 	private String levelFile;
-
+	private ArrayList<Level> tempLevels;
 	public LevelReader() {
-		levelFile = "res/txt/levels.txt";
 		try {
-			levelReader = new BufferedReader(new InputStreamReader(
-					new DataInputStream(new FileInputStream(levelFile))));
+			fos= new FileOutputStream("res/temp/tempdata.ser");
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			oos = new ObjectOutputStream(fos);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			fis  = new FileInputStream("res/temp/tempdata.ser");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			ois  = new ObjectInputStream(fis);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		levelFile = "res/txt/levels.txt";
+		tempLevels = new ArrayList<Level>();
+		try {
+			levelReader = new BufferedReader(new FileReader(levelFile));
 		}catch(Exception e){
 			System.out.println("Level file not found: " + levelFile);
 		}
@@ -25,18 +58,24 @@ public class LevelReader {
 
 	public void readLevel() {
 		String line;
-
+		boolean endOfLevel = false;
 			try {
-				while ((line = levelReader.readLine()) != null){
+				while ((line = levelReader.readLine()) != null && !endOfLevel){
 					System.out.println("Line: " + line);
 					if(line.contains("startLevel:")){
 						Level level = new Level();
 						level.setName(levelReader.readLine());
-						level.setLevelID();
-						System.out.println(level.getName());
+						level.setLevelID(Integer.parseInt(levelReader.readLine()));
+						//DataStore.getInstance().levels.add(level);
+						tempLevels.add(level.getLevelID(),level);
+						oos.writeObject(level);
+						//System.out.println("Level Name set to: " + level.getName());
+					}if(line.contains("endLevel:")){
+						endOfLevel = true;
 					}
 					
 				}
+			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -47,14 +86,25 @@ public class LevelReader {
 		
 
 	}
+	public Level getNextLevel(){
+		readLevel();
+		try {
+			return (Level) ois.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			System.err.println("No more levels :-(");
+			return null;
+		}
+	}
 
 	public void prepareReader() {
 		String line;
 		try {
 			while ((line = levelReader.readLine()) != null
-					&& !line.equals("startLevel:")) {
-				levelReader.readLine();
+					&& !line.equals("begin:")) {
+				
 			}
+			System.out.println("Reader set up succesfully");
 		} catch (Exception e) {
 
 			System.out.println("Error reading level file");
@@ -64,9 +114,17 @@ public class LevelReader {
 
 	public static void main(String[] args) {
 		LevelReader levelReader = new LevelReader();
-		levelReader.prepareReader();
+		levelReader.readLevel();
+		System.out.println("\n\n\n");
 		levelReader.readLevel();
 		
-		System.out.println(levelReader.curLevel);
+		LevelReader serial = new LevelReader();
+		System.out.println(serial.getNextLevel().toString());
+		System.out.println(serial.getNextLevel().toString());
+		System.out.println(serial.getNextLevel().toString());
+		//System.out.println(levelReader.curLevel);
 	}
+
+	
+	
 }
