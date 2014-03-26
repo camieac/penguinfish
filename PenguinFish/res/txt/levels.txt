@@ -1,0 +1,8 @@
+Level File for Operation Penguin Fish
+name: => the start of level information, followed by the level name in a new line.
+		This is thin followed by initial enemy coordinates, type,path all in new lines
+
+startLevel:
+Level 1: Tutorial
+20,20,0,0
+20,40,0,0

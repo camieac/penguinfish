@@ -116,8 +116,8 @@ public class Game implements Runnable {
 			
 			
 		}
-		System.out.println("Bullets: " + DataStore.getInstance().bullets);
-		System.out.println("Dead Bullets: " + dead);
+		//System.out.println("Bullets: " + DataStore.getInstance().bullets);
+		//System.out.println("Dead Bullets: " + dead);
 		DataStore.getInstance().bullets.removeAll(dead);
 	}
 
