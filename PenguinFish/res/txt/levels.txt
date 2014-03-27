@@ -8,6 +8,7 @@ begin(colon)
 startLevel: 
 name: <name>
 id: <id>
+endLevel:
 begin:
 
 startLevel:
@@ -17,19 +18,19 @@ startSessileSprite:
 20,20,0
 endSessileSprite:
 startSessileSprite:
-20,20,0
+20,84,0
 endSessileSprite:
 startSessileSprite:
-20,20,0
+84,20,0
 endSessileSprite:
 startSessileSprite:
-20,20,0
+84,84,0
 endSessileSprite:
 endLevel:
 
 startLevel:
 Level 2: Mission
 1
-l220,20,0,0
-l220,40,0,0
+20,20,0,0
+20,40,0,0
 endLevel:l2

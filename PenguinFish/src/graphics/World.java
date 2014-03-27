@@ -23,6 +23,7 @@ public class World {
 		for (int i = 0; i < 100; i++) {
 			sessileSprites.add(new SessileSprite(100, (64 * i), 0));
 		}
+		sessileSprites = DataStore.getInstance().level.getSessileSprites();
 	}
 
 	public void tick(Player player) {

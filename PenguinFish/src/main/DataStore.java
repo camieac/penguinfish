@@ -12,7 +12,7 @@ import sprites.SessileSprite;
 
 public class DataStore {
 	public Player player;
-	public World background;
+	public World world;
 	public LinkedList<Bullet> bullets;
 	public LinkedList<Enemy> enemies;
 	public LinkedList<SessileSprite> worldSprites;
@@ -35,8 +35,7 @@ public class DataStore {
 	public void setEverything(){
 		baseSpeed = 5;
 		images = new Images();
-		background = new World();
-		background.createSessileSprites();
+		
 		enemies = new LinkedList<Enemy>();
 		player = new Player(0, 0, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
@@ -47,8 +46,9 @@ public class DataStore {
 		maxHeight = images.getBackground().getHeight();
 		periodSinceLastFire = 0;
 		levelReader = new LevelReader();
-		//level = levelReader.getNextLevel();
-		
+		level = levelReader.getNextLevel();
+		world = new World();
+		world.createSessileSprites();
 	}
 
 	static {
