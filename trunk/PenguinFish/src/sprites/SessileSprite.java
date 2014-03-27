@@ -29,5 +29,16 @@ public class SessileSprite extends Rectangle {
 		this.y = y;
 		
 	}
+	public String toString(){
+		StringBuffer sb = new StringBuffer();
+		sb.append("x: " + x + "\n");
+		sb.append("y: " + y + "\n");
+		String type;
+		if(id == 0){
+			type = "Tree";
+		}else type = "Unknown";
+		sb.append("Type: "+ type + "\n");
+		return sb.toString();
+	}
 
 }

@@ -78,7 +78,7 @@ public class Camera extends JComponent {
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
 		g.setColor(Color.BLACK);
-		DataStore.getInstance().background.draw(g, camX, camY);
+		DataStore.getInstance().world.draw(g, camX, camY);
 		try {
 			// If attached make the cam x and y be relative to the player's
 			if (attached) {
@@ -96,7 +96,7 @@ public class Camera extends JComponent {
 			}
 
 			// Draw the background sprites in the correct position in the world
-			for (SessileSprite s : DataStore.getInstance().background.sessileSprites) {
+			for (SessileSprite s : DataStore.getInstance().world.sessileSprites) {
 				// if the sprite is in the camera area
 				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
 					s.draw(s.getX() - camX, s.getY() - camY, g, 0);

@@ -58,7 +58,7 @@ public class Game implements Runnable {
 		DataStore.getInstance().player.tick();
 		detectEnemyCollisions();
 		detectBulletCollisions();
-		DataStore.getInstance().background.tick(DataStore.getInstance().player);
+		DataStore.getInstance().world.tick(DataStore.getInstance().player);
 		difficultyWait();
 
 	}
