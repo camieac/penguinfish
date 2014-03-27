@@ -4,6 +4,7 @@ import graphics.Camera;
 import graphics.Images;
 
 import java.awt.Rectangle;
+import java.util.Random;
 
 import main.Direction;
 
@@ -102,6 +103,7 @@ public class Sprite extends SessileSprite {
 	}
 
 	public void run() {
+		
 		calcStep();
 		x += dx;
 		y += dy;
