@@ -2,6 +2,7 @@ package graphics;
 
 import javax.swing.*;
 
+import main.DataStore;
 import main.Game;
 
 import java.awt.*;
@@ -12,8 +13,8 @@ public class Window implements Runnable {
 	protected Camera camera;
 
 	public Window() {
-		panelWidth = 500;
-		panelHeight = 500;
+		panelWidth = 512;
+		panelHeight = 512;
 		JFrame frame = new JFrame("Penguin Fish");
 		frame.setResizable(false);
 		camera = new Camera(0, 0, panelWidth, panelHeight);

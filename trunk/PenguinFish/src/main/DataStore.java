@@ -48,7 +48,11 @@ public class DataStore {
 		levelReader = new LevelReader();
 		level = levelReader.getNextLevel();
 		world = new World();
-		world.createSessileSprites();
+		for(int i =0 ; i < 4; i++){
+			world.createSessileSprites(world.createDefaultBoundaries()[i], 0);
+			}
+		world.createSessileSprites(world.createBoundaries(200, 200, 256, 128), 1);
+		world.createSessileSprites(world.createBoundaries(400, 400, 256, 256), 2);
 	}
 
 	static {
