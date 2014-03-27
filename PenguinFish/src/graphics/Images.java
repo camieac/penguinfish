@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 public class Images {
 	protected BufferedImage[] players, backgrounds, enemies, bullets,
 			sessileSpriteImages;
-	protected BufferedImage fullHeart, emptyHeart, background, spriteSheet;
+	protected BufferedImage fullHeart, emptyHeart, background, sessileSpriteSheet,playerSpriteSheet;
 
 	public Images() {
 		players = new BufferedImage[13];
@@ -27,13 +27,14 @@ public class Images {
 		bullets[0] = getImage("res/img/FishSkeleton.png");
 		enemies[0] = getImage("res/img/Enemy00.png");
 		background = getImage("res/img/back.png");
-		spriteSheet = Images.getImage("res/img/SpriteSheet1.png");
+		sessileSpriteSheet = Images.getImage("res/img/sessileSprites.png");
+		playerSpriteSheet = Images.getImage("res/img/player.png");
 		for (int i = 0; i < 4; i ++){
-			sessileSpriteImages[i] = spriteSheet.getSubimage(64*i, 0, 64, 64);
+			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64*i, 0, 64, 64);
 			}
 		int numPlayerImages = 13;
 		for (int i = 0; i < numPlayerImages; i++) {
-			players[i] = getImage("res/img/Character" + i + ".png");
+			players[i] = playerSpriteSheet.getSubimage(i*30, i*42, 30, 42);
 		}
 	}
 
