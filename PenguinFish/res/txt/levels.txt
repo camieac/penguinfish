@@ -10,7 +10,6 @@ name: <name>
 id: <id>
 endLevel:
 begin:
-
 startLevel:
 Level 1: Tutorial
 0
@@ -18,15 +17,18 @@ startSessileSprite:
 20,20,0
 endSessileSprite:
 startSessileSprite:
-20,84,0
+20,84,1
 endSessileSprite:
 startSessileSprite:
-84,20,0
+84,20,2
 endSessileSprite:
 startSessileSprite:
 84,84,0
 endSessileSprite:
 endLevel:
+
+
+
 
 startLevel:
 Level 2: Mission

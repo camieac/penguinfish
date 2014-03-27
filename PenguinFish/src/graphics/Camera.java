@@ -96,11 +96,13 @@ public class Camera extends JComponent {
 			}
 
 			// Draw the background sprites in the correct position in the world
-			for (SessileSprite s : DataStore.getInstance().world.sessileSprites) {
+			for(LinkedList<SessileSprite> sp: DataStore.getInstance().world.sessileSprites){
+			for (SessileSprite s : sp) {
 				// if the sprite is in the camera area
 				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
 					s.draw(s.getX() - camX, s.getY() - camY, g, 0);
 				}
+			}
 			}
 			// Draw Player
 			DataStore.getInstance().player.drawPlayer(g,

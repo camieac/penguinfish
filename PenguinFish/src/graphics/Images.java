@@ -28,8 +28,9 @@ public class Images {
 		enemies[0] = getImage("res/img/Enemy00.png");
 		background = getImage("res/img/back.png");
 		spriteSheet = Images.getImage("res/img/SpriteSheet1.png");
-		sessileSpriteImages[0] = spriteSheet.getSubimage(0, 0, 64, 64);
-
+		for (int i = 0; i < 4; i ++){
+			sessileSpriteImages[i] = spriteSheet.getSubimage(64*i, 0, 64, 64);
+			}
 		int numPlayerImages = 13;
 		for (int i = 0; i < numPlayerImages; i++) {
 			players[i] = getImage("res/img/Character" + i + ".png");
