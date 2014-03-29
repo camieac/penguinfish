@@ -16,7 +16,7 @@ public class Images {
 	protected BufferedImage fullHeart, emptyHeart, background, sessileSpriteSheet,playerSpriteSheet;
 
 	public Images() {
-		players = new BufferedImage[13];
+		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[1];
 		backgrounds = new BufferedImage[1];
@@ -32,9 +32,13 @@ public class Images {
 		for (int i = 0; i < 4; i ++){
 			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64*i, 0, 64, 64);
 			}
-		int numPlayerImages = 13;
-		for (int i = 0; i < numPlayerImages; i++) {
-			players[i] = playerSpriteSheet.getSubimage(i*30, i*42, 30, 42);
+		int numPlayerImages = 16;
+		int rows = 2;
+		for(int j = 0; j < rows; j++){
+		for (int i = 0; i < numPlayerImages/rows; i++) {
+			if (j == 0) players[i] = playerSpriteSheet.getSubimage(i*30, j*42, 30, 42);
+			if (j == 1) players[i+8] = playerSpriteSheet.getSubimage(i*30, j*42, 30, 42);
+		}
 		}
 	}
 

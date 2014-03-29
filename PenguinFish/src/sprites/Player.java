@@ -41,21 +41,37 @@ public class Player extends Sprite {
 			direction.disableDirection(Direction.WEST);
 			direction.disableDirection(Direction.NORTHWEST);
 			direction.disableDirection(Direction.SOUTHWEST);
+		}else{
+			direction.enableDirection(Direction.WEST);
+			direction.enableDirection(Direction.NORTHWEST);
+			direction.enableDirection(Direction.SOUTHWEST);
 		}
 		if (y < 0){
 			direction.disableDirection(Direction.NORTH);
 			direction.disableDirection(Direction.NORTHEAST);
 			direction.disableDirection(Direction.NORTHWEST);
+		}else{
+			direction.enableDirection(Direction.NORTH);
+			direction.enableDirection(Direction.NORTHEAST);
+			direction.enableDirection(Direction.NORTHWEST);
 		}
 		if (x > DataStore.getInstance().images.getBackground().getWidth() - (width/2)){
 			direction.disableDirection(Direction.EAST);
 			direction.disableDirection(Direction.NORTHEAST);
 			direction.disableDirection(Direction.SOUTHEAST);
+		}else{
+			direction.enableDirection(Direction.EAST);
+			direction.enableDirection(Direction.NORTHEAST);
+			direction.enableDirection(Direction.SOUTHEAST);
 		}
 		if (y > DataStore.getInstance().images.getBackground().getHeight() - (height/2)){
 			direction.disableDirection(Direction.SOUTH);
 			direction.disableDirection(Direction.SOUTHWEST);
 			direction.disableDirection(Direction.SOUTHEAST);
+		}else{
+			direction.enableDirection(Direction.SOUTH);
+			direction.enableDirection(Direction.SOUTHWEST);
+			direction.enableDirection(Direction.SOUTHEAST);
 		}
 		
 	}

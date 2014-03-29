@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public enum Direction {
-	NORTH(1, 0), NORTHEAST(5, 45), EAST(3, 90), SOUTHEAST(7, 135), SOUTH(0, 180), SOUTHWEST(
-			6, 225), WEST(2, 270), NORTHWEST(4, 315);
+	NORTH(0, 0), NORTHEAST(1, 45), EAST(2, 90), SOUTHEAST(3, 135), SOUTH(4, 180), SOUTHWEST(
+			5, 225), WEST(6, 270), NORTHWEST(7, 315);
 
 	protected int direction;
 	protected int angle;
@@ -30,21 +30,21 @@ public enum Direction {
 	protected static Direction resolveDirection(int num) {
 		switch (num) {
 		case 0:
-			return SOUTH;
-		case 1:
 			return NORTH;
-		case 2:
-			return WEST;
-		case 3:
-			return EAST;
-		case 4:
-			return NORTHWEST;
-		case 5:
+		case 1:
 			return NORTHEAST;
-		case 6:
-			return SOUTHWEST;
-		case 7:
+		case 2:
+			return EAST;
+		case 3:
 			return SOUTHEAST;
+		case 4:
+			return SOUTH ;
+		case 5:
+			return SOUTHWEST;
+		case 6:
+			return WEST;
+		case 7:
+			return NORTHWEST;
 		default:
 			return SOUTH;
 		}
