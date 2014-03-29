@@ -26,6 +26,8 @@ public class Camera extends JComponent {
 	Direction direction;
 	LinkedList<Integer> buttons;
 	double camX, camY;
+	
+	
 
 	double backgroundWidth, backgroundHeight;
 
@@ -36,6 +38,8 @@ public class Camera extends JComponent {
 		camX = 0;
 		camY = 0;
 
+		
+		
 		width = w;
 		height = h;
 
@@ -74,6 +78,7 @@ public class Camera extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
+//		nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
@@ -218,15 +223,20 @@ public class Camera extends JComponent {
 			DataStore.getInstance().player.move();
 		}
 
-		if (buttons.contains(KeyEvent.VK_F))
-			addBullet();
-
-		// if(player.getDirection().checkDisabled(player.getDirection())){
-		// player.setDirection(player.getDirection().getNormalOpposite(player.getDirection()));
-		// player.setSpeed(0);
-		// }
+		if (buttons.contains(KeyEvent.VK_F)) addBullet();
+		
+		if (buttons.contains(KeyEvent.VK_H)){
+			DataStore.getInstance().player.displayHelpNotification();
+			
+		}
+		
+		
 
 	}
+
+
+	
+	
 
 	public void addBullet() {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {

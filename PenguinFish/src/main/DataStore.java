@@ -1,10 +1,11 @@
 package main;
 
-import java.util.ArrayList;
+import graphics.Images;
+import graphics.Notification;
+import graphics.World;
+
 import java.util.LinkedList;
 
-import graphics.World;
-import graphics.Images;
 import sprites.Bullet;
 import sprites.Enemy;
 import sprites.Player;
@@ -16,6 +17,7 @@ public class DataStore {
 	public LinkedList<Bullet> bullets;
 	public LinkedList<Enemy> enemies;
 	public LinkedList<SessileSprite> worldSprites;
+	public LinkedList<Notification> notifications;
 	public int baseSpeed;
 	public Images images;
 	public int pace;
@@ -28,6 +30,8 @@ public class DataStore {
 	
 	public static DataStore instance;
 
+	
+	
 	private DataStore() {
 		
 	}
@@ -48,6 +52,10 @@ public class DataStore {
 		levelReader = new LevelReader();
 		level = levelReader.getNextLevel();
 		world = new World();
+		notifications = new LinkedList<Notification>();
+		
+		
+		
 		for(int i =0 ; i < 4; i++){
 			world.createSessileSprites(world.createDefaultBoundaries()[i], 0);
 			}

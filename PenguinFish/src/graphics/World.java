@@ -71,4 +71,12 @@ public class World {
 		g.drawImage(DataStore.getInstance().images.getBackground(), -(int)camX,-(int) camY, null);
 
 	}
+
+	public LinkedList<SessileSprite> getSessileSprites() {
+		LinkedList<SessileSprite> ll = new LinkedList<SessileSprite>();
+		for(LinkedList<SessileSprite> l : sessileSprites){
+			ll.addAll(l);
+		}
+		return ll;
+	}
 }

@@ -13,8 +13,8 @@ public class Window implements Runnable {
 	protected Camera camera;
 
 	public Window() {
-		panelWidth = 512;
-		panelHeight = 512;
+		panelWidth = 512*3;
+		panelHeight = 512*2;
 		JFrame frame = new JFrame("Penguin Fish");
 		frame.setResizable(false);
 		camera = new Camera(0, 0, panelWidth, panelHeight);
