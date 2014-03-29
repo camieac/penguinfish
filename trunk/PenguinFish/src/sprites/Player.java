@@ -2,6 +2,10 @@ package sprites;
 
 import main.DataStore;
 import main.Direction;
+
+import graphics.Notification;
+
+import java.awt.Color;
 import java.awt.Graphics;
 
 @SuppressWarnings("serial")
@@ -24,6 +28,7 @@ public class Player extends Sprite {
 				(int)ycam, null);
 		g.drawString("pos: " + x + "," + y, (int)xcam,(int) ycam);
 		g.drawString("step: " + dx + "," + dy, (int)xcam,(int) ycam - 15);
+		DataStore.getInstance().notifications.getLast().displayPlayerText(g, (int) xcam, (int) ycam);
 	}
 
 	public void tick() {
@@ -73,6 +78,38 @@ public class Player extends Sprite {
 			direction.enableDirection(Direction.SOUTHWEST);
 			direction.enableDirection(Direction.SOUTHEAST);
 		}
+		
+	}
+
+	public void displayHelpNotification() {
+		boolean overSessileSprite = false;
+f1:		for(SessileSprite s : DataStore.getInstance().world.getSessileSprites()){
+			if(collide(s.getBounds())){
+				Notification n = new Notification("This is a sessile sprite\n" + s.toString(), Color.black, Color.white);
+				DataStore.getInstance().notifications.add(n);
+				overSessileSprite =  true;
+				break f1;
+				
+			}
+		}
+			boolean overEnemy = false;
+			f2:		for(Enemy e : DataStore.getInstance().enemies){
+						if(collide(e.getBounds())){
+							Notification n = new Notification("This is an enemy\n" + e.toString(), Color.black, Color.white);
+							DataStore.getInstance().notifications.add(n);
+							System.out.println("Help Notification for Enemy");
+							overSessileSprite =  true;
+							break f2;
+							
+						}
+			
+		
+			
+		}
+		if(!overSessileSprite){
+			DataStore.getInstance().notifications.clear();
+		}
+	
 		
 	}
 

@@ -16,8 +16,9 @@ public class Enemy extends Sprite {
 		bounces = true;
 		health = 100;
 		speed = 6;
-		step = 0;
-		Random rand = new Random(); //this is temporary
+		Random rand = new Random(); 
+		step = rand.nextInt(80);
+		
 		type = rand.nextInt(2);
 	}
 
