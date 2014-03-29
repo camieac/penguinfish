@@ -13,12 +13,12 @@ import javax.imageio.ImageIO;
 public class Images {
 	protected BufferedImage[] players, backgrounds, enemies, bullets,
 			sessileSpriteImages;
-	protected BufferedImage fullHeart, emptyHeart, background, sessileSpriteSheet,playerSpriteSheet;
+	protected BufferedImage fullHeart, emptyHeart, background, sessileSpriteSheet,playerSpriteSheet,enemiesSpriteSheet;
 
 	public Images() {
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
-		enemies = new BufferedImage[1];
+		enemies = new BufferedImage[16];
 		backgrounds = new BufferedImage[1];
 		sessileSpriteImages = new BufferedImage[4];
 		backgrounds[0] = getImage("res/img/back.png");
@@ -29,6 +29,7 @@ public class Images {
 		background = getImage("res/img/back.png");
 		sessileSpriteSheet = Images.getImage("res/img/sessileSprites.png");
 		playerSpriteSheet = Images.getImage("res/img/player.png");
+		enemiesSpriteSheet = Images.getImage("res/img/enemies.png");
 		for (int i = 0; i < 4; i ++){
 			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64*i, 0, 64, 64);
 			}
@@ -39,6 +40,15 @@ public class Images {
 			if (j == 0) players[i] = playerSpriteSheet.getSubimage(i*30, j*42, 30, 42);
 			if (j == 1) players[i+8] = playerSpriteSheet.getSubimage(i*30, j*42, 30, 42);
 		}
+		}
+		int numEnemyImages = 3;
+		//Setup spider images
+		for(int i = 0;i < numEnemyImages;i++){
+			enemies[i] = enemiesSpriteSheet.getSubimage(i*128,0,128,64);
+		}
+		//Setup worm images
+		for(int i = 2;i < numEnemyImages+3;i++){
+			enemies[i] = enemiesSpriteSheet.getSubimage(0*(i-2),64,128,64);
 		}
 	}
 
