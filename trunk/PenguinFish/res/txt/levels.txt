@@ -10,22 +10,20 @@ name: <name>
 id: <id>
 endLevel:
 begin:
-startLevel:
-Level 1: Tutorial
-0
-startSessileSprite:
-20,20,0
-endSessileSprite:
-startSessileSprite:
-20,84,1
-endSessileSprite:
-startSessileSprite:
-84,20,2
-endSessileSprite:
-startSessileSprite:
-84,84,0
-endSessileSprite:
-endLevel:
+<level>
+	<name>
+		Level 1: Tutorial
+	</name>
+	<id>
+		0
+	</id>
+	<SessileSprites>
+		20,20,0
+		20,84,1
+		84,20,2
+		84,84,0
+	</SessileSprites>
+</level>
 
 
 

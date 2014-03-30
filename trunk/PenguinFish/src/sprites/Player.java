@@ -17,9 +17,9 @@ public class Player extends Sprite {
 	protected int distance;
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param d
+	 * @param x x-position of the player.
+	 * @param y y-position of the player.
+	 * @param d Direction of the player.
 	 * @param i
 	 */
 	public Player(int x, int y, Direction d, int i) {
