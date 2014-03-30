@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
- * 
+ * @since 30th March 2014
  */
 public class SpriteBlock implements Serializable {
 	/**

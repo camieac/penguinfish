@@ -24,6 +24,14 @@ import sprites.SessileSprite;
  */
 public class Camera extends JComponent {
 
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
 	private static final long serialVersionUID = -3395117504081297410L;
 	boolean attached;
 

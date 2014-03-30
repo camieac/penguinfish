@@ -25,11 +25,10 @@ public class Enemy extends Sprite {
 	private int step;
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param d
-	 * @param id
-	 * @param movement
+	 * @param x x-coordinate of the left hand side of the enemy.
+	 * @param y y-coordinate of the top side of the enemy.
+	 * @param id The type image of the Enemy.
+	 * @param movement The type of movement of the Enemy.
 	 */
 	public Enemy(int x, int y, int id, int movement) {
 		super(x, y, Direction.getRandom(), id);
