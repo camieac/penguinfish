@@ -36,9 +36,25 @@ begin:
 
 
 
-startLevel:
-Level 2: Mission
-1
-20,20,0,0
-20,40,0,0
-endLevel:l2
+<level>
+	<name>
+		Level 2: The Beginning
+	</name>
+	<id>
+		1
+	</id>
+	<SessileSprites>
+		100,100,0
+		200,200,1
+		300,300,2
+		400,400,0
+	</SessileSprites>
+	<spriteblock>
+		500,500,200,200,1
+	</spriteblock>
+	<enemies>
+		800,800,0,0
+		900,900,3,0
+		1000,1000,6,1
+	</enemies>
+</level>

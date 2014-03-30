@@ -61,16 +61,17 @@ public class Images {
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[16];
-		backgrounds = new BufferedImage[1];
+		backgrounds = new BufferedImage[2];
 		sessileSpriteImages = new BufferedImage[4];
 		backgrounds[0] = getImage("res/img/back.png");
+		backgrounds[1] = getImage("res/img/map2.png");
 		fullHeart = getImage("res/img/Heart01.png");
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
 		enemies[0] = getImage("res/img/Enemy00.png");
-		sessileSpriteSheet = Images.getImage("res/img/sessileSprites.png");
-		playerSpriteSheet = Images.getImage("res/img/player.png");
-		enemiesSpriteSheet = Images.getImage("res/img/enemies.png");
+		sessileSpriteSheet = getImage("res/img/sessileSprites.png");
+		playerSpriteSheet = getImage("res/img/player.png");
+		enemiesSpriteSheet = getImage("res/img/enemies.png");
 		for (int i = 0; i < 4; i++) {
 			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64 * i, 0,
 					64, 64);

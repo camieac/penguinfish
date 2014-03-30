@@ -19,7 +19,7 @@ public class World {
 	protected LinkedList<Rectangle> boundaries;
 	protected int defaultBoundedAreas = 4;
 	protected Rectangle[] defualtBoundaries;
-	protected BufferedImage image;
+	//protected BufferedImage image;
 	protected LinkedList<LinkedList<SessileSprite>> sessileSprites;
 
 	/**
@@ -37,7 +37,21 @@ public class World {
 		addLevelSpriteBlocks();
 		addLevelEnemies();
 	}
-
+	/**
+	 * 
+	 */
+	public void newLevel(){ //TODO: Finish this thing
+		DataStore.getInstance().levelNumber++;
+		if(DataStore.getInstance().levelNumber > DataStore.getInstance().images.backgrounds.length-1){
+			DataStore.getInstance().levelNumber = DataStore.getInstance().images.backgrounds.length-1;
+		}
+		sessileSprites.clear();
+		DataStore.getInstance().enemies.clear();
+		DataStore.getInstance().level = DataStore.getInstance().levelReader.getNextLevel();
+		addLevelSprites();
+		addLevelSpriteBlocks();
+		addLevelEnemies();
+	}
 	private void addLevelEnemies() {
 		LinkedList<Enemy> lle = DataStore.getInstance().level.getEnemies();
 		DataStore.getInstance().enemies.clear();
