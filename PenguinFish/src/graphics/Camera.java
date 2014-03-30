@@ -303,7 +303,16 @@ public class Camera extends JComponent {
 
 		}
 		if (buttons.contains(KeyEvent.VK_L)) {
-
+			
+			DataStore.getInstance().world.newLevel();
+			System.out.println("Level Number incremented");
+			//This sleep is a temporary fix to stop the level incrementing more than once per button press.
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
