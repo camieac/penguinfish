@@ -24,24 +24,27 @@ import sprites.SessileSprite;
  */
 public class Camera extends JComponent {
 
-	
 	private static final long serialVersionUID = -3395117504081297410L;
-	double width, height;
-
-	boolean moveX, moveY;
-	Direction direction;
-	LinkedList<Integer> buttons;
-	double camX, camY;
-
-	double backgroundWidth, backgroundHeight;
-
 	boolean attached;
 
+	double backgroundWidth, backgroundHeight;
+	LinkedList<Integer> buttons;
+	double camX, camY;
+	Direction direction;
+
+	boolean moveX, moveY;
+
+	double width, height;
+
 	/**
-	 * @param x x-position of the left edge of the camera.
-	 * @param y y-position of the top edge of the camera.
-	 * @param w Width of the camera.
-	 * @param h Height of the camera.
+	 * @param x
+	 *            x-position of the left edge of the camera.
+	 * @param y
+	 *            y-position of the top edge of the camera.
+	 * @param w
+	 *            Width of the camera.
+	 * @param h
+	 *            Height of the camera.
 	 */
 	public Camera(int x, int y, int w, int h) {
 		buttons = new LinkedList<Integer>();
@@ -56,10 +59,58 @@ public class Camera extends JComponent {
 	}
 
 	/**
-	 * @param x x-position of the left edge of the object being checked.
-	 * @param y y-position of the top edge of the object being checked.
-	 * @param w Width of the object being checked.
-	 * @param h Height of the object being checked.
+	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
+	 * 
+	 */
+	public void addBullet() {
+		if (DataStore.getInstance().periodSinceLastFire >= 3) {
+			// TODO: bullets seem to get deleted as soon as they spawn,
+			// so they are probably colliding with the player instantly
+			// and getting added to the remove array.
+			Bullet b = new Bullet(DataStore.getInstance().player.getX() - camX,
+					DataStore.getInstance().player.getY() - camY,
+					DataStore.getInstance().player.getDirection(), 0);
+
+			DataStore.getInstance().bullets.add(b);
+			// TODO: Why are bullets rotated to 0? Just set the direction in the
+			// constructor since they don't bounce.
+
+			DataStore.getInstance().periodSinceLastFire = 0;
+		}
+	}
+
+	/**
+	 * Attaches the camera to the position of the player.
+	 */
+	public void attach() {
+		attached = true;
+
+	}
+
+	/**
+	 * Detaches the camera from the player position.
+	 */
+	public void detach() {
+		attached = false;
+	}
+
+	public int getHeight() {
+		return (int) height;
+	}
+
+	public int getWidth() {
+		return (int) width;
+	}
+
+	/**
+	 * @param x
+	 *            x-position of the left edge of the object being checked.
+	 * @param y
+	 *            y-position of the top edge of the object being checked.
+	 * @param w
+	 *            Width of the object being checked.
+	 * @param h
+	 *            Height of the object being checked.
 	 * @return
 	 */
 	public boolean isInFrame(double x, double y, double w, double h) {
@@ -75,27 +126,19 @@ public class Camera extends JComponent {
 			return true;
 	}
 
-	public int getWidth() {
-		return (int) width;
+	/**
+	 * @param e
+	 */
+	public void keyPressed(KeyEvent e) {
+		buttons.add(e.getKeyCode());
 	}
 
 	/**
-	 * Detaches the camera from the player position.
+	 * @param e
 	 */
-	public void detach() {
-		attached = false;
-	}
-
-	public int getHeight() {
-		return (int) height;
-	}
-
-	/**
-	 * Attaches the camera to the position of the player.
-	 */
-	public void attach() {
-		attached = true;
-
+	public void keyReleased(KeyEvent e) {
+		if (buttons.contains(e.getKeyCode()))
+			buttons.remove(buttons.indexOf(e.getKeyCode()));
 	}
 
 	public void paintComponent(Graphics g) {
@@ -151,16 +194,9 @@ public class Camera extends JComponent {
 
 	}
 
-	protected void paintText(Graphics g) {
-		g.setColor(Color.black);
-		g.drawString("Avoid the red enemy!", 10, 10);
-		g.drawString("Pace: " + DataStore.getInstance().pace, (int) width / 2,
-				10);
-		g.drawString("Life: ", (int) width - 100, 10);
-	}
-
 	/**
-	 * @param g The Graphics object to to draw to.
+	 * @param g
+	 *            The Graphics object to to draw to.
 	 */
 	protected void paintHealth(Graphics g) {
 		BufferedImage fullHeart = DataStore.getInstance().images.getFullHeart();
@@ -203,22 +239,16 @@ public class Camera extends JComponent {
 		}
 	}
 
-	/**
-	 * @param e
-	 */
-	public void keyPressed(KeyEvent e) {
-		buttons.add(e.getKeyCode());
+	protected void paintText(Graphics g) {
+		g.setColor(Color.black);
+		g.drawString("Avoid the red enemy!", 10, 10);
+		g.drawString("Pace: " + DataStore.getInstance().pace, (int) width / 2,
+				10);
+		g.drawString("Life: ", (int) width - 100, 10);
 	}
 
 	/**
-	 * @param e
-	 */
-	public void keyReleased(KeyEvent e) {
-		if (buttons.contains(e.getKeyCode()))
-			buttons.remove(buttons.indexOf(e.getKeyCode()));
-	}
-
-	/** Handles all key presses.
+	 * Handles all key presses.
 	 * 
 	 */
 	protected void processKeys() {
@@ -264,27 +294,10 @@ public class Camera extends JComponent {
 			DataStore.getInstance().player.displayHelpNotification();
 
 		}
+		if (buttons.contains(KeyEvent.VK_L)) {
 
-	}
-
-	/** Adds a bullet to the LinkedList of bullets, stored in the DataStore.
-	 * 
-	 */
-	public void addBullet() {
-		if (DataStore.getInstance().periodSinceLastFire >= 3) {
-			// TODO: bullets seem to get deleted as soon as they spawn,
-			// so they are probably colliding with the player instantly
-			// and getting added to the remove array.
-			Bullet b = new Bullet(DataStore.getInstance().player.getX() - camX,
-					DataStore.getInstance().player.getY() - camY,
-					DataStore.getInstance().player.getDirection(), 0);
-
-			DataStore.getInstance().bullets.add(b);
-			// TODO: Why are bullets rotated to 0? Just set the direction in the
-			// constructor since they don't bounce.
-
-			DataStore.getInstance().periodSinceLastFire = 0;
 		}
+
 	}
 
 }

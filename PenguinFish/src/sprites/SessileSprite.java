@@ -2,14 +2,16 @@ package sprites;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import main.DataStore;
 
 /**
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
-public class SessileSprite extends Rectangle {
+public class SessileSprite extends Rectangle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	protected int id;
@@ -36,29 +38,37 @@ public class SessileSprite extends Rectangle {
 		g.drawImage(DataStore.getInstance().images.getSessileImage(id),
 				(int) x, (int) y, null);
 	}
+
 	/**
 	 * @param x
 	 */
 	public void setX(int x) {
 		this.x = x;
-		
+
 	}
+
 	/**
 	 * @param y
 	 */
 	public void setY(int y) {
 		this.y = y;
-		
+
 	}
-	public String toString(){
+
+	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("x: " + x + "\n");
 		sb.append("y: " + y + "\n");
 		String type;
-		if(id == 0){
+		if (id == 0) {
 			type = "Tree";
-		}else type = "Unknown";
-		sb.append("Type: "+ type + "\n");
+		} else if (id == 1)
+			type = "Bush";
+		else if (id == 2)
+			type = "Hole";
+		else
+			type = "Unknown";
+		sb.append("Type: " + type + "\n");
 		return sb.toString();
 	}
 
