@@ -1,11 +1,8 @@
 package sprites;
 
-import graphics.Camera;
 import graphics.Images;
 
 import java.awt.Rectangle;
-import java.util.Random;
-
 import main.Direction;
 
 /**
@@ -13,26 +10,28 @@ import main.Direction;
  *
  */
 public class Sprite extends SessileSprite {
+	
+	private static final long serialVersionUID = 1L;
 	protected Direction direction, wallHit;
 	protected double dx, dy, speed;
 	protected int health;
 	protected boolean bounces, dead;
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param d
-	 * @param i
+	 * @param x x-position of sprite.
+	 * @param y y-position of sprite.
+	 * @param d Initial direction of sprite.
+	 * @param id ID of player.
 	 */
-	public Sprite(double x, double y, Direction d, int i) {
-		super((int) x, (int) y, i);
+	public Sprite(double x, double y, Direction d, int id) {
+		super((int) x, (int) y, id);
 		this.direction = d;
 		this.health = 0;
 		this.dead = false;
 	}
 
 	/**
-	 * 
+	 * Calculates the next movement step of the player, based on it's direction.
 	 */
 	public void calcStep() {
 		dx = 0;
@@ -83,7 +82,7 @@ public class Sprite extends SessileSprite {
 	}
 
 	/**
-	 * 
+	 * Changes the x and y fields based on the result of the calcStep method.
 	 */
 	public void move() {
 		x += dx;
@@ -126,6 +125,9 @@ public class Sprite extends SessileSprite {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void run() {
 		
 		calcStep();

@@ -75,37 +75,55 @@ public class LevelReader {
 		try {
 			Level level = new Level();
 			boolean inLevel = false;
+			boolean inSessileSprites = false;
+			boolean inName = false;
+			boolean inID = false;
 			while ((line = levelReader.readLine()) != null && !endOfLevel) {
 				
 				
 				//System.out.println("Line: " + line);
-				if (line.contains("startLevel:")) {
+				if (line.contains("<level>")) {
 					inLevel = true;
 					level = new Level();
-					level.setName(levelReader.readLine());
-					level.setLevelID(Integer.parseInt(levelReader.readLine()));
-					// DataStore.getInstance().levels.add(level);
-					/* sessile sprites */
-
-					// System.out.println("Level Name set to: " +
-					// level.getName());
+//					
+					
 				}
-				if (line.contains("endLevel:") && inLevel) {
+				else if (line.contains("</level>") && inLevel) {
 					inLevel = false;
-					// tempLevels.add(level.getLevelID(),level);
 					oos.writeObject(level);
 					endOfLevel = true;
 					System.out.println(level.toString());
 					level = new Level();
-					// System.exit(0);
 				}
-				if (line.contains("startSessileSprite:") && inLevel) {
-
-					String[] data = levelReader.readLine().split(",");
-					SessileSprite s = new SessileSprite(
-							Integer.parseInt(data[0]),
-							Integer.parseInt(data[1]),
-							Integer.parseInt(data[2]));
+				else if(line.contains("<name>") && !inName){
+					inName = true;
+					level.setName(levelReader.readLine().trim());
+				}
+				else if(line.contains("</name>") && inName){
+					inName = false;
+				}
+				else if(line.contains("<id>") && !inID){
+					inID = true;
+					level.setLevelID(Integer.parseInt(levelReader.readLine().trim()));
+				}
+				else if(line.contains("</id>") && inID){
+					inID = false;
+				}
+				else if (line.contains("<SessileSprites>") && inLevel) {
+					inSessileSprites = true;
+					//line = levelReader.readLine();
+				}
+				else if (line.contains("</SessileSprites>") && inLevel) {
+					inSessileSprites = false;
+					//line = levelReader.readLine();
+				}
+				else if(inSessileSprites){
+					
+					String[] data = line.split(",");
+					int x = Integer.parseInt(data[0].trim());
+					int y = Integer.parseInt(data[1].trim());
+					int type = Integer.parseInt(data[2].trim());
+					SessileSprite s = new SessileSprite(x,y,type);
 					level.addSessileSprite(s);
 					System.out.println(s.toString());
 
