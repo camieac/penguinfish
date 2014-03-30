@@ -12,35 +12,25 @@ import sprites.Player;
 import sprites.SessileSprite;
 
 /**
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
 
 public class DataStore {
 	/**
 	 * 
 	 */
-	public Player player;
+	public static DataStore instance;
+	static {
+		instance = new DataStore();
+	}
 	/**
-	 * 
+	 * @return
 	 */
-	public World world;
-	/**
-	 * 
-	 */
-	public LinkedList<Bullet> bullets;
-	/**
-	 * 
-	 */
-	public LinkedList<Enemy> enemies;
-	/**
-	 * 
-	 */
-	public LinkedList<SessileSprite> worldSprites;
-	/**
-	 * 
-	 */
-	public LinkedList<Notification> notifications;
+	public static DataStore getInstance() {
+		return instance;
+	}
 	/**
 	 * 
 	 */
@@ -48,11 +38,7 @@ public class DataStore {
 	/**
 	 * 
 	 */
-	public Images images;
-	/**
-	 * 
-	 */
-	public int pace;
+	public LinkedList<Bullet> bullets;
 	/**
 	 * 
 	 */
@@ -60,12 +46,16 @@ public class DataStore {
 	/**
 	 * 
 	 */
-	public double maxWidth, maxHeight;
+	public LinkedList<Enemy> enemies;
 	/**
 	 * 
 	 */
-	public int periodSinceLastFire;
-	
+	public Images images;
+	/**
+	 * 
+	 */
+	public Level level;
+	public int levelNumber;
 	/**
 	 * 
 	 */
@@ -73,27 +63,49 @@ public class DataStore {
 	/**
 	 * 
 	 */
-	public Level level;
-	
-	/**
-	 * 
-	 */
-	public static DataStore instance;
+	public double maxWidth, maxHeight;
 
-	public int levelNumber;
-	
-	private DataStore() {
-		
-	}
-	
 	/**
 	 * 
 	 */
-	public void setEverything(){
+	public LinkedList<Notification> notifications;
+	/**
+	 * 
+	 */
+	public int pace;
+
+	/**
+	 * 
+	 */
+	public int periodSinceLastFire;
+
+	/**
+	 * 
+	 */
+	public Player player;
+
+	/**
+	 * 
+	 */
+	public World world;
+
+	/**
+	 * 
+	 */
+	public LinkedList<SessileSprite> worldSprites;
+
+	private DataStore() {
+
+	}
+
+	/**
+	 * 
+	 */
+	public void setEverything() {
 		levelNumber = 0;
 		baseSpeed = 5;
 		images = new Images();
-		
+
 		enemies = new LinkedList<Enemy>();
 		player = new Player(0, 0, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
@@ -107,24 +119,6 @@ public class DataStore {
 		level = levelReader.getNextLevel();
 		world = new World();
 		notifications = new LinkedList<Notification>();
-		
-		
-		
-		for(int i =0 ; i < 4; i++){
-			world.createSessileSprites(world.createDefaultBoundaries()[i], 0);
-			}
-		world.createSessileSprites(world.createBoundaries(200, 200, 256, 128), 1);
-		world.createSessileSprites(world.createBoundaries(400, 400, 256, 256), 2);
-	}
 
-	static {
-		instance = new DataStore();
-	}
-
-	/**
-	 * @return
-	 */
-	public static DataStore getInstance() {
-		return instance;
 	}
 }

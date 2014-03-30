@@ -10,8 +10,9 @@ import main.DataStore;
 import main.Direction;
 
 /**
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
 @SuppressWarnings("serial")
 public class Bullet extends Sprite {
@@ -34,7 +35,20 @@ public class Bullet extends Sprite {
 		rotateBullet(degreesToRadians(direction.getAngle()));
 	}
 
-	
+	/**
+	 * @param degree
+	 * @return
+	 */
+	public double degreesToRadians(int degree) {
+		return Math.PI / 180 * degree;
+	}
+
+	/**
+	 * @return
+	 */
+	public Image getImage() {
+		return rotatedImage;
+	}
 
 	/**
 	 * @param dir
@@ -49,22 +63,5 @@ public class Bullet extends Sprite {
 					AffineTransformOp.TYPE_BILINEAR);
 			rotatedImage = op.filter(bulletImage, null);
 		}
-	}
-
-	/**
-	 * @param degree
-	 * @return
-	 */
-	public double degreesToRadians(int degree) {
-		return Math.PI / 180 * degree;
-	}
-
-
-
-	/**
-	 * @return
-	 */
-	public Image getImage() {
-		return rotatedImage;
 	}
 }

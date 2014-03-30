@@ -10,19 +10,21 @@ import java.awt.event.*;
 
 /**
  * The window that contains the game.
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+ * 
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
 public class Window implements Runnable {
-	int panelWidth, panelHeight;
 	protected Camera camera;
+	int panelWidth, panelHeight;
 
 	/**
 	 * 
 	 */
 	public Window() {
-		panelWidth = 512*3;
-		panelHeight = 512*2;
+		panelWidth = 512 * 3;
+		panelHeight = 512 * 2;
 		JFrame frame = new JFrame("Penguin Fish");
 		frame.setResizable(true);
 		camera = new Camera(0, 0, panelWidth, panelHeight);

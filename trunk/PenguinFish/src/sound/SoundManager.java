@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class SoundManager implements Runnable {
 
-	ArrayList<Sound> tracks;
-	boolean playing;
 	SoundPlayer player;
+	boolean playing;
+	ArrayList<Sound> tracks;
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class SoundManager implements Runnable {
 
 		addToQueue(new Sound("res/Sound/PenguinFish D01 End.wav", false));
 		addToQueue(new Sound("res/Sound/PenguinFish D01Repeat.wav", true));
-		//addToQueue(new Sound("res/Sound/PenguinFish D01 Intro.wav", false));
+		// addToQueue(new Sound("res/Sound/PenguinFish D01 Intro.wav", false));
 
 	}
 
@@ -29,12 +29,19 @@ public class SoundManager implements Runnable {
 	}
 
 	/**
-	 * @param s
+	 * 
 	 */
-	public void removeFromQueue(Sound s) {
-		if (tracks.contains(s)) {
-			tracks.remove(s);
+	private void playNextTrack() {
+		Sound nextTrack = tracks.get(tracks.size() - 1);
+		System.out.println("Now playing " + nextTrack.file);
+		SoundPlayer sp;
+		(new Thread(sp = new SoundPlayer(nextTrack.file))).start();
+		player = sp;
+
+		if (!nextTrack.loop) {
+			tracks.remove(nextTrack);
 		}
+
 	}
 
 	/**
@@ -58,19 +65,12 @@ public class SoundManager implements Runnable {
 	}
 
 	/**
-	 * 
+	 * @param s
 	 */
-	private void playNextTrack() {
-		Sound nextTrack = tracks.get(tracks.size() - 1);
-		System.out.println("Now playing " + nextTrack.file);
-		SoundPlayer sp;
-		(new Thread(sp = new SoundPlayer(nextTrack.file))).start();
-		player = sp;
-
-		if (!nextTrack.loop) {
-			tracks.remove(nextTrack);
+	public void removeFromQueue(Sound s) {
+		if (tracks.contains(s)) {
+			tracks.remove(s);
 		}
-
 	}
 
 	@Override

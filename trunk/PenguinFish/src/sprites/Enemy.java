@@ -2,6 +2,7 @@ package sprites;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
 import graphics.Images;
@@ -9,41 +10,52 @@ import main.DataStore;
 import main.Direction;
 
 /**
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
 public class Enemy extends Sprite {
-	private int step;
-	private int type;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6014554174205449235L;
 	private int animationStep;
 	private BufferedImage[] images;
+	private int movement;
+	private int step;
+
 	/**
 	 * @param x
 	 * @param y
 	 * @param d
 	 * @param id
+	 * @param movement
 	 */
-	public Enemy(int x, int y, Direction d, int id) {
-		super(x, y, d, id);
-		direction = Direction.getRandom();
+	public Enemy(int x, int y, int id, int movement) {
+		super(x, y, Direction.getRandom(), id);
+		// Valid ID's 0,3,6,9
+		if (id > 0 && id < 3)
+			id = 0;
+		if (id > 3 && id < 6)
+			id = 3;
+		if (id > 6 && id < 9)
+			id = 6;
+		if (id > 9)
+			id = 9;
+
+		this.movement = movement;
 		bounces = true;
 		health = 100;
 		speed = 6;
-		Random rand = new Random(); 
+		Random rand = new Random();
 		step = rand.nextInt(80);
-		
-		type = rand.nextInt(2);
+
 		animationStep = 0;
 		images = new BufferedImage[3];
 		images[0] = DataStore.getInstance().images.getEnemy(id);
-		images[1] = DataStore.getInstance().images.getEnemy(id+1);
-		images[2] = DataStore.getInstance().images.getEnemy(id+2);
-		
-	}
+		images[1] = DataStore.getInstance().images.getEnemy(id + 1);
+		images[2] = DataStore.getInstance().images.getEnemy(id + 2);
 
-	public void draw(double x, double y, Graphics g, int i) {
-		g.drawImage(images[animationStep], (int) x,
-				(int) y, null);
 	}
 
 	// public void run() {
@@ -55,11 +67,11 @@ public class Enemy extends Sprite {
 	// }
 	// }
 	public void calcStep() {
-		animationStep++;
-		animationStep = animationStep%3;
+
 		dx = 0;
 		dy = 0;
-		if (type == 0) {//East - South - West - North
+		if (movement == 0) {// East - South - West - North
+			animationStep++;
 			if (step >= 0 && step <= 20) {
 				dx = speed;
 			}
@@ -74,26 +86,53 @@ public class Enemy extends Sprite {
 			}
 			if (step == 80)
 				step = 0;
-		}else if(type ==1){ //East - Stop - West - Stop
+		} else if (movement == 1) { // East - Stop - West - Stop
 			if (step >= 0 && step <= 20) {
 				dx = speed;
+				animationStep++;
 			}
 			if (step > 40 && step <= 60) {
 				dx = -speed;
+				animationStep++;
 			}
 			if (step == 80)
 				step = 0;
-		}
-		else if(type ==2){ //South - Stop - North - Stop
+		} else if (movement == 2) { // South - Stop - North - Stop
 			if (step >= 0 && step <= 20) {
 				dy = speed;
+				animationStep++;
 			}
 			if (step > 40 && step <= 60) {
 				dy = -speed;
+				animationStep++;
 			}
 			if (step == 80)
 				step = 0;
 		}
 		step++;
+		animationStep = animationStep % 3;
+	}
+
+	public void draw(double x, double y, Graphics g, int i) {
+		g.drawImage(images[animationStep], (int) x, (int) y, null);
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("x: " + x + "\n");
+		sb.append("y: " + y + "\n");
+		String type;
+		if (id == 0) {
+			type = "Spider";
+		} else if (id == 1)
+			type = "Worm";
+		else if (id == 2)
+			type = "Fisherman";
+		else if (id == 3)
+			type = "Minotaur";
+		else
+			type = "Unknown";
+		sb.append("Type: " + type + "\n");
+		return sb.toString();
 	}
 }

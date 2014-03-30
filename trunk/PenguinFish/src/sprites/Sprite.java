@@ -6,22 +6,27 @@ import java.awt.Rectangle;
 import main.Direction;
 
 /**
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
 public class Sprite extends SessileSprite {
-	
+
 	private static final long serialVersionUID = 1L;
+	protected boolean bounces, dead;
 	protected Direction direction, wallHit;
 	protected double dx, dy, speed;
 	protected int health;
-	protected boolean bounces, dead;
 
 	/**
-	 * @param x x-position of sprite.
-	 * @param y y-position of sprite.
-	 * @param d Initial direction of sprite.
-	 * @param id ID of player.
+	 * @param x
+	 *            x-position of sprite.
+	 * @param y
+	 *            y-position of sprite.
+	 * @param d
+	 *            Initial direction of sprite.
+	 * @param id
+	 *            ID of player.
 	 */
 	public Sprite(double x, double y, Direction d, int id) {
 		super((int) x, (int) y, id);
@@ -77,16 +82,7 @@ public class Sprite extends SessileSprite {
 			}
 
 		}
-		
 
-	}
-
-	/**
-	 * Changes the x and y fields based on the result of the calcStep method.
-	 */
-	public void move() {
-		x += dx;
-		y += dy;
 	}
 
 	/**
@@ -126,19 +122,6 @@ public class Sprite extends SessileSprite {
 	}
 
 	/**
-	 * 
-	 */
-	public void run() {
-		
-		calcStep();
-		x += dx;
-		y += dy;
-		if (health <= 0) {
-			dead = true;
-		}
-	}
-
-	/**
 	 * @param amount
 	 */
 	public void damage(int amount) {
@@ -146,52 +129,10 @@ public class Sprite extends SessileSprite {
 	}
 
 	/**
-	 * @param dx
-	 */
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
-
-	/**
-	 * @param dy
-	 */
-	public void setDy(int dy) {
-		this.dy = dy;
-	}
-
-	/**
-	 * @param speed
-	 */
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-
-	/**
-	 * @param health
-	 */
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	/**
-	 * @param dead
-	 */
-	public void setDead(boolean dead) {
-		this.dead = dead;
-	}
-
-	/**
-	 * @param d
-	 */
-	public void setDirection(Direction d) {
-		direction = d;
-	}
-
-	/**
 	 * @return
 	 */
-	public double getSpeed() {
-		return speed;
+	public Direction getDirection() {
+		return direction;
 	}
 
 	/**
@@ -218,15 +159,78 @@ public class Sprite extends SessileSprite {
 	/**
 	 * @return
 	 */
-	public boolean isDead() {
-		return dead;
+	public double getSpeed() {
+		return speed;
 	}
 
 	/**
 	 * @return
 	 */
-	public Direction getDirection() {
-		return direction;
+	public boolean isDead() {
+		return dead;
+	}
+
+	/**
+	 * Changes the x and y fields based on the result of the calcStep method.
+	 */
+	public void move() {
+		x += dx;
+		y += dy;
+	}
+
+	/**
+	 * 
+	 */
+	public void run() {
+
+		calcStep();
+		x += dx;
+		y += dy;
+		if (health <= 0) {
+			dead = true;
+		}
+	}
+
+	/**
+	 * @param dead
+	 */
+	public void setDead(boolean dead) {
+		this.dead = dead;
+	}
+
+	/**
+	 * @param d
+	 */
+	public void setDirection(Direction d) {
+		direction = d;
+	}
+
+	/**
+	 * @param dx
+	 */
+	public void setDx(int dx) {
+		this.dx = dx;
+	}
+
+	/**
+	 * @param dy
+	 */
+	public void setDy(int dy) {
+		this.dy = dy;
+	}
+
+	/**
+	 * @param health
+	 */
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	/**
+	 * @param speed
+	 */
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
 
 }

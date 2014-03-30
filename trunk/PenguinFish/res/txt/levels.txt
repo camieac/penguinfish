@@ -23,6 +23,14 @@ begin:
 		84,20,2
 		84,84,0
 	</SessileSprites>
+	<spriteblock>
+		100,100,200,200,1
+	</spriteblock>
+	<enemies>
+		30,30,0,0
+		150,150,3,0
+		250,150,6,1
+	</enemies>
 </level>
 
 

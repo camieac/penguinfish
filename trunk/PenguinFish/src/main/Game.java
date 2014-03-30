@@ -5,74 +5,61 @@ import java.util.Random;
 import sprites.Bullet;
 import sprites.Enemy;
 
-/** Handles collisions and creates enemies at the start of a game.
- * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
- *
+/**
+ * Handles collisions and creates enemies at the start of a game.
+ * 
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
  */
 public class Game implements Runnable {
-	
+
 	protected boolean gameOver;
-	protected int numberOfEnemies;
+	// protected int numberOfEnemies;
 	protected Random rand;
-	
+
 	public Game() {
 		rand = new Random();
-		numberOfEnemies = 300;
+		// numberOfEnemies = 300;
 		createGame();
-	}
-
-	protected void createGame() {
-
-		createEnemies();
-		gameOver = false;
-
-	}
-
-	/**
-	 * 
-	 */
-	protected void createEnemies() {
-		for (int i = 0; i < numberOfEnemies; i++) {
-			DataStore.getInstance().enemies.add(new Enemy(rand
-					.nextInt((int) DataStore.getInstance().maxWidth), rand
-					.nextInt((int) DataStore.getInstance().maxHeight),
-					Direction.getRandom(), 0));
-		}
-	}
-
-	protected void difficultyWait() {
-		try {
-			Thread.sleep(70 - (DataStore.getInstance().pace * 10));
-		} catch (InterruptedException e) {
-			// Thread got interrupted
-			e.printStackTrace();
-		}
-	}
-
-	
-	
-
-	public void run() {
-		while (!gameOver) {
-			tickAll();
-		}
-	}
-
-	protected void tickAll() {
-		cameraControl();
-		DataStore.getInstance().periodSinceLastFire++;
-		
-		DataStore.getInstance().player.tick();
-		detectEnemyCollisions();
-		detectBulletCollisions();
-		DataStore.getInstance().world.tick(DataStore.getInstance().player);
-		difficultyWait();
-
 	}
 
 	private void cameraControl() {
 		DataStore.getInstance().cameraAttachedToPlayer = true;
 
+	}
+
+	protected void createGame() {
+
+		// createEnemies();
+		gameOver = false;
+
+	}
+
+	protected void detectBulletCollisions() {
+		LinkedList<Bullet> dead = new LinkedList<Bullet>();
+		for (Bullet bullet : DataStore.getInstance().bullets) {
+			bullet.run();
+			bullet.collideWalls(DataStore.getInstance().maxWidth,
+					DataStore.getInstance().maxHeight);
+			// if(bullet.collide(player.getRect())){
+			// player.damage(10);
+			// }
+			for (Enemy e : DataStore.getInstance().enemies) {
+				if (bullet.collide(e)) {
+					bullet.setDead(true);
+					e.damage(10);
+				}
+
+			}
+			if (bullet.isDead()) {
+				dead.add(bullet);
+			}
+
+		}
+		// System.out.println("Bullets: " + DataStore.getInstance().bullets);
+		// System.out.println("Dead Bullets: " + dead);
+		DataStore.getInstance().bullets.removeAll(dead);
 	}
 
 	protected void detectEnemyCollisions() {
@@ -92,40 +79,32 @@ public class Game implements Runnable {
 
 				}
 			}
-			if(enemy.isDead()){
+			if (enemy.isDead()) {
 				dead.add(enemy);
 			}
-			
+
 		}
 		DataStore.getInstance().enemies.removeAll(dead);
 	}
 
-	protected void detectBulletCollisions() {
-		LinkedList<Bullet> dead = new LinkedList<Bullet>();
-		for (Bullet bullet : DataStore.getInstance().bullets) {
-			bullet.run();
-			bullet.collideWalls(DataStore.getInstance().maxWidth,
-					DataStore.getInstance().maxHeight);
-			// if(bullet.collide(player.getRect())){
-			// player.damage(10);
-			// }
-			for (Enemy e : DataStore.getInstance().enemies) {
-				if (bullet.collide(e)) {
-					bullet.setDead(true);
-					e.damage(10);
-				}
+	/**
+	 * 
+	 */
+	// protected void createEnemies() {
+	// for (int i = 0; i < numberOfEnemies; i++) {
+	// DataStore.getInstance().enemies.add(new Enemy(rand
+	// .nextInt((int) DataStore.getInstance().maxWidth), rand
+	// .nextInt((int) DataStore.getInstance().maxHeight), 0));
+	// }
+	// }
 
-			}
-			if(bullet.isDead()){
-			dead.add(bullet);
-			}
-
-			
-			
+	protected void difficultyWait() {
+		try {
+			Thread.sleep(70 - (DataStore.getInstance().pace * 10));
+		} catch (InterruptedException e) {
+			// Thread got interrupted
+			e.printStackTrace();
 		}
-		//System.out.println("Bullets: " + DataStore.getInstance().bullets);
-		//System.out.println("Dead Bullets: " + dead);
-		DataStore.getInstance().bullets.removeAll(dead);
 	}
 
 	/**
@@ -133,5 +112,23 @@ public class Game implements Runnable {
 	 */
 	public void incrementPace(int i) {
 		DataStore.getInstance().pace += i;
+	}
+
+	public void run() {
+		while (!gameOver) {
+			tickAll();
+		}
+	}
+
+	protected void tickAll() {
+		cameraControl();
+		DataStore.getInstance().periodSinceLastFire++;
+
+		DataStore.getInstance().player.tick();
+		detectEnemyCollisions();
+		detectBulletCollisions();
+		DataStore.getInstance().world.tick(DataStore.getInstance().player);
+		difficultyWait();
+
 	}
 }
