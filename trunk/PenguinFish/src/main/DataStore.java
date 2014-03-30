@@ -11,32 +11,86 @@ import sprites.Enemy;
 import sprites.Player;
 import sprites.SessileSprite;
 
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
+
 public class DataStore {
+	/**
+	 * 
+	 */
 	public Player player;
+	/**
+	 * 
+	 */
 	public World world;
+	/**
+	 * 
+	 */
 	public LinkedList<Bullet> bullets;
+	/**
+	 * 
+	 */
 	public LinkedList<Enemy> enemies;
+	/**
+	 * 
+	 */
 	public LinkedList<SessileSprite> worldSprites;
+	/**
+	 * 
+	 */
 	public LinkedList<Notification> notifications;
+	/**
+	 * 
+	 */
 	public int baseSpeed;
+	/**
+	 * 
+	 */
 	public Images images;
+	/**
+	 * 
+	 */
 	public int pace;
+	/**
+	 * 
+	 */
 	public boolean cameraAttachedToPlayer;
+	/**
+	 * 
+	 */
 	public double maxWidth, maxHeight;
+	/**
+	 * 
+	 */
 	public int periodSinceLastFire;
 	
+	/**
+	 * 
+	 */
 	public LevelReader levelReader;
+	/**
+	 * 
+	 */
 	public Level level;
 	
+	/**
+	 * 
+	 */
 	public static DataStore instance;
 
-	
+	public int levelNumber;
 	
 	private DataStore() {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public void setEverything(){
+		levelNumber = 0;
 		baseSpeed = 5;
 		images = new Images();
 		
@@ -46,8 +100,8 @@ public class DataStore {
 		player.setSpeed(baseSpeed);
 		pace = 1;
 		cameraAttachedToPlayer = false;
-		maxWidth = images.getBackground().getWidth();
-		maxHeight = images.getBackground().getHeight();
+		maxWidth = images.getBackground(levelNumber).getWidth();
+		maxHeight = images.getBackground(levelNumber).getHeight();
 		periodSinceLastFire = 0;
 		levelReader = new LevelReader();
 		level = levelReader.getNextLevel();
@@ -67,6 +121,9 @@ public class DataStore {
 		instance = new DataStore();
 	}
 
+	/**
+	 * @return
+	 */
 	public static DataStore getInstance() {
 		return instance;
 	}

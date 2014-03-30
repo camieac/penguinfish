@@ -5,11 +5,20 @@ import java.awt.Rectangle;
 
 import main.DataStore;
 
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 public class SessileSprite extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
 	protected int id;
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param id
+	 */
 	public SessileSprite(int x, int y, int id) {
 		super(x, y, DataStore.getInstance().images.getSessileImage(id)
 				.getWidth(), DataStore.getInstance().images.getSessileImage(id)
@@ -17,14 +26,26 @@ public class SessileSprite extends Rectangle {
 		this.id = id;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param g
+	 * @param i
+	 */
 	public void draw(double x, double y, Graphics g, int i) {
 		g.drawImage(DataStore.getInstance().images.getSessileImage(id),
 				(int) x, (int) y, null);
 	}
+	/**
+	 * @param x
+	 */
 	public void setX(int x) {
 		this.x = x;
 		
 	}
+	/**
+	 * @param y
+	 */
 	public void setY(int y) {
 		this.y = y;
 		

@@ -9,11 +9,21 @@ import java.awt.image.BufferedImage;
 import main.DataStore;
 import main.Direction;
 
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 @SuppressWarnings("serial")
 public class Bullet extends Sprite {
 
 	protected Image rotatedImage;
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param d
+	 * @param id
+	 */
 	public Bullet(double x, double y, Direction d, int id) {
 		super(x, y, d, id);
 		setDead(false);
@@ -26,6 +36,9 @@ public class Bullet extends Sprite {
 
 	
 
+	/**
+	 * @param dir
+	 */
 	public void rotateBullet(double dir) {
 		if (rotatedImage == null) {
 			BufferedImage bulletImage = DataStore.getInstance().images
@@ -38,12 +51,19 @@ public class Bullet extends Sprite {
 		}
 	}
 
+	/**
+	 * @param degree
+	 * @return
+	 */
 	public double degreesToRadians(int degree) {
 		return Math.PI / 180 * degree;
 	}
 
 
 
+	/**
+	 * @return
+	 */
 	public Image getImage() {
 		return rotatedImage;
 	}

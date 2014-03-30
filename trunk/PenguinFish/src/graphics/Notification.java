@@ -8,6 +8,11 @@ import java.text.BreakIterator;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+/**
+ * A small information box that appears at points in the game to give useful information.
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 public class Notification {
 	int fontHeight;
 	String[] lines;
@@ -24,6 +29,11 @@ public class Notification {
 	
 	int xOffset, yOffset;
 
+	/**
+	 * @param text The text to be displayed in the notification box.
+	 * @param textColor The colour of the text in the notification box, also used for the box outline.
+	 * @param backColor The colour of the background of the box.
+	 */
 	public Notification(String text, Color textColor, Color backColor) {
 		this.text = text;
 		maxCaptionWidth = 250;
@@ -46,6 +56,11 @@ public class Notification {
 		
 	}
 
+	/**
+	 * @param g The graphics object to draw on.
+	 * @param x x-position of the player, or relative object 
+	 * @param y y-position of the player, or relative object.
+	 */
 	public void displayPlayerText(Graphics g, int x, int y) {
 		x = x + xOffset;
 		y = y + yOffset;
@@ -96,6 +111,10 @@ public class Notification {
 
 	
 
+	/**
+	 * @param text The text to wrap into an array of lines.
+	 * @return An array of strings, each element of the array represents a line.
+	 */
 	public String[] wrapStringToArray(String text) {
 		BreakIterator breakIterator = BreakIterator.getSentenceInstance(Locale
 				.getDefault());
@@ -173,6 +192,7 @@ public class Notification {
 		return lines.toArray(s);
 	}
 }
+//Old stuff 
 
 // private static String trimString(String s) {
 // int idx = 0;

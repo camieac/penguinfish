@@ -8,10 +8,20 @@ import graphics.Notification;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 @SuppressWarnings("serial")
 public class Player extends Sprite {
 	protected int distance;
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param d
+	 * @param i
+	 */
 	public Player(int x, int y, Direction d, int i) {
 		super(x, y, d, i);
 
@@ -22,6 +32,11 @@ public class Player extends Sprite {
 		y = 200;
 	}
 
+	/**
+	 * @param g
+	 * @param xcam
+	 * @param ycam
+	 */
 	public void drawPlayer(Graphics g, double xcam, double ycam) {
 		int imageNumber = direction.getInt();
 		g.drawImage(DataStore.getInstance().images.getPlayer(imageNumber), (int)xcam,
@@ -31,6 +46,9 @@ public class Player extends Sprite {
 		DataStore.getInstance().notifications.getLast().displayPlayerText(g, (int) xcam, (int) ycam);
 	}
 
+	/**
+	 * 
+	 */
 	public void tick() {
 		checkBoundary();
 		calcStep();
@@ -60,7 +78,7 @@ public class Player extends Sprite {
 			direction.enableDirection(Direction.NORTHEAST);
 			direction.enableDirection(Direction.NORTHWEST);
 		}
-		if (x > DataStore.getInstance().images.getBackground().getWidth() - (width/2)){
+		if (x > DataStore.getInstance().images.getBackground(DataStore.getInstance().levelNumber).getWidth() - (width/2)){
 			direction.disableDirection(Direction.EAST);
 			direction.disableDirection(Direction.NORTHEAST);
 			direction.disableDirection(Direction.SOUTHEAST);
@@ -69,7 +87,7 @@ public class Player extends Sprite {
 			direction.enableDirection(Direction.NORTHEAST);
 			direction.enableDirection(Direction.SOUTHEAST);
 		}
-		if (y > DataStore.getInstance().images.getBackground().getHeight() - (height/2)){
+		if (y > DataStore.getInstance().images.getBackground(DataStore.getInstance().levelNumber).getHeight() - (height/2)){
 			direction.disableDirection(Direction.SOUTH);
 			direction.disableDirection(Direction.SOUTHWEST);
 			direction.disableDirection(Direction.SOUTHEAST);
@@ -81,6 +99,9 @@ public class Player extends Sprite {
 		
 	}
 
+	/**
+	 * 
+	 */
 	public void displayHelpNotification() {
 		boolean overSessileSprite = false;
 f1:		for(SessileSprite s : DataStore.getInstance().world.getSessileSprites()){
@@ -98,7 +119,7 @@ f1:		for(SessileSprite s : DataStore.getInstance().world.getSessileSprites()){
 							Notification n = new Notification("This is an enemy\n" + e.toString(), Color.black, Color.white);
 							DataStore.getInstance().notifications.add(n);
 							System.out.println("Help Notification for Enemy");
-							overSessileSprite =  true;
+							overEnemy =  true;
 							break f2;
 							
 						}
@@ -106,7 +127,7 @@ f1:		for(SessileSprite s : DataStore.getInstance().world.getSessileSprites()){
 		
 			
 		}
-		if(!overSessileSprite){
+		if(!overSessileSprite && !overEnemy){
 			DataStore.getInstance().notifications.clear();
 		}
 	

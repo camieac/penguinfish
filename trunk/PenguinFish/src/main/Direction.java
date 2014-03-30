@@ -3,9 +3,43 @@ package main;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 public enum Direction {
-	NORTH(0, 0), NORTHEAST(1, 45), EAST(2, 90), SOUTHEAST(3, 135), SOUTH(4, 180), SOUTHWEST(
-			5, 225), WEST(6, 270), NORTHWEST(7, 315);
+	/**
+	 * 
+	 */
+	NORTH(0, 0),
+	/**
+	 * 
+	 */
+	NORTHEAST(1, 45),
+	/**
+	 * 
+	 */
+	EAST(2, 90),
+	/**
+	 * 
+	 */
+	SOUTHEAST(3, 135),
+	/**
+	 * 
+	 */
+	SOUTH(4, 180),
+	/**
+	 * 
+	 */
+	SOUTHWEST(5, 225),
+	/**
+	 * 
+	 */
+	WEST(6, 270),
+	/**
+	 * 
+	 */
+	NORTHWEST(7, 315);
 
 	protected int direction;
 	protected int angle;
@@ -13,14 +47,23 @@ public enum Direction {
 
 	protected LinkedList<Direction> disabledDirections = new LinkedList<Direction>();;
 
+	/**
+	 * @return
+	 */
 	public int getInt() {
 		return direction;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getAngle() {
 		return angle;
 	}
 
+	/**
+	 * @return
+	 */
 	public static Direction getRandom() {
 		Random random = new Random();
 		int rand = random.nextInt(7);
@@ -50,6 +93,11 @@ public enum Direction {
 		}
 	}
 
+	/**
+	 * @param d
+	 * @param directionHit
+	 * @return
+	 */
 	public Direction getOpposite(Direction d, Direction directionHit) {
 		if (directionHit == Direction.NORTH) {
 			switch (d) {
@@ -102,6 +150,10 @@ public enum Direction {
 		return d;
 	}
 
+	/**
+	 * @param d
+	 * @return
+	 */
 	public Direction getNormalOpposite(Direction d) {
 		switch (d) {
 		case NORTH:
@@ -132,6 +184,9 @@ public enum Direction {
 
 	}
 
+	/**
+	 * @param d
+	 */
 	public void disableDirection(Direction d) {
 
 		if (!disabledDirections.contains(d)) {
@@ -140,6 +195,9 @@ public enum Direction {
 		}
 	}
 
+	/**
+	 * @param d
+	 */
 	public void enableDirection(Direction d) {
 		if (!disabledDirections.contains(d)) {
 			disabledDirections.remove(d);
@@ -147,6 +205,10 @@ public enum Direction {
 		}
 	}
 
+	/**
+	 * @param d
+	 * @return
+	 */
 	public boolean checkDisabled(Direction d) {
 		boolean result = disabledDirections.contains(d);
 		// System.out.println(d + " is being checked in " + disabledDirections +
@@ -155,6 +217,9 @@ public enum Direction {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void clearDisabledDirections() {
 		disabledDirections.clear();
 	}
