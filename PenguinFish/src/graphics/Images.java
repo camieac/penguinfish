@@ -10,11 +10,20 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Imports all images to BufferedImages. Handles individual image files and spritesheets.
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 public class Images {
 	protected BufferedImage[] players, backgrounds, enemies, bullets,
 			sessileSpriteImages;
-	protected BufferedImage fullHeart, emptyHeart, background, sessileSpriteSheet,playerSpriteSheet,enemiesSpriteSheet;
+	protected BufferedImage fullHeart, emptyHeart, sessileSpriteSheet,playerSpriteSheet,enemiesSpriteSheet;
 
+	
+	/**
+	 * 
+	 */
 	public Images() {
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
@@ -26,7 +35,6 @@ public class Images {
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
 		enemies[0] = getImage("res/img/Enemy00.png");
-		background = getImage("res/img/back.png");
 		sessileSpriteSheet = Images.getImage("res/img/sessileSprites.png");
 		playerSpriteSheet = Images.getImage("res/img/player.png");
 		enemiesSpriteSheet = Images.getImage("res/img/enemies.png");
@@ -47,11 +55,24 @@ public class Images {
 			enemies[i] = enemiesSpriteSheet.getSubimage(i*128,0,128,64);
 		}
 		//Setup worm images
-		for(int i = 2;i < numEnemyImages+3;i++){
-			enemies[i] = enemiesSpriteSheet.getSubimage(0*(i-2),64,128,64);
+		for(int i = 3;i < numEnemyImages+3;i++){
+			enemies[i] = enemiesSpriteSheet.getSubimage(128*(i-3),64,128,82);
 		}
+		//Setup Fisherman images
+		for(int i = 6;i < numEnemyImages+6;i++){
+			enemies[i] = enemiesSpriteSheet.getSubimage(128*(i-6),192,128,128);
+		}
+		//Setup Minotaurs
+			enemies[10] = enemiesSpriteSheet.getSubimage(12,331,96,145);
+			enemies[11] = enemiesSpriteSheet.getSubimage(133,331,127,145);
+			enemies[12] = enemiesSpriteSheet.getSubimage(246,326,127,145);
+		
 	}
 
+	/**
+	 * @param image The location of the image to get.
+	 * @return BufferedImage from the location given.
+	 */
 	public static BufferedImage getImage(String image) {
 		BufferedImage map = null;
 		try {
@@ -63,14 +84,21 @@ public class Images {
 		}
 	}
 
+	/**
+	 * @param camX
+	 * @param camY
+	 * @param width
+	 * @param height
+	 * @return
+	 */
 	public BufferedImage getDisplayableBackground(double camX, double camY,
 			double width, double height) {
 		BufferedImage image = null;
 		try {
-			image = background.getSubimage((int) camX, (int) camY, (int) width,
+			image = backgrounds[0].getSubimage((int) camX, (int) camY, (int) width,
 					(int) height);
 		} catch (RasterFormatException e) {
-			return background;
+			return backgrounds[0];
 		}
 		return image;
 	}
@@ -89,42 +117,81 @@ public class Images {
 		return new_image;
 	}
 
+	/**
+	 * @param i The index of the world map array.
+	 * @return The image of the world background.
+	 */
 	public BufferedImage getMapImage(int i) {
 		return backgrounds[i];
 	}
 
+	/**
+	 * @return Array of images of players.
+	 */
 	public BufferedImage[] getPlayerImages() {
 		return players;
 	}
 
+	/**
+	 * @return Array of images of enemies.
+	 */
 	public BufferedImage[] getEnemyImages() {
 		return enemies;
 	}
 
+	/**
+	 * @param i Index of the bullets array.
+	 * @return Image of a bullet at index i.
+	 */
 	public BufferedImage getBulletImage(int i) {
 		return bullets[i];
 	}
 
+	/**
+	 * @return BufferedImage of a full heart.
+	 */
 	public BufferedImage getFullHeart() {
 		return fullHeart;
 	}
 
+	/**
+	 * @return BufferedImage of an empty heart
+	 */
 	public BufferedImage getEmptyHeart() {
 		return emptyHeart;
 	}
-
-	public BufferedImage getBackground() {
-		return background;
+	/**
+	 * @param i Index of the backgrounds array
+	 * @return BufferedImage background at index i.
+	 */
+	public BufferedImage getBackground(int i){
+		return backgrounds[i];
 	}
 
+
+	/**
+	 * @param i Index of the sessile sprite array.
+	 * @return BufferedImage of a sessile sprite at index i.
+	 */
 	public BufferedImage getSessileImage(int i) {
+		if(i > sessileSpriteImages.length){
+			return sessileSpriteImages[sessileSpriteImages.length-1];
+		}
 		return sessileSpriteImages[i];
 	}
 
+	/**
+	 * @param i Index of the player images array.
+	 * @return BufferedImage of the player at index i.
+	 */
 	public BufferedImage getPlayer(int i) {
 		return players[i];
 	}
 
+	/**
+	 * @param i Index of the array of enemies.
+	 * @return BufferedImage of enemy at index i.
+	 */
 	public BufferedImage getEnemy(int i) {
 		return enemies[i];
 	}

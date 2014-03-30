@@ -5,6 +5,10 @@ import java.util.Random;
 import sprites.Bullet;
 import sprites.Enemy;
 
+/** Handles collisions and creates enemies at the start of a game.
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 public class Game implements Runnable {
 	
 	protected boolean gameOver;
@@ -24,6 +28,9 @@ public class Game implements Runnable {
 
 	}
 
+	/**
+	 * 
+	 */
 	protected void createEnemies() {
 		for (int i = 0; i < numberOfEnemies; i++) {
 			DataStore.getInstance().enemies.add(new Enemy(rand
@@ -121,6 +128,9 @@ public class Game implements Runnable {
 		DataStore.getInstance().bullets.removeAll(dead);
 	}
 
+	/**
+	 * @param i
+	 */
 	public void incrementPace(int i) {
 		DataStore.getInstance().pace += i;
 	}

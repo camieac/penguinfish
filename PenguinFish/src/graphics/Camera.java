@@ -14,11 +14,17 @@ import sprites.Bullet;
 import sprites.Enemy;
 import sprites.SessileSprite;
 
+/**
+ * Represents the viewable area of the world, the camera follows the position of
+ * the player. Once sprites within the viewable area are drawn.
+ * 
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
+ */
 public class Camera extends JComponent {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -3395117504081297410L;
 	double width, height;
 
@@ -26,20 +32,22 @@ public class Camera extends JComponent {
 	Direction direction;
 	LinkedList<Integer> buttons;
 	double camX, camY;
-	
-	
 
 	double backgroundWidth, backgroundHeight;
 
 	boolean attached;
 
+	/**
+	 * @param x x-position of the left edge of the camera.
+	 * @param y y-position of the top edge of the camera.
+	 * @param w Width of the camera.
+	 * @param h Height of the camera.
+	 */
 	public Camera(int x, int y, int w, int h) {
 		buttons = new LinkedList<Integer>();
 		camX = 0;
 		camY = 0;
 
-		
-		
 		width = w;
 		height = h;
 
@@ -47,6 +55,13 @@ public class Camera extends JComponent {
 
 	}
 
+	/**
+	 * @param x x-position of the left edge of the object being checked.
+	 * @param y y-position of the top edge of the object being checked.
+	 * @param w Width of the object being checked.
+	 * @param h Height of the object being checked.
+	 * @return
+	 */
 	public boolean isInFrame(double x, double y, double w, double h) {
 		if (x + w < camX)
 			return false;
@@ -64,6 +79,9 @@ public class Camera extends JComponent {
 		return (int) width;
 	}
 
+	/**
+	 * Detaches the camera from the player position.
+	 */
 	public void detach() {
 		attached = false;
 	}
@@ -72,13 +90,16 @@ public class Camera extends JComponent {
 		return (int) height;
 	}
 
+	/**
+	 * Attaches the camera to the position of the player.
+	 */
 	public void attach() {
 		attached = true;
 
 	}
 
 	public void paintComponent(Graphics g) {
-//		nc.displayPlayerText(g, "Hello", Color.black, Color.white);
+		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
@@ -101,13 +122,14 @@ public class Camera extends JComponent {
 			}
 
 			// Draw the background sprites in the correct position in the world
-			for(LinkedList<SessileSprite> sp: DataStore.getInstance().world.sessileSprites){
-			for (SessileSprite s : sp) {
-				// if the sprite is in the camera area
-				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
-					s.draw(s.getX() - camX, s.getY() - camY, g, 0);
+			for (LinkedList<SessileSprite> sp : DataStore.getInstance().world.sessileSprites) {
+				for (SessileSprite s : sp) {
+					// if the sprite is in the camera area
+					if (isInFrame(s.getX(), s.getY(), s.getWidth(),
+							s.getHeight())) {
+						s.draw(s.getX() - camX, s.getY() - camY, g, 0);
+					}
 				}
-			}
 			}
 			// Draw Player
 			DataStore.getInstance().player.drawPlayer(g,
@@ -137,6 +159,9 @@ public class Camera extends JComponent {
 		g.drawString("Life: ", (int) width - 100, 10);
 	}
 
+	/**
+	 * @param g The Graphics object to to draw to.
+	 */
 	protected void paintHealth(Graphics g) {
 		BufferedImage fullHeart = DataStore.getInstance().images.getFullHeart();
 		BufferedImage emptyHeart = DataStore.getInstance().images
@@ -178,15 +203,24 @@ public class Camera extends JComponent {
 		}
 	}
 
+	/**
+	 * @param e
+	 */
 	public void keyPressed(KeyEvent e) {
 		buttons.add(e.getKeyCode());
 	}
 
+	/**
+	 * @param e
+	 */
 	public void keyReleased(KeyEvent e) {
 		if (buttons.contains(e.getKeyCode()))
 			buttons.remove(buttons.indexOf(e.getKeyCode()));
 	}
 
+	/** Handles all key presses.
+	 * 
+	 */
 	protected void processKeys() {
 		boolean moveKeyPressed = false;
 		if (buttons.contains(KeyEvent.VK_UP)
@@ -223,21 +257,19 @@ public class Camera extends JComponent {
 			DataStore.getInstance().player.move();
 		}
 
-		if (buttons.contains(KeyEvent.VK_F)) addBullet();
-		
-		if (buttons.contains(KeyEvent.VK_H)){
+		if (buttons.contains(KeyEvent.VK_F))
+			addBullet();
+
+		if (buttons.contains(KeyEvent.VK_H)) {
 			DataStore.getInstance().player.displayHelpNotification();
-			
+
 		}
-		
-		
 
 	}
 
-
-	
-	
-
+	/** Adds a bullet to the LinkedList of bullets, stored in the DataStore.
+	 * 
+	 */
 	public void addBullet() {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
 			// TODO: bullets seem to get deleted as soon as they spawn,

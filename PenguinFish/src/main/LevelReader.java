@@ -15,6 +15,10 @@ import java.util.ArrayList;
 
 import sprites.SessileSprite;
 
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson, Stuart Thain
+ *
+ */
 public class LevelReader {
 	private FileOutputStream fos;
 	private ObjectOutputStream oos;
@@ -24,6 +28,9 @@ public class LevelReader {
 	private String levelFile;
 	private ArrayList<Level> tempLevels;
 
+	/**
+	 * 
+	 */
 	public LevelReader() {
 		try {
 			fos = new FileOutputStream("res/temp/tempdata.ser");
@@ -59,6 +66,9 @@ public class LevelReader {
 		prepareReader();
 	}
 
+	/**
+	 * 
+	 */
 	public void readLevel() {
 		String line;
 		boolean endOfLevel = false;
@@ -110,6 +120,9 @@ public class LevelReader {
 
 	}
 
+	/**
+	 * @return
+	 */
 	public Level getNextLevel() {
 		readLevel();
 		try {
@@ -121,6 +134,9 @@ public class LevelReader {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void prepareReader() {
 		String line;
 		try {

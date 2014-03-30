@@ -8,6 +8,9 @@ public class SoundManager implements Runnable {
 	boolean playing;
 	SoundPlayer player;
 
+	/**
+	 * 
+	 */
 	public SoundManager() {
 		tracks = new ArrayList<Sound>();
 		player = null;
@@ -18,16 +21,25 @@ public class SoundManager implements Runnable {
 
 	}
 
+	/**
+	 * @param s
+	 */
 	public void addToQueue(Sound s) {
 		tracks.add(s);
 	}
 
+	/**
+	 * @param s
+	 */
 	public void removeFromQueue(Sound s) {
 		if (tracks.contains(s)) {
 			tracks.remove(s);
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void playQueue() {
 		if (player != null) {
 			if (tracks.size() != 0) {
@@ -45,6 +57,9 @@ public class SoundManager implements Runnable {
 
 	}
 
+	/**
+	 * 
+	 */
 	private void playNextTrack() {
 		Sound nextTrack = tracks.get(tracks.size() - 1);
 		System.out.println("Now playing " + nextTrack.file);
