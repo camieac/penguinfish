@@ -32,15 +32,18 @@ public class Enemy extends Sprite {
 	 */
 	public Enemy(int x, int y, int id, int movement) {
 		super(x, y, Direction.getRandom(), id);
-		// Valid ID's 0,3,6,9
+		// Valid ID's 0,3,6,9,12
 		if (id > 0 && id < 3)
 			id = 0;
 		if (id > 3 && id < 6)
 			id = 3;
 		if (id > 6 && id < 9)
 			id = 6;
-		if (id > 9)
+		if (id > 9 && id < 12)
 			id = 9;
+		if (id >12){
+			id = 12;
+		}
 
 		this.movement = movement;
 		bounces = true;
@@ -108,6 +111,9 @@ public class Enemy extends Sprite {
 			if (step == 80)
 				step = 0;
 		}
+		else if (movement == 3) { // Dragon swoosh
+				dy = speed;
+		}
 		step++;
 		animationStep = animationStep % 3;
 	}
@@ -123,12 +129,14 @@ public class Enemy extends Sprite {
 		String type;
 		if (id == 0) {
 			type = "Spider";
-		} else if (id == 1)
+		} else if (id == 3)
 			type = "Worm";
-		else if (id == 2)
+		else if (id == 6)
 			type = "Fisherman";
-		else if (id == 3)
+		else if (id == 9)
 			type = "Minotaur";
+		else if (id == 12)
+			type = "Dragon";
 		else
 			type = "Unknown";
 		sb.append("Type: " + type + "\n");

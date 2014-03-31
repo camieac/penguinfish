@@ -18,8 +18,8 @@ import sprites.SessileSprite;
 public class World {
 	protected LinkedList<Rectangle> boundaries;
 	protected int defaultBoundedAreas = 4;
-	protected Rectangle[] defualtBoundaries;
-	//protected BufferedImage image;
+	protected Rectangle[] defaultBoundaries;
+	// protected BufferedImage image;
 	protected LinkedList<LinkedList<SessileSprite>> sessileSprites;
 
 	/**
@@ -27,31 +27,46 @@ public class World {
 	 */
 	public World() {
 		sessileSprites = new LinkedList<LinkedList<SessileSprite>>();
-		defualtBoundaries = new Rectangle[defaultBoundedAreas];
+		defaultBoundaries = new Rectangle[defaultBoundedAreas];
 		boundaries = new LinkedList<Rectangle>();
 
-		for (int i = 0; i < 4; i++) {
-			createSpriteBlock(createDefaultBoundaries()[i], 0);
-		}
+		setupDefaultBoundaries();
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();
 	}
+
 	/**
 	 * 
 	 */
-	public void newLevel(){ //TODO: Finish this thing
+	public void setupDefaultBoundaries() {
+		boundaries.clear();
+		sessileSprites.clear();
+		addLevelSprites();
+		addLevelSpriteBlocks();
+		
+		for (int i = 0; i < 4; i++) {
+			createSpriteBlock(createDefaultBoundaries()[i], 4);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void newLevel() { // TODO: Finish this thing
 		DataStore.getInstance().levelNumber++;
-		if(DataStore.getInstance().levelNumber > DataStore.getInstance().images.backgrounds.length-1){
-			DataStore.getInstance().levelNumber = DataStore.getInstance().images.backgrounds.length-1;
+		if (DataStore.getInstance().levelNumber > DataStore.getInstance().images.backgrounds.length - 1) {
+			DataStore.getInstance().levelNumber = DataStore.getInstance().images.backgrounds.length - 1;
 		}
 		sessileSprites.clear();
 		DataStore.getInstance().enemies.clear();
-		DataStore.getInstance().level = DataStore.getInstance().levelReader.getNextLevel();
+		DataStore.getInstance().level = DataStore.getInstance().levelReader
+				.getNextLevel();
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();
 	}
+
 	private void addLevelEnemies() {
 		LinkedList<Enemy> lle = DataStore.getInstance().level.getEnemies();
 		DataStore.getInstance().enemies.clear();
@@ -96,40 +111,48 @@ public class World {
 	 * @return
 	 */
 	public Rectangle[] createDefaultBoundaries() {
+		System.out.println("WIDTH: " + DataStore.getInstance().panelWidth + " HEIGHT: " + DataStore.getInstance().panelHeight);
 		int level = DataStore.getInstance().levelNumber;
-		defualtBoundaries[0] = new Rectangle(
-				-((int) DataStore.getInstance().maxWidth / 2),
-				-((int) DataStore.getInstance().maxHeight / 2),
+		defaultBoundaries[0] = new Rectangle(
+				-(DataStore.getInstance().panelWidth/ 2),
+				-(DataStore.getInstance().panelHeight / 2),
 				DataStore.getInstance().images.getBackground(level).getWidth()
-						+ ((int) DataStore.getInstance().maxWidth),
-				((int) DataStore.getInstance().maxHeight / 2));
-		defualtBoundaries[1] = new Rectangle(
-				-((int) DataStore.getInstance().maxWidth / 2),
+						+ (DataStore.getInstance().panelWidth),
+				(DataStore.getInstance().panelHeight/ 2));
+		defaultBoundaries[1] = new Rectangle(
+				-(DataStore.getInstance().panelWidth / 2),
 				DataStore.getInstance().images.getBackground(level).getHeight(),
 				DataStore.getInstance().images.getBackground(level).getWidth()
-						+ ((int) DataStore.getInstance().maxWidth),
-				((int) DataStore.getInstance().maxHeight / 2));
-		defualtBoundaries[2] = new Rectangle(
-				-((int) DataStore.getInstance().maxWidth / 2), 0,
-				((int) DataStore.getInstance().maxWidth / 2),
+						+ (DataStore.getInstance().panelWidth),
+				(DataStore.getInstance().panelHeight / 2));
+		defaultBoundaries[2] = new Rectangle(
+				-(DataStore.getInstance().panelWidth / 2), 0,
+				(DataStore.getInstance().panelWidth / 2),
 				DataStore.getInstance().images.getBackground(level).getHeight());
-		defualtBoundaries[3] = new Rectangle(DataStore.getInstance().images
+		defaultBoundaries[3] = new Rectangle(DataStore.getInstance().images
 				.getBackground(level).getWidth(), 0,
-				((int) DataStore.getInstance().maxWidth / 2),
+				(DataStore.getInstance().panelWidth / 2),
 				DataStore.getInstance().images.getBackground(level).getHeight());
 		for (int i = 0; i < defaultBoundedAreas; i++) {
-			createSpriteBlock(defualtBoundaries[i], 0);
-			boundaries.add(defualtBoundaries[i]);
+			// createSpriteBlock(defualtBoundaries[i], 0);
+			boundaries.add(defaultBoundaries[i]);
 		}
-		return defualtBoundaries;
+		return defaultBoundaries;
 	}
 
-	private void createSpriteBlock(Rectangle rect, int spriteImage) {
+	public void createSpriteBlock(Rectangle rect, int spriteImage) {
 		LinkedList<SessileSprite> sessileSpriteType = new LinkedList<SessileSprite>();
-		for (int j = 0; j < rect.height / 64; j++) {
-			for (int i = 0; i < rect.width / 64; i++) {
-				sessileSpriteType.add(new SessileSprite(rect.x + (64 * i),
-						rect.y + (64 * j), spriteImage));
+		for (int j = 0; j < rect.height
+				/ DataStore.getInstance().images.getSessileImage(spriteImage)
+						.getHeight(); j++) {
+			for (int i = 0; i < rect.width
+					/ DataStore.getInstance().images.getSessileImage(
+							spriteImage).getWidth(); i++) {
+				sessileSpriteType.add(new SessileSprite(rect.x
+						+ (DataStore.getInstance().images.getSessileImage(
+								spriteImage).getWidth() * i), rect.y
+						+ (DataStore.getInstance().images.getSessileImage(
+								spriteImage).getHeight() * j), spriteImage));
 			}
 		}
 		sessileSprites.add(sessileSpriteType);

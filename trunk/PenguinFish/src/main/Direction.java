@@ -87,14 +87,11 @@ public enum Direction {
 	}
 
 	/**
-	 * @param d
-	 * @return
+	 * @param d The direction to check.
+	 * @return True if direction is disabled, false otherwise.
 	 */
 	public boolean checkDisabled(Direction d) {
-		boolean result = disabledDirections.contains(d);
-		// System.out.println(d + " is being checked in " + disabledDirections +
-		// " and is " + result);
-		return result;
+		return disabledDirections.contains(d);
 
 	}
 
@@ -115,12 +112,31 @@ public enum Direction {
 			// System.out.println(d + " has been disabled");
 		}
 	}
+	public void setDirections(boolean N,boolean NE, boolean E, boolean SE, boolean S, boolean SW, boolean W, boolean NW){
+		disabledDirections.clear();
+		if(N) disabledDirections.add(Direction.NORTH);
+		else disabledDirections.remove(Direction.NORTH);
+		if(NE) disabledDirections.add(Direction.NORTHEAST);
+		else disabledDirections.remove(Direction.NORTHEAST);
+		if(E) disabledDirections.add(Direction.EAST);
+		else disabledDirections.remove(Direction.EAST);
+		if(SE) disabledDirections.add(Direction.SOUTHEAST);
+		else disabledDirections.remove(Direction.SOUTHEAST);
+		if(S) disabledDirections.add(Direction.SOUTH);
+		else disabledDirections.remove(Direction.SOUTH);
+		if(SW) disabledDirections.add(Direction.SOUTHWEST);
+		else disabledDirections.remove(Direction.SOUTHWEST);
+		if(W) disabledDirections.add(Direction.WEST);
+		else disabledDirections.remove(Direction.WEST);
+		if(NW) disabledDirections.add(Direction.NORTHWEST);
+		else disabledDirections.remove(Direction.NORTHWEST);
+	}
 
 	/**
 	 * @param d
 	 */
 	public void enableDirection(Direction d) {
-		if (!disabledDirections.contains(d)) {
+		if (disabledDirections.contains(d)) {
 			disabledDirections.remove(d);
 			// System.out.println(d + " has been enabled");
 		}
@@ -223,5 +239,8 @@ public enum Direction {
 			}
 		}
 		return d;
+	}
+	public boolean checkEnabled(Direction d) {
+		return !disabledDirections.contains(d);
 	}
 }
