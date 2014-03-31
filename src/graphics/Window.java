@@ -18,22 +18,25 @@ import java.awt.event.*;
 public class Window implements Runnable {
 	protected Camera camera;
 	
+	
 	private boolean fullscreen;
 	private JFrame frame;
 	/**
 	 * Sets up the window to 512*512, the standard width and height for this game.
 	 */
 	public Window() {
+		//The camera is set up with the width and height of the window.
+		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
+		
 		//The title of the window is set.
 		frame = new JFrame("Penguin Fish");
 		//The game initial starts not in fullscreen mode.
 		fullscreen = false;
 		//The frame is not resizable by default.
 		frame.setResizable(false);
-		//The camera is set up with the width and height of the window.
-		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		//The camera is added to the centre of the window.
 		frame.getContentPane().add(camera, BorderLayout.CENTER);
+		
 	//frame.CROSSHAIR_CURSOR;
 		//A key listener is added to detect button presses.
 		frame.addKeyListener(new KeyAdapter() {
@@ -54,6 +57,9 @@ public class Window implements Runnable {
 		frame.setVisible(true);
 
 	}
+//	public void startGame(){
+//		
+//	}
 	private void returnFullScreen() {
 		if(fullscreen){
 			int panWidth = 512;
@@ -107,8 +113,11 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			camera.repaint();
+			if(DataStore.getInstance().gameStarted){
+				camera.repaint();
 			camera.processKeys();
+			}
+			
 			try {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {
