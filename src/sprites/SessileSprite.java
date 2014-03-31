@@ -1,21 +1,75 @@
 package sprites;
 
-import main.Boundary;
-import graphics.Images;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
+import java.io.Serializable;
 
-public class SessileSprite extends Boundary{
-	protected BufferedImage image;
-	
-	public SessileSprite(int absoluteX, int absoluteY, Images images, int i) {
-		super(absoluteX, absoluteY);
-		this.image = images.getSessileImage(i);
-		this.width = this.image.getWidth();
-		this.height = this.image.getHeight();
+import main.DataStore;
+
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
+ */
+public class SessileSprite extends Rectangle implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	protected int id;
+
+	/**
+	 * @param x
+	 * @param y
+	 * @param id
+	 */
+	public SessileSprite(int x, int y, int id) {
+		super(x, y, DataStore.getInstance().images.getSessileImage(id)
+				.getWidth(), DataStore.getInstance().images.getSessileImage(id)
+				.getHeight());
+		this.id = id;
 	}
-	
-	public void draw(Graphics g, int i) {
-		g.drawImage(image, absoluteX, absoluteY, null);
+
+	/**
+	 * @param x
+	 * @param y
+	 * @param g
+	 * @param i
+	 */
+	public void draw(double x, double y, Graphics g, int i) {
+		g.drawImage(DataStore.getInstance().images.getSessileImage(id),
+				(int) x, (int) y, null);
 	}
+
+	/**
+	 * @param x
+	 */
+	public void setX(int x) {
+		this.x = x;
+
+	}
+
+	/**
+	 * @param y
+	 */
+	public void setY(int y) {
+		this.y = y;
+
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("x: " + x + "\n");
+		sb.append("y: " + y + "\n");
+		String type;
+		if (id == 0) {
+			type = "Tree";
+		} else if (id == 1)
+			type = "Bush";
+		else if (id == 2)
+			type = "Hole";
+		else
+			type = "Unknown";
+		sb.append("Type: " + type + "\n");
+		return sb.toString();
+	}
+
 }

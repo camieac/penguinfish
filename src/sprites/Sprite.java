@@ -1,192 +1,236 @@
 package sprites;
 
 import graphics.Images;
+
 import java.awt.Rectangle;
-import main.Camera;
 import main.Direction;
 
-public class Sprite extends SessileSprite{
-	protected Direction direction, directionHit;
-	protected int dx, dy, speed, health;
-	protected boolean bounces, dead;
+/**
+ * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
+ *         Stuart Thain
+ * 
+ */
+public class Sprite extends SessileSprite {
 
-	public Sprite(int x, int y, Direction d, Images images, int i) {
-		super(x,y, images, i);
+	private static final long serialVersionUID = 1L;
+	protected boolean bounces, dead;
+	protected Direction direction, wallHit;
+	protected double dx, dy, speed;
+	protected int health;
+
+	/**
+	 * @param x
+	 *            x-position of sprite.
+	 * @param y
+	 *            y-position of sprite.
+	 * @param d
+	 *            Initial direction of sprite.
+	 * @param id
+	 *            ID of player.
+	 */
+	public Sprite(double x, double y, Direction d, int id) {
+		super((int) x, (int) y, id);
 		this.direction = d;
 		this.health = 0;
 		this.dead = false;
 	}
 
-	public void calcVelocity() {
-		
-		boolean directionEnabled = !direction.checkDisabled(direction);
-		if(directionEnabled){
-		switch (direction) {
-		case NORTH:
-			dx = 0;
-			dy = -speed;
-			break;
-		case NORTHEAST:
-			dx = (int) (speed / Math.sqrt(2));
-			dy = -(int) (speed / Math.sqrt(2));
-			break;
-		case EAST:
-			dx = speed;
-			dy = 0;
-			break;
-		case SOUTHEAST:
-			dx = (int) (speed / Math.sqrt(2));
-			dy = (int) (speed / Math.sqrt(2));
-			break;
-		case SOUTH:
-			dx = 0;
-			dy = speed;
-			break;
-		case SOUTHWEST:
-			dx = -(int) (speed / Math.sqrt(2));
-			dy = (int) (speed / Math.sqrt(2));
-			break;
-		case WEST:
-			dx = -speed;
-			dy = 0;
-			break;
-		case NORTHWEST:
-			dx = -(int) (speed / Math.sqrt(2));
-			dy = -(int) (speed / Math.sqrt(2));
-			break;
-		default:
-			dx = 0;
-			dy = 0;
+	/**
+	 * Calculates the next movement step of the player, based on it's direction.
+	 */
+	public void calcStep() {
+		dx = 0;
+		dy = 0;
+		boolean directionEnabled = direction.checkEnabled(direction);
+		if (directionEnabled) {
+			switch (direction) {
+			case NORTH:
+				dx = 0;
+				dy = -speed;
+				break;
+			case NORTHEAST:
+				dx = (speed / Math.sqrt(2));
+				dy = -(speed / Math.sqrt(2));
+				break;
+			case EAST:
+				dx = speed;
+				dy = 0;
+				break;
+			case SOUTHEAST:
+				dx = (speed / Math.sqrt(2));
+				dy = (speed / Math.sqrt(2));
+				break;
+			case SOUTH:
+				dx = 0;
+				dy = speed;
+				break;
+			case SOUTHWEST:
+				dx = -(speed / Math.sqrt(2));
+				dy = (speed / Math.sqrt(2));
+				break;
+			case WEST:
+				dx = -speed;
+				dy = 0;
+				break;
+			case NORTHWEST:
+				dx = -(speed / Math.sqrt(2));
+				dy = -(speed / Math.sqrt(2));
+				break;
+			default:
+				dx = 0;
+				dy = 0;
+			}
+
 		}
-		
-		}
-//		else{
-//			speed = 0;
-//			dx = 0;
-//			dy = 0;
-//		}
-		System.out.println("Enabled: " + directionEnabled);
-		
-	}
-	public void move(){
-		absoluteX += dx;
-		absoluteY += dy;
+
 	}
 
+	/**
+	 * @param rect2
+	 * @return
+	 */
 	public boolean collide(Rectangle rect2) {
-		rect = new Rectangle(absoluteX, absoluteY, width, height);
-		if (rect.intersects(rect2)) {
-			direction = direction.getOpposite(direction, directionHit);
-			
-			
+
+		if (this.intersects(rect2)) {
+			direction = direction.getOpposite(direction, wallHit);
+
 			return true;
 		}
 		return false;
 	}
 
-	public void collideWalls(int xMax, int yMax, Camera camera) {
-			
-			if (absoluteX < 0){
-				directionHit = Direction.WEST;				
-			}
-			else if (absoluteX + width > xMax){
-				directionHit = Direction.EAST;	
-			}
-			else if (absoluteY < 0){
-				directionHit = Direction.NORTH;	
-			}
-			else if (absoluteY + height > yMax){
-				directionHit = Direction.SOUTH;	
-			}
-				if (bounces) {					
-					direction = direction.getOpposite(direction,directionHit);
-				} else {
-					dead = true;
-				}
-			}
+	/**
+	 * @param xMax
+	 * @param yMax
+	 */
+	public void collideWalls(double xMax, double yMax) {
 
+		if (x < 0) {
+			wallHit = Direction.WEST;
+		} else if (x + width > xMax) {
+			wallHit = Direction.EAST;
+		} else if (x < 0) {
+			wallHit = Direction.NORTH;
+		} else if (x + height > yMax) {
+			wallHit = Direction.SOUTH;
+		}
+		if (bounces) {
+			direction = direction.getOpposite(direction, wallHit);
+		} else {
+			dead = true;
+		}
+	}
+
+	/**
+	 * @param amount
+	 */
+	public void damage(int amount) {
+		health -= amount;
+	}
+
+	/**
+	 * @return
+	 */
+	public Direction getDirection() {
+		return direction;
+	}
+
+	/**
+	 * @return
+	 */
+	public double getDx() {
+		return dx;
+	}
+
+	/**
+	 * @return
+	 */
+	public double getDy() {
+		return dy;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getHealth() {
+		return health;
+	}
+
+	/**
+	 * @return
+	 */
+	public double getSpeed() {
+		return speed;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isDead() {
+		return dead;
+	}
+
+	/**
+	 * Changes the x and y fields based on the result of the calcStep method.
+	 */
+	public void move() {
+		x += dx;
+		y += dy;
+	}
+
+	/**
+	 * 
+	 */
 	public void run() {
-		calcVelocity();
-		absoluteX += dx;
-		absoluteY += dy;
+
+		calcStep();
+		x += dx;
+		y += dy;
 		if (health <= 0) {
 			dead = true;
 		}
 	}
 
-	public void damage(int amount) {
-		health -= amount;
-	}
-
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
-
-	public void setDy(int dy) {
-		this.dy = dy;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-	
+	/**
+	 * @param dead
+	 */
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
 
+	/**
+	 * @param d
+	 */
 	public void setDirection(Direction d) {
-		this.direction = d;
+		direction = d;
 	}
 
-	public int getSpeed() {
-		return this.speed;
-	}
-	
-	public int getDx() {
-		return dx;
-	}
-
-	public int getDy() {
-		return dy;
+	/**
+	 * @param dx
+	 */
+	public void setDx(int dx) {
+		this.dx = dx;
 	}
 
-	public int getHealth() {
-		return health;
+	/**
+	 * @param dy
+	 */
+	public void setDy(int dy) {
+		this.dy = dy;
 	}
 
-	public boolean getDead() {
-		return dead;
+	/**
+	 * @param health
+	 */
+	public void setHealth(int health) {
+		this.health = health;
 	}
-	
-	public Direction getDirection() {
-		return direction;
+
+	/**
+	 * @param speed
+	 */
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
-	
-	public void collisionA(Rectangle rectA, Rectangle rectB){
-		if(rectA.intersects(rectB)){
-			//A bounces off B 
-		}
-	}
-	
-	public void collisionB(Rectangle rectA, Rectangle rectB){
-		if(rectA.intersects(rectB)){
-			//A is destroyed
-		}
-	}
-	
-	public void collisionC(Rectangle rectB){
-		if(rect.intersects(rectB)){
-			//A stops moving (this is collision walls)	
-		}
-	}
-	
-	public void collisionD(Rectangle rectA, Rectangle rectB){
-		if(rectA.intersects(rectB)){
-			//A slows down
-		}
-	}
+
 }
