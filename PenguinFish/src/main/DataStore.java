@@ -94,6 +94,12 @@ public class DataStore {
 	 */
 	public LinkedList<SessileSprite> worldSprites;
 
+	
+	/**
+	 * 
+	 */
+	public int panelWidth;
+	public int panelHeight;
 	private DataStore() {
 
 	}
@@ -102,12 +108,13 @@ public class DataStore {
 	 * 
 	 */
 	public void setEverything() {
+		panelHeight = 512;
+		panelWidth = 512;
 		levelNumber = 0;
 		baseSpeed = 5;
 		images = new Images();
-
 		enemies = new LinkedList<Enemy>();
-		player = new Player(0, 0, Direction.SOUTH, 0);
+		player = new Player(200, 200, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		pace = 1;
@@ -119,6 +126,7 @@ public class DataStore {
 		level = levelReader.getNextLevel();
 		world = new World();
 		notifications = new LinkedList<Notification>();
+		
 
 	}
 }

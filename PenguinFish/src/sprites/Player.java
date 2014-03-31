@@ -32,53 +32,104 @@ public class Player extends Sprite {
 		health = 100;
 		speed = 5;
 
-		x = 200;
-		y = 200;
+		
 	}
 
 	private void checkBoundary() {
+		boolean leftEdgeBreach = x <= 0;
+		boolean topEdgeBreach = y <= 0;
+		boolean rightEdgeBreach = x >= DataStore.getInstance().images.getCurrentBackground().getWidth()
+				- (width / 2);
+		boolean bottomEdgeBreach = y >= DataStore.getInstance().images.getCurrentBackground().getHeight()
+				- (height / 2);
+		Direction edgeDirection = null;
+		if(topEdgeBreach) edgeDirection = Direction.NORTH;
+		if(rightEdgeBreach) edgeDirection = Direction.EAST;
+		if(bottomEdgeBreach) edgeDirection = Direction.SOUTH;
+		if(leftEdgeBreach) edgeDirection = Direction.WEST;
+		if(topEdgeBreach && rightEdgeBreach) edgeDirection = Direction.NORTHEAST;
+		if(topEdgeBreach && leftEdgeBreach) edgeDirection = Direction.NORTHWEST;
+		if(bottomEdgeBreach && leftEdgeBreach) edgeDirection = Direction.SOUTHWEST;
+		if(bottomEdgeBreach && rightEdgeBreach) edgeDirection = Direction.SOUTHEAST;
 
-		if (x < 0) {
-			direction.disableDirection(Direction.WEST);
-			direction.disableDirection(Direction.NORTHWEST);
-			direction.disableDirection(Direction.SOUTHWEST);
-		} else {
-			direction.enableDirection(Direction.WEST);
-			direction.enableDirection(Direction.NORTHWEST);
-			direction.enableDirection(Direction.SOUTHWEST);
+		if(edgeDirection != null){
+		switch(edgeDirection){			
+		case NORTH:
+			//Top Edge - everything with north in it.
+			System.out.println("TOP EDGE BREACH");
+//			direction.disableDirection(Direction.NORTHWEST);
+//			direction.disableDirection(Direction.NORTH);
+//			direction.disableDirection(Direction.NORTHEAST);
+			direction.setDirections(true, true, false, false, false, false, false, true);
+			break;
+		case NORTHEAST:
+			System.out.println("TOP RIGHT EDGE BREACH");
+//			direction.disableDirection(Direction.NORTH);
+//			direction.disableDirection(Direction.NORTHEAST);
+//			direction.disableDirection(Direction.EAST);
+			direction.setDirections(true, true, true, false, false, false, false, false);
+			break;
+		case EAST:
+			 // Right edge - everything with east in it.
+			System.out.println("RIGHT EDGE BREACH");
+//			direction.disableDirection(Direction.NORTHEAST);
+//			direction.disableDirection(Direction.EAST);
+//			direction.disableDirection(Direction.SOUTHEAST);
+			direction.setDirections(false, true, true, true, false, false, false, false);
+			break;
+		case SOUTHEAST:
+			System.out.println("BOTTOM RIGHT EDGE BREACH");
+//			direction.disableDirection(Direction.EAST);
+//			direction.disableDirection(Direction.SOUTHEAST);
+//			direction.disableDirection(Direction.SOUTH);
+			direction.setDirections(false, false, true, true, true, false, false, false);
+			break;
+		case SOUTH:
+			//Bottom Edge - everything with south in it.
+			System.out.println("BOTTOM EDGE BREACH");
+//			direction.disableDirection(Direction.SOUTHEAST);
+//			direction.disableDirection(Direction.SOUTH);
+//			direction.disableDirection(Direction.SOUTHWEST);
+			direction.setDirections(false, false, false, true, true, true, false, false);
+			break;
+		case SOUTHWEST:
+			System.out.println("BOTTOM LEFT EDGE BREACH");
+//			direction.disableDirection(Direction.SOUTH);
+//			direction.disableDirection(Direction.SOUTHWEST);
+//			direction.disableDirection(Direction.WEST);
+			direction.setDirections(false, false, false, false, true, true, true, false);
+			break;
+		case WEST:
+			 //Left Edge - everything with west in it
+			System.out.println("LEFT EDGE BREACH");
+//			direction.disableDirection(Direction.SOUTHWEST);
+//			direction.disableDirection(Direction.WEST);
+//			direction.disableDirection(Direction.NORTHWEST);
+			direction.setDirections(false, false, false, false, false, true, true, true);
+			break;
+		case NORTHWEST:
+			System.out.println("TOP LEFT EDGE BREACH");
+//			direction.disableDirection(Direction.WEST);
+//			direction.disableDirection(Direction.NORTHWEST);
+//			direction.disableDirection(Direction.NORTH);
+			direction.setDirections(true, false, false, false, false, false, true, true);
+			break;
+		default:
+			break;
 		}
-		if (y < 0) {
-			direction.disableDirection(Direction.NORTH);
-			direction.disableDirection(Direction.NORTHEAST);
-			direction.disableDirection(Direction.NORTHWEST);
-		} else {
+		}
+	
+		else{
+			System.out.println("ALL ENABLED");
 			direction.enableDirection(Direction.NORTH);
 			direction.enableDirection(Direction.NORTHEAST);
-			direction.enableDirection(Direction.NORTHWEST);
-		}
-		if (x > DataStore.getInstance().images.getBackground(
-				DataStore.getInstance().levelNumber).getWidth()
-				- (width / 2)) {
-			direction.disableDirection(Direction.EAST);
-			direction.disableDirection(Direction.NORTHEAST);
-			direction.disableDirection(Direction.SOUTHEAST);
-		} else {
 			direction.enableDirection(Direction.EAST);
-			direction.enableDirection(Direction.NORTHEAST);
 			direction.enableDirection(Direction.SOUTHEAST);
-		}
-		if (y > DataStore.getInstance().images.getBackground(
-				DataStore.getInstance().levelNumber).getHeight()
-				- (height / 2)) {
-			direction.disableDirection(Direction.SOUTH);
-			direction.disableDirection(Direction.SOUTHWEST);
-			direction.disableDirection(Direction.SOUTHEAST);
-		} else {
 			direction.enableDirection(Direction.SOUTH);
 			direction.enableDirection(Direction.SOUTHWEST);
-			direction.enableDirection(Direction.SOUTHEAST);
+			direction.enableDirection(Direction.WEST);
+			direction.enableDirection(Direction.NORTHWEST);
 		}
-
 	}
 
 	/**

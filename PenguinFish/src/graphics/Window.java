@@ -17,7 +17,7 @@ import java.awt.event.*;
  */
 public class Window implements Runnable {
 	protected Camera camera;
-	int panelWidth, panelHeight;
+	
 	private boolean fullscreen;
 	private JFrame frame;
 	/**
@@ -28,15 +28,13 @@ public class Window implements Runnable {
 		frame = new JFrame("Penguin Fish");
 		//The game initial starts not in fullscreen mode.
 		fullscreen = false;
-		//The default width and height are set to 512 pixels.
-		panelWidth = 512;
-		panelHeight = 512;
 		//The frame is not resizable by default.
 		frame.setResizable(false);
 		//The camera is set up with the width and height of the window.
-		camera = new Camera(0, 0, panelWidth, panelHeight);
+		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		//The camera is added to the centre of the window.
 		frame.getContentPane().add(camera, BorderLayout.CENTER);
+	//frame.CROSSHAIR_CURSOR;
 		//A key listener is added to detect button presses.
 		frame.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent evt) {
@@ -49,7 +47,7 @@ public class Window implements Runnable {
 		});
 		//frame.pack();
 		//The width and height are now assigned to the frame.
-		frame.setSize(panelWidth, panelHeight);
+		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		//The frame is set to exit the application when the close button is pressed.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//The frame is now fully configured, so is made visible.
@@ -58,12 +56,17 @@ public class Window implements Runnable {
 	}
 	private void returnFullScreen() {
 		if(fullscreen){
-		panelWidth = 512;
-		panelHeight = 512;
-		frame.setSize(panelWidth, panelHeight);
+			int panWidth = 512;
+			int panHeight = 512;
+		frame.setLocation((DataStore.getInstance().panelWidth/2)-panWidth/2, (DataStore.getInstance().panelHeight/2)-panHeight/2);
+		DataStore.getInstance().panelWidth = panWidth;
+		DataStore.getInstance().panelHeight = panHeight;
+		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		fullscreen = false;
-		camera.setWidth(panelWidth);
-		camera.setHeight(panelHeight);
+		camera.setWidth(DataStore.getInstance().panelWidth);
+		camera.setHeight(DataStore.getInstance().panelHeight);
+		DataStore.getInstance().world.setupDefaultBoundaries();
+
 		}
 		
 	}
@@ -71,12 +74,14 @@ public class Window implements Runnable {
 		
 		if(!fullscreen){
 		Toolkit tk = Toolkit.getDefaultToolkit();  
-		panelWidth = ((int) tk.getScreenSize().getWidth());  
-		panelHeight = ((int) tk.getScreenSize().getHeight());  
-		frame.setSize(panelWidth, panelHeight);
+		DataStore.getInstance().panelWidth = ((int) tk.getScreenSize().getWidth());  
+		DataStore.getInstance().panelHeight = ((int) tk.getScreenSize().getHeight());  
+		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);  
-		camera.setWidth(panelWidth);
-		camera.setHeight(panelHeight);
+		camera.setWidth(DataStore.getInstance().panelWidth);
+		camera.setHeight(DataStore.getInstance().panelHeight);
+		DataStore.getInstance().world.setupDefaultBoundaries();
+		
 		
 		fullscreen = true;
 		

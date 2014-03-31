@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.DataStore;
+
 /**
  * Imports all images to BufferedImages. Handles individual image files and
  * spritesheets.
@@ -62,7 +64,7 @@ public class Images {
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[16];
 		backgrounds = new BufferedImage[2];
-		sessileSpriteImages = new BufferedImage[4];
+		sessileSpriteImages = new BufferedImage[5];
 		backgrounds[0] = getImage("res/img/back.png");
 		backgrounds[1] = getImage("res/img/map2.png");
 		fullHeart = getImage("res/img/Heart01.png");
@@ -76,6 +78,7 @@ public class Images {
 			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64 * i, 0,
 					64, 64);
 		}
+		sessileSpriteImages[4] = sessileSpriteSheet.getSubimage(0, 70, 45, 69);
 		int numPlayerImages = 16;
 		int rows = 2;
 		for (int j = 0; j < rows; j++) {
@@ -89,24 +92,30 @@ public class Images {
 			}
 		}
 		int numEnemyImages = 3;
-		// Setup spider images
+		// Setup spider images (0,1,2)
 		for (int i = 0; i < numEnemyImages; i++) {
 			enemies[i] = enemiesSpriteSheet.getSubimage(i * 128, 0, 128, 64);
 		}
-		// Setup worm images
+		// Setup worm images (3,4,5)
 		for (int i = 3; i < numEnemyImages + 3; i++) {
 			enemies[i] = enemiesSpriteSheet.getSubimage(128 * (i - 3), 64, 128,
 					82);
 		}
-		// Setup Fisherman images
+		// Setup Fisherman images (6,7,8)
 		for (int i = 6; i < numEnemyImages + 6; i++) {
 			enemies[i] = enemiesSpriteSheet.getSubimage(128 * (i - 6), 192,
 					128, 128);
 		}
 		// Setup Minotaurs
-		enemies[10] = enemiesSpriteSheet.getSubimage(12, 331, 96, 145);
-		enemies[11] = enemiesSpriteSheet.getSubimage(133, 331, 127, 145);
-		enemies[12] = enemiesSpriteSheet.getSubimage(246, 326, 127, 145);
+		enemies[9] = enemiesSpriteSheet.getSubimage(12, 331, 96, 145);
+		enemies[10] = enemiesSpriteSheet.getSubimage(133, 331, 127, 145);
+		enemies[11] = enemiesSpriteSheet.getSubimage(246, 326, 127, 145);
+		
+		//Setup Dragons
+		enemies[12] = enemiesSpriteSheet.getSubimage(136, 564, 860, 580);
+		enemies[13] = enemiesSpriteSheet.getSubimage(1260, 573, 861, 564);
+		enemies[14] = enemiesSpriteSheet.getSubimage(2376, 561, 860, 580);
+		
 
 	}
 
@@ -117,6 +126,12 @@ public class Images {
 	 */
 	public BufferedImage getBackground(int i) {
 		return backgrounds[i];
+	}
+	/**
+	 * @return The background image for the current level.
+	 */
+	public BufferedImage getCurrentBackground(){
+		return backgrounds[DataStore.getInstance().levelNumber];
 	}
 
 	/**

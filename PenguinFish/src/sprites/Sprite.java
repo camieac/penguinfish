@@ -41,7 +41,7 @@ public class Sprite extends SessileSprite {
 	public void calcStep() {
 		dx = 0;
 		dy = 0;
-		boolean directionEnabled = !direction.checkDisabled(direction);
+		boolean directionEnabled = direction.checkEnabled(direction);
 		if (directionEnabled) {
 			switch (direction) {
 			case NORTH:
@@ -49,32 +49,32 @@ public class Sprite extends SessileSprite {
 				dy = -speed;
 				break;
 			case NORTHEAST:
-				dx = (int) (speed / Math.sqrt(2));
-				dy = -(int) (speed / Math.sqrt(2));
+				dx = (speed / Math.sqrt(2));
+				dy = -(speed / Math.sqrt(2));
 				break;
 			case EAST:
 				dx = speed;
 				dy = 0;
 				break;
 			case SOUTHEAST:
-				dx = (int) (speed / Math.sqrt(2));
-				dy = (int) (speed / Math.sqrt(2));
+				dx = (speed / Math.sqrt(2));
+				dy = (speed / Math.sqrt(2));
 				break;
 			case SOUTH:
 				dx = 0;
 				dy = speed;
 				break;
 			case SOUTHWEST:
-				dx = -(int) (speed / Math.sqrt(2));
-				dy = (int) (speed / Math.sqrt(2));
+				dx = -(speed / Math.sqrt(2));
+				dy = (speed / Math.sqrt(2));
 				break;
 			case WEST:
 				dx = -speed;
 				dy = 0;
 				break;
 			case NORTHWEST:
-				dx = -(int) (speed / Math.sqrt(2));
-				dy = -(int) (speed / Math.sqrt(2));
+				dx = -(speed / Math.sqrt(2));
+				dy = -(speed / Math.sqrt(2));
 				break;
 			default:
 				dx = 0;
