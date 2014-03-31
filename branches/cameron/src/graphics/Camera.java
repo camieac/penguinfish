@@ -43,6 +43,8 @@ public class Camera extends JComponent {
 	boolean moveX, moveY;
 
 	double width, height;
+	
+	Screen startScreen;
 
 	/**
 	 * @param x
@@ -63,7 +65,11 @@ public class Camera extends JComponent {
 		height = h;
 
 		attached = true;
-
+		
+		startScreen = new Screen(DataStore.getInstance().panelWidth,DataStore.getInstance().panelHeight);
+		Button startGameButton = new Button(20,20,50,20);
+		startScreen.addButton(startGameButton);
+		
 	}
 
 	/**
@@ -150,6 +156,7 @@ public class Camera extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
+		if(DataStore.getInstance().gameStarted){
 		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
@@ -198,6 +205,9 @@ public class Camera extends JComponent {
 			}
 		} catch (Exception e) {
 			// erm...
+		}
+		}else{
+			startScreen.draw(g);
 		}
 
 	}

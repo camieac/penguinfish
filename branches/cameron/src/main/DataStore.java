@@ -100,6 +100,7 @@ public class DataStore {
 	 */
 	public int panelWidth;
 	public int panelHeight;
+	public boolean gameStarted;
 	private DataStore() {
 
 	}
@@ -126,6 +127,7 @@ public class DataStore {
 		level = levelReader.getNextLevel();
 		world = new World();
 		notifications = new LinkedList<Notification>();
+		gameStarted = false;
 		
 
 	}

@@ -14,14 +14,14 @@ import sprites.Enemy;
  */
 public class Game implements Runnable {
 
-	protected boolean gameOver;
+	
 	// protected int numberOfEnemies;
 	protected Random rand;
 
 	public Game() {
 		rand = new Random();
 		// numberOfEnemies = 300;
-		createGame();
+		
 	}
 
 	private void cameraControl() {
@@ -29,11 +29,8 @@ public class Game implements Runnable {
 
 	}
 
-	protected void createGame() {
-
-		// createEnemies();
-		gameOver = false;
-
+	protected void startGame() {
+		DataStore.getInstance().gameStarted = true;
 	}
 
 	protected void detectBulletCollisions() {
@@ -87,16 +84,7 @@ public class Game implements Runnable {
 		DataStore.getInstance().enemies.removeAll(dead);
 	}
 
-	/**
-	 * 
-	 */
-	// protected void createEnemies() {
-	// for (int i = 0; i < numberOfEnemies; i++) {
-	// DataStore.getInstance().enemies.add(new Enemy(rand
-	// .nextInt((int) DataStore.getInstance().maxWidth), rand
-	// .nextInt((int) DataStore.getInstance().maxHeight), 0));
-	// }
-	// }
+	
 
 	protected void difficultyWait() {
 		try {
@@ -115,7 +103,7 @@ public class Game implements Runnable {
 	}
 
 	public void run() {
-		while (!gameOver) {
+		while (DataStore.getInstance().gameStarted) {
 			tickAll();
 		}
 	}
