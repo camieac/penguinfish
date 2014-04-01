@@ -2,6 +2,8 @@ package graphics;
 
 import javax.swing.*;
 
+import chrriis.dj.nativeswing.NativeComponentWrapper;
+import chrriis.dj.nativeswing.NativeSwing;
 import main.DataStore;
 import main.Game;
 import main.State;
@@ -22,12 +24,45 @@ public class Window implements Runnable {
 	
 	private boolean fullscreen;
 	private JFrame frame;
+	private boolean startMenuLoaded;
+	private boolean startingAnimationLoaded;
 	/**
 	 * Sets up the window to 512*512, the standard width and height for this game.
 	 */
 	public Window() {
-		
+		startMenuLoaded = false;
+		startingAnimationLoaded = false;
 		frame = new JFrame("Penguin Fish");
+		
+		//The game initial starts not in fullscreen mode.
+		fullscreen = false;
+		//The frame is not resizable by default.
+		frame.setResizable(false);
+		//The camera is added to the centre of the window.
+		//frame.getContentPane().add(camera, BorderLayout.CENTER);
+		
+	//frame.CROSSHAIR_CURSOR;
+		
+		//frame.pack();
+		//The width and height are now assigned to the frame.
+		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
+		//The frame is set to exit the application when the close button is pressed.
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//The frame is now fully configured, so is made visible.
+		frame.setVisible(true);
+
+	}
+	private void loadStartMenu() {
+		//A key listener is added to detect button presses.
+				frame.addKeyListener(new KeyAdapter() {
+					public void keyPressed(KeyEvent evt) {
+						formKeyPressed(evt);
+					}
+
+					public void keyReleased(KeyEvent evt) {
+						formKeyReleased(evt);
+					}
+				});
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout());
 		JButton startButton = new JButton("Start Game");
@@ -37,32 +72,6 @@ public class Window implements Runnable {
 		startButton.setMaximumSize(new Dimension(100,20));
 		frame.add(buttons,BorderLayout.CENTER);
 		frame.getContentPane().add(startButton, BorderLayout.LINE_START);
-		//The game initial starts not in fullscreen mode.
-		fullscreen = false;
-		//The frame is not resizable by default.
-		frame.setResizable(false);
-		//The camera is added to the centre of the window.
-		//frame.getContentPane().add(camera, BorderLayout.CENTER);
-		
-	//frame.CROSSHAIR_CURSOR;
-		//A key listener is added to detect button presses.
-		frame.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent evt) {
-				formKeyPressed(evt);
-			}
-
-			public void keyReleased(KeyEvent evt) {
-				formKeyReleased(evt);
-			}
-		});
-		//frame.pack();
-		//The width and height are now assigned to the frame.
-		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
-		//The frame is set to exit the application when the close button is pressed.
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//The frame is now fully configured, so is made visible.
-		frame.setVisible(true);
-
 	}
 //	public void startGame(){
 //		
@@ -126,8 +135,16 @@ public class Window implements Runnable {
 				camera.processKeys();
 				break;
 			case STARTMENU:
+				if(!startMenuLoaded){
+					loadStartMenu();
+					startMenuLoaded = true;
+				}
 				break;
 			case STARTINGANIMATION:
+				if(!startingAnimationLoaded){
+					loadStartingAnimation();
+					startingAnimationLoaded = true;
+				}
 				break;
 			default:
 				break;
@@ -142,5 +159,12 @@ public class Window implements Runnable {
 			}
 		}
 
+	}
+	private void loadStartingAnimation() {
+		NativeSwing.initialize();
+		System.out.println("loading starting animation");
+		NativeComponentWrapper ncw = new NativeComponentWrapper(frame);
+		frame.add(ncw.createEmbeddableComponent(null));
+		
 	}
 }

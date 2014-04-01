@@ -71,7 +71,6 @@ public class Images {
 		fullHeart = getImage("res/img/Heart01.png");
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
-		enemies[0] = getImage("res/img/Enemy00.png");
 		sessileSpriteSheet = getImage("res/img/sessileSprites.png");
 		playerSpriteSheet = getImage("res/img/player.png");
 		enemiesSpriteSheet = getImage("res/img/enemies.png");
