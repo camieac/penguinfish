@@ -6,7 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import main.DataStore;
 import main.Direction;
@@ -23,7 +25,7 @@ import sprites.SessileSprite;
  * 
  */
 public class Camera extends JComponent {
-
+	private JPanel startPanel;
 	public void setWidth(double width) {
 		this.width = width;
 	}
@@ -57,6 +59,10 @@ public class Camera extends JComponent {
 	 *            Height of the camera.
 	 */
 	public Camera(int x, int y, int w, int h) {
+		startPanel = new JPanel();
+		startPanel.setBackground(Color.yellow);
+		startPanel.add(new JButton("Start Game"));
+		startPanel.setVisible(true);
 		buttons = new LinkedList<Integer>();
 		camX = 0;
 		camY = 0;
@@ -66,10 +72,16 @@ public class Camera extends JComponent {
 
 		attached = true;
 		
-		startScreen = new Screen(DataStore.getInstance().panelWidth,DataStore.getInstance().panelHeight);
-		Button startGameButton = new Button(20,20,50,20);
-		startScreen.addButton(startGameButton);
-		
+		//startScreen = new Screen(DataStore.getInstance().panelWidth,DataStore.getInstance().panelHeight);
+		//startScreen.setBackground(Color.yellow);
+		//Button startGameButton = new Button(200,20,50,20);
+		//JButton startGameButton = new JButton("Hello");
+		//startScreen.add(startGameButton);
+		//Button helpGameButton = new Button(200,50,50,20);
+		//startScreen.addButton(helpGameButton);
+		//Button creditsGameButton = new Button(200,80,50,20);
+		//startScreen.addButton(creditsGameButton);
+		JPanel pan = new JPanel();
 	}
 
 	/**
@@ -207,7 +219,8 @@ public class Camera extends JComponent {
 			// erm...
 		}
 		}else{
-			startScreen.draw(g);
+			//startScreen.draw(g);
+			//add(startPanel);
 		}
 
 	}
