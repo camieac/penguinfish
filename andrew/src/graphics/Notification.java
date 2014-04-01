@@ -43,7 +43,7 @@ public class Notification {
 	 */
 	public Notification(String text, Color textColor, Color backColor) {
 		this.text = text;
-		maxCaptionWidth = 250;
+		maxCaptionWidth = 500;
 		maxCaptionHeight = 250;
 		margin = 10;
 
@@ -100,21 +100,25 @@ public class Notification {
 	}
 
 	private Rectangle stringToCaptionRectangle(Graphics g, String text) {
-		textWidth = stringToLength(g, text);
+		textWidth = stringToLength(g, lines);
 		if (textWidth > maxCaptionWidth)
 			textWidth = maxCaptionWidth;
 
 		textHeight = (lines.length) * fontHeight;
 
-		return new Rectangle(textWidth + margin, textHeight + margin);
+		return new Rectangle(textWidth + 2*margin, textHeight + margin);
 
 	}
 
-	private int stringToLength(Graphics g, String text) {
+	private int stringToLength(Graphics g, String []text) {
 		FontMetrics fm = g.getFontMetrics();
 		int length = 0;
-		for (Character c : text.toCharArray()) {
-			length += fm.charWidth(c);
+		int tempLength = 0;
+		for (int i = 0; i < lines.length; i++){
+			tempLength = fm.stringWidth(lines[i]);
+			if(tempLength > length){
+				length = tempLength;
+			}
 		}
 		return length;
 	}
@@ -200,123 +204,3 @@ public class Notification {
 		return lines.toArray(s);
 	}
 }
-// Old stuff
-
-// private static String trimString(String s) {
-// int idx = 0;
-// char c;
-// final int slen = s.length();
-//
-// if (slen == 0) {
-// return s;
-// }
-//
-// do {
-// c = s.charAt(idx++);
-// } while (((c == '\n') || (c == '\r')) && (idx < slen));
-//
-// s = s.substring(--idx);
-// idx = s.length() - 1;
-//
-// if (idx < 0) {
-// return s;
-// }
-//
-// do {
-// c = s.charAt(idx--);
-// } while (((c == '\n') || (c == '\r')) && (idx >= 0));
-//
-// return s.substring(0, idx + 2);
-// }
-// }
-
-// static public void main(String[] args) {
-//
-// // characterExamples();
-// // System.out.println();
-// // wordExamples();
-// // System.out.println();
-// // sentenceExamples();
-// // System.out.println();
-// lineExamples("Nearly all programs with user interfaces manipulate text. In an international market the text your programs display must conform to the rules of languages from around the world. The Java programming language provides a number of classes that help you handle text in a locale-independent manner.");
-// }
-// }
-// private String[] stringToLineArray(String target) {
-// String[] lines = new String[50];
-// // lines = text.split("(?<=\\G.{25})");
-//
-// BreakIterator boundary = BreakIterator.getLineInstance(Locale
-// .getDefault());
-// boundary.setText(target);
-// int start = boundary.first();
-// int end = boundary.next();
-// int lineLength = 0;
-// int i = 0;
-// StringBuffer sb = new StringBuffer();
-// while (end != BreakIterator.DONE) {
-// String word = target.substring(start, end);
-// lineLength = lineLength + word.length();
-// if (lineLength >= maxLength) {
-// // System.out.println();
-// i++;
-// sb = new StringBuffer();
-// lineLength = word.length();
-// }
-// System.out.print(word);
-// sb.append("" + word);
-// lines[i] = sb.toString();
-// start = end;
-// end = boundary.next();
-// }
-//
-// return lines;
-// }
-
-// static ArrayList<String> formatLines(String target, int maxLength,
-// Locale currentLocale) {
-// ArrayList<String> linesArray = new ArrayList<String>();
-// linesArray.add(0, "");
-// // String[] lines = new String[100];
-// // lines[0] = "";
-// // StringBuffer sb = new StringBuffer();
-// BreakIterator boundary = BreakIterator.getLineInstance(currentLocale);
-// boundary.setText(target);
-// int start = boundary.first();
-// int end = boundary.next();
-// int lineLength = 0;
-// int i = 0;
-// while (end != BreakIterator.DONE) {
-// String word = target.substring(start, end);
-// lineLength = lineLength + word.length();
-// if (lineLength >= maxLength) {
-// System.out.println();
-// i++;
-// lineLength = word.length();
-// }
-// System.out.print(word);
-// // String old = lines[i];
-// String o = linesArray.get(i);
-// // lines[i] = old + word;
-// linesArray.add(i, o + word);
-// o = null;
-// start = end;
-// end = boundary.next();
-// }
-// System.out.println(linesArray.get(0));
-// System.out.println(linesArray.get(1));
-// System.out.println(linesArray.get(2));
-// System.out.println(linesArray.get(3));
-// System.out.println(linesArray.get(4));
-// System.out.println(linesArray.get(5));
-// return linesArray;
-// }
-
-// static void lineExamples(String text) {
-//
-// Locale currentLocale = new Locale("en", "US");
-// BreakIterator lineIterator = BreakIterator
-// .getLineInstance(currentLocale);
-//
-// formatLines(text, 30, currentLocale);
-//
-// }

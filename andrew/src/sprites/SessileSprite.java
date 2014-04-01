@@ -58,7 +58,7 @@ public class SessileSprite extends Rectangle implements Serializable {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("x: " + x + "\n");
-		sb.append("y: " + y + "\n");
+		sb.append("y: " + y + "\n");		
 		String type;
 		if (id == 0) {
 			type = "Tree";
