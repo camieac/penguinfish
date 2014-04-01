@@ -54,13 +54,13 @@ public class Button extends JButton implements ActionListener{
 	 * @param g
 	 */
 	public void draw(Graphics g){
-		Color oldColour = g.getColor();
-		g.setColor(foreGroundColour);
-		g.drawString(text,x+margin,y+margin);
-		g.drawRoundRect(x, y, width+ (margin*2), height+(margin*2), curveRadius, curveRadius);
-		g.setColor(backgroundColour);
-		g.fillRoundRect(x, y, width+ (margin*2), height+ (margin*2), curveRadius, curveRadius);
-		g.setColor(oldColour);
+//		Color oldColour = g.getColor();
+//		g.setColor(foreGroundColour);
+//		g.drawString(text,x+margin,y+margin);
+//		g.drawRoundRect(x, y, width+ (margin*2), height+(margin*2), curveRadius, curveRadius);
+//		g.setColor(backgroundColour);
+//		g.fillRoundRect(x, y, width+ (margin*2), height+ (margin*2), curveRadius, curveRadius);
+//		g.setColor(oldColour);
 	}
 	/**
 	 * 

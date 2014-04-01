@@ -14,6 +14,7 @@ import main.DataStore;
  * @since 31st March 2014
  *
  */
+@SuppressWarnings("serial")
 public class Screen extends JPanel {
 	private Color backgroundColor;
 	private Color foregroundColor;
@@ -99,11 +100,9 @@ public class Screen extends JPanel {
 	public void draw(Graphics g){
 		//Draw Title image
 		int imageLength = titleImage.getWidth();
-		g.drawImage(titleImage, (width-imageLength)/2, 0, width, height, null);
+		g.drawImage(titleImage, (width-imageLength)/2, 0, titleImage.getWidth(), titleImage.getHeight(), null);
 		//Draw Buttons
-		for(Button b:buttons){
-			b.draw(g);
-		}
+		
 		
 	}
 

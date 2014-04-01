@@ -103,7 +103,7 @@ public class Game implements Runnable {
 	}
 
 	public void run() {
-		while (DataStore.getInstance().gameStarted) {
+		while (DataStore.getInstance().gameState == State.PLAYING) {
 			tickAll();
 		}
 	}

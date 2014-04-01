@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import main.DataStore;
 import main.Game;
+import main.State;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -25,17 +26,23 @@ public class Window implements Runnable {
 	 * Sets up the window to 512*512, the standard width and height for this game.
 	 */
 	public Window() {
-		//The camera is set up with the width and height of the window.
-		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		
-		//The title of the window is set.
 		frame = new JFrame("Penguin Fish");
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new GridLayout());
+		JButton startButton = new JButton("Start Game");
+		JButton helpButton = new JButton("Help");
+		buttons.add(startButton);
+		buttons.add(helpButton);
+		startButton.setMaximumSize(new Dimension(100,20));
+		frame.add(buttons,BorderLayout.CENTER);
+		frame.getContentPane().add(startButton, BorderLayout.LINE_START);
 		//The game initial starts not in fullscreen mode.
 		fullscreen = false;
 		//The frame is not resizable by default.
 		frame.setResizable(false);
 		//The camera is added to the centre of the window.
-		frame.getContentPane().add(camera, BorderLayout.CENTER);
+		//frame.getContentPane().add(camera, BorderLayout.CENTER);
 		
 	//frame.CROSSHAIR_CURSOR;
 		//A key listener is added to detect button presses.
@@ -113,10 +120,20 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			if(DataStore.getInstance().gameStarted){
+			switch(DataStore.getInstance().gameState){
+			case PLAYING:
 				camera.repaint();
-			camera.processKeys();
+				camera.processKeys();
+				break;
+			case STARTMENU:
+				break;
+			case STARTINGANIMATION:
+				break;
+			default:
+				break;
 			}
+				
+			
 			
 			try {
 				Thread.sleep(16);

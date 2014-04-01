@@ -99,8 +99,15 @@ public class DataStore {
 	 * 
 	 */
 	public int panelWidth;
+	/**
+	 * 
+	 */
 	public int panelHeight;
+	/**
+	 * 
+	 */
 	public boolean gameStarted;
+	public State gameState;
 	private DataStore() {
 
 	}
@@ -128,6 +135,8 @@ public class DataStore {
 		world = new World();
 		notifications = new LinkedList<Notification>();
 		gameStarted = false;
+		gameState = State.STARTINGANIMATION;
+	
 		
 
 	}
