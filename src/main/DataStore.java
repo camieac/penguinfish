@@ -116,11 +116,10 @@ public class DataStore {
 	 * 
 	 */
 	public void setEverything() {
-		panelHeight = 512;
-		panelWidth = 512;
+		
 		levelNumber = 0;
 		baseSpeed = 5;
-		images = new Images();
+		
 		enemies = new LinkedList<Enemy>();
 		player = new Player(200, 200, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
@@ -134,10 +133,20 @@ public class DataStore {
 		level = levelReader.getNextLevel();
 		world = new World();
 		notifications = new LinkedList<Notification>();
-		gameStarted = false;
-		gameState = State.STARTINGANIMATION;
+		System.out.println("Everything has been setup in DataStore.");
+	
 	
 		
 
+	}
+	/**
+	 * When the game is first opened, not all of DataStore's fields are required, so this method initialises the required fields to run the stating animation and display the start menu.
+	 */
+	public void setInitialFields(){
+		panelHeight = 512;
+		panelWidth = 512;
+		images = new Images();
+		gameState = State.STARTINGANIMATION;
+		gameStarted = false;
 	}
 }
