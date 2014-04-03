@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import chrriis.dj.nativeswing.NativeComponentWrapper;
 import chrriis.dj.nativeswing.NativeSwing;
+import chrriis.dj.nativeswing.swtimpl.NativeInterface;
+import chrriis.dj.nativeswing.swtimpl.components.JFlashPlayer;
 import main.DataStore;
 import main.Game;
 import main.State;
@@ -161,10 +163,21 @@ public class Window implements Runnable {
 
 	}
 	private void loadStartingAnimation() {
-		NativeSwing.initialize();
+//		NativeSwing.initialize();
 		System.out.println("loading starting animation");
-		NativeComponentWrapper ncw = new NativeComponentWrapper(frame);
-		frame.add(ncw.createEmbeddableComponent(null));
+//		NativeComponentWrapper ncw = new NativeComponentWrapper(frame);
+//		frame.add(ncw.createEmbeddableComponent(null));
+		NativeInterface.open();
+		 SwingUtilities.invokeLater(new Runnable() {
+			 public void run() {
+				 JFlashPlayer flashPlayer = new JFlashPlayer();
+					flashPlayer.load("res/ani/Movement-pointer_or_click.swf");
+					frame.getContentPane().add(flashPlayer, BorderLayout.CENTER);
+					System.out.println("Animation Loaded"); 
+			 }
+		 });
+		 NativeInterface.runEventPump();
+		
 		
 	}
 }
