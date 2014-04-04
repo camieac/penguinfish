@@ -1,5 +1,7 @@
 package graphics;
 
+
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -9,13 +11,19 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import main.DataStore;
+import chrriis.common.WebServer;
+import chrriis.dj.nativeswing.NSOption;
+import chrriis.dj.nativeswing.NativeComponentWrapper;
+import chrriis.dj.nativeswing.NativeSwing;
 import chrriis.dj.nativeswing.swtimpl.NativeInterface;
 import chrriis.dj.nativeswing.swtimpl.components.JFlashPlayer;
+import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 
 /**
  * The window that contains the game.
@@ -26,85 +34,96 @@ import chrriis.dj.nativeswing.swtimpl.components.JFlashPlayer;
  */
 public class Window implements Runnable {
 	protected Camera camera;
-	
-	
+
 	private boolean fullscreen;
 	private JFrame frame;
 	private boolean startMenuLoaded;
 	private boolean startingAnimationLoaded;
+
 	/**
-	 * Sets up the window to 512*512, the standard width and height for this game.
+	 * Sets up the window to 512*512, the standard width and height for this
+	 * game.
 	 */
 	public Window() {
 		startMenuLoaded = false;
 		startingAnimationLoaded = false;
 		frame = new JFrame("Penguin Fish");
-		//The game initial starts not in fullscreen mode.
+		// The game initial starts not in fullscreen mode.
 		fullscreen = false;
 		frame.setResizable(false);
-		//The width and height are now assigned to the frame.
-		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
-		//The frame is set to exit the application when the close button is pressed.
+		// The width and height are now assigned to the frame.
+		frame.setSize(DataStore.getInstance().panelWidth,
+				DataStore.getInstance().panelHeight);
+		// The frame is set to exit the application when the close button is
+		// pressed.
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//The frame is now fully configured, so is made visible.
-		frame.setVisible(true);
+		// The frame is now fully configured, so is made visible.
+		// frame.setVisible(true);
 
 	}
-	private void loadStartMenu() {
-		//A key listener is added to detect button presses.
-				frame.addKeyListener(new KeyAdapter() {
-					public void keyPressed(KeyEvent evt) {
-						formKeyPressed(evt);
-					}
 
-					public void keyReleased(KeyEvent evt) {
-						formKeyReleased(evt);
-					}
-				});
+	private void loadStartMenu() {
+		// A key listener is added to detect button presses.
+		frame.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent evt) {
+				formKeyPressed(evt);
+			}
+
+			public void keyReleased(KeyEvent evt) {
+				formKeyReleased(evt);
+			}
+		});
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout());
 		JButton startButton = new JButton("Start Game");
 		JButton helpButton = new JButton("Help");
 		buttons.add(startButton);
 		buttons.add(helpButton);
-		startButton.setMaximumSize(new Dimension(100,20));
-		frame.add(buttons,BorderLayout.CENTER);
+		startButton.setMaximumSize(new Dimension(100, 20));
+		frame.add(buttons, BorderLayout.CENTER);
 		frame.getContentPane().add(startButton, BorderLayout.LINE_START);
 	}
-//	public void startGame(){
-//		
-//	}
+
+	// public void startGame(){
+	//
+	// }
 	private void returnFullScreen() {
-		if(fullscreen){
+		if (fullscreen) {
 			int panWidth = 512;
 			int panHeight = 512;
-		frame.setLocation((DataStore.getInstance().panelWidth/2)-panWidth/2, (DataStore.getInstance().panelHeight/2)-panHeight/2);
-		DataStore.getInstance().panelWidth = panWidth;
-		DataStore.getInstance().panelHeight = panHeight;
-		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
-		fullscreen = false;
-		camera.setWidth(DataStore.getInstance().panelWidth);
-		camera.setHeight(DataStore.getInstance().panelHeight);
-		DataStore.getInstance().world.setupDefaultBoundaries();
+			frame.setLocation((DataStore.getInstance().panelWidth / 2)
+					- panWidth / 2, (DataStore.getInstance().panelHeight / 2)
+					- panHeight / 2);
+			DataStore.getInstance().panelWidth = panWidth;
+			DataStore.getInstance().panelHeight = panHeight;
+			frame.setSize(DataStore.getInstance().panelWidth,
+					DataStore.getInstance().panelHeight);
+			fullscreen = false;
+			camera.setWidth(DataStore.getInstance().panelWidth);
+			camera.setHeight(DataStore.getInstance().panelHeight);
+			DataStore.getInstance().world.setupDefaultBoundaries();
 
 		}
-		
+
 	}
-	private void goFullScreen(){
-		
-		if(!fullscreen){
-		Toolkit tk = Toolkit.getDefaultToolkit();  
-		DataStore.getInstance().panelWidth = ((int) tk.getScreenSize().getWidth());  
-		DataStore.getInstance().panelHeight = ((int) tk.getScreenSize().getHeight());  
-		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);  
-		camera.setWidth(DataStore.getInstance().panelWidth);
-		camera.setHeight(DataStore.getInstance().panelHeight);
-		DataStore.getInstance().world.setupDefaultBoundaries();
-		
-		
-		fullscreen = true;
-		
+
+	private void goFullScreen() {
+
+		if (!fullscreen) {
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			DataStore.getInstance().panelWidth = ((int) tk.getScreenSize()
+					.getWidth());
+			DataStore.getInstance().panelHeight = ((int) tk.getScreenSize()
+					.getHeight());
+			frame.setSize(DataStore.getInstance().panelWidth,
+					DataStore.getInstance().panelHeight);
+			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+			camera.setWidth(DataStore.getInstance().panelWidth);
+			camera.setHeight(DataStore.getInstance().panelHeight);
+			DataStore.getInstance().world.setupDefaultBoundaries();
+
+			fullscreen = true;
+
 		}
 	}
 
@@ -114,32 +133,32 @@ public class Window implements Runnable {
 
 	protected void formKeyReleased(KeyEvent evt) {
 		camera.keyReleased(evt);
-		if(evt.getKeyCode() == KeyEvent.VK_G){
-			if(!fullscreen){
+		if (evt.getKeyCode() == KeyEvent.VK_G) {
+			if (!fullscreen) {
 				goFullScreen();
-			}else{
+			} else {
 				returnFullScreen();
 			}
-			
+
 		}
 	}
 
 	@Override
 	public void run() {
 		while (true) {
-			switch(DataStore.getInstance().gameState){
+			switch (DataStore.getInstance().gameState) {
 			case PLAYING:
 				camera.repaint();
 				camera.processKeys();
 				break;
 			case STARTMENU:
-				if(!startMenuLoaded){
+				if (!startMenuLoaded) {
 					loadStartMenu();
 					startMenuLoaded = true;
 				}
 				break;
 			case STARTINGANIMATION:
-				if(!startingAnimationLoaded){
+				if (!startingAnimationLoaded) {
 					loadStartingAnimation();
 					startingAnimationLoaded = true;
 				}
@@ -147,9 +166,7 @@ public class Window implements Runnable {
 			default:
 				break;
 			}
-				
-			
-			
+
 			try {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {
@@ -158,27 +175,43 @@ public class Window implements Runnable {
 		}
 
 	}
+
+	public static JWebBrowser createContent() {
+	    JWebBrowser webBrowser = new JWebBrowser();
+	   // webBrowser.navigate(WebServer.getDefaultWebServer().getClassPathResourceURL(Window.class.getName(), "res/ani/bubbles.swf"));
+	   // webBrowser.navigate("http://google.com/");
+	    webBrowser.navigate("http://samples.mplayerhq.hu/SWF/zeldaADPCM2bit.swf");
+	    webBrowser.setBarsVisible(false);
+	    return webBrowser;
+	  }
 	private void loadStartingAnimation() {
-//		NativeSwing.initialize();
-		System.out.println("loading starting animation");
-//		NativeComponentWrapper ncw = new NativeComponentWrapper(frame);
-//		frame.add(ncw.createEmbeddableComponent(null));
+		DataStore.getInstance().panelHeight = 750;
+		DataStore.getInstance().panelWidth = 1280;
+		frame.setSize(DataStore.getInstance().panelWidth,
+				DataStore.getInstance().panelHeight);
+		NativeSwing.initialize();
+		NativeInterface.initialize();
 		NativeInterface.open();
-		 SwingUtilities.invokeLater(new Runnable() {
-			 public void run() {
-				 DataStore.getInstance().panelHeight = 750;
-				 DataStore.getInstance().panelWidth = 1280;
-				 frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
-				 JFlashPlayer flashPlayer = new JFlashPlayer();
-					flashPlayer.load(Window.class,"res/ani/bubbles.swf");
-					flashPlayer.play();
-					frame.getContentPane().add(flashPlayer, BorderLayout.CENTER);
-					System.out.println("Animation Loaded"); 
-					
-			 }
-		 });
-		 NativeInterface.runEventPump();
+
+//		JWebBrowser browser = new JWebBrowser(new NSOption(null));
+		SwingUtilities.invokeLater(new Runnable() {
+		      public void run() {
+		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        JWebBrowser browser = createContent();
+		        //frame.getContentPane().add(browser, BorderLayout.CENTER);
+		        NativeComponentWrapper ncw = new NativeComponentWrapper(browser);
+				frame.add(ncw.createEmbeddableComponent(new NSOption(null)));
+		        frame.setVisible(true);
+		      //  browser.navigate("http://google.com/");
+		      }
+		    });
+		    NativeInterface.runEventPump();
 		
 		
+		System.out.println("Browser should be added");
+
+	
+		frame.setVisible(true);
+
 	}
 }
