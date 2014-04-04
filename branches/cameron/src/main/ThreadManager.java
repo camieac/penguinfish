@@ -1,7 +1,7 @@
 package main;
 
-import sound.SoundManager;
 import graphics.Window;
+import sound.SoundManager;
 
 /**
  * Starts the Window, Game and SoundManager threads. Sets up the DataStore

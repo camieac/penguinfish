@@ -2,13 +2,13 @@ package graphics;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+
 import main.DataStore;
 import sprites.Enemy;
-import sprites.SpriteBlock;
 import sprites.Player;
 import sprites.SessileSprite;
+import sprites.SpriteBlock;
 
 /**
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,

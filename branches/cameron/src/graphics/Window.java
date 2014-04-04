@@ -1,17 +1,21 @@
 package graphics;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-import chrriis.dj.nativeswing.NativeComponentWrapper;
-import chrriis.dj.nativeswing.NativeSwing;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import main.DataStore;
 import chrriis.dj.nativeswing.swtimpl.NativeInterface;
 import chrriis.dj.nativeswing.swtimpl.components.JFlashPlayer;
-import main.DataStore;
-import main.Game;
-import main.State;
-
-import java.awt.*;
-import java.awt.event.*;
 
 /**
  * The window that contains the game.
@@ -35,17 +39,9 @@ public class Window implements Runnable {
 		startMenuLoaded = false;
 		startingAnimationLoaded = false;
 		frame = new JFrame("Penguin Fish");
-		
 		//The game initial starts not in fullscreen mode.
 		fullscreen = false;
-		//The frame is not resizable by default.
 		frame.setResizable(false);
-		//The camera is added to the centre of the window.
-		//frame.getContentPane().add(camera, BorderLayout.CENTER);
-		
-	//frame.CROSSHAIR_CURSOR;
-		
-		//frame.pack();
 		//The width and height are now assigned to the frame.
 		frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 		//The frame is set to exit the application when the close button is pressed.
@@ -170,10 +166,15 @@ public class Window implements Runnable {
 		NativeInterface.open();
 		 SwingUtilities.invokeLater(new Runnable() {
 			 public void run() {
+				 DataStore.getInstance().panelHeight = 750;
+				 DataStore.getInstance().panelWidth = 1280;
+				 frame.setSize(DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
 				 JFlashPlayer flashPlayer = new JFlashPlayer();
-					flashPlayer.load("res/ani/Movement-pointer_or_click.swf");
+					flashPlayer.load(Window.class,"res/ani/bubbles.swf");
+					flashPlayer.play();
 					frame.getContentPane().add(flashPlayer, BorderLayout.CENTER);
 					System.out.println("Animation Loaded"); 
+					
 			 }
 		 });
 		 NativeInterface.runEventPump();

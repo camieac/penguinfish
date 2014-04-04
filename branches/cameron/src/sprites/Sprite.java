@@ -1,8 +1,7 @@
 package sprites;
 
-import graphics.Images;
-
 import java.awt.Rectangle;
+
 import main.Direction;
 
 /**
