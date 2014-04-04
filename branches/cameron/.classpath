@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/DJNativeSwing-SWT-1-0-2/DJNativeSwing-SWT.jar"/>
 	<classpathentry kind="lib" path="lib/DJNativeSwing-SWT-1-0-2/DJNativeSwing-SWTDemo.jar"/>
 	<classpathentry kind="lib" path="lib/DJNativeSwing-SWT-1-0-2/DJNativeSwing.jar"/>
+	<classpathentry kind="lib" path="lib/jffmpeg-1.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
