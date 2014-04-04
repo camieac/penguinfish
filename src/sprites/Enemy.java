@@ -2,10 +2,8 @@ package sprites;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.util.Random;
 
-import graphics.Images;
 import main.DataStore;
 import main.Direction;
 

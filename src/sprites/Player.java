@@ -1,12 +1,13 @@
 package sprites;
 
-import main.DataStore;
-import main.Direction;
 import graphics.Notification;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import main.DataStore;
+import main.Direction;
 
 /**
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
