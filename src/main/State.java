@@ -50,5 +50,9 @@ public enum State {
 	/**
 	 * This is the standard game play state, whenever the user is actually playing the game.
 	 */
-	PLAYING();
+	PLAYING(),
+	/**
+	 * The user is presented with a help menu with controls and advice.
+	 */
+	HELPMENU;
 }

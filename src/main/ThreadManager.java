@@ -21,9 +21,18 @@ public class ThreadManager {
 		new ThreadManager();
 		boolean gameStarted = false;
 		while(true){
+			//System.out.println(DataStore.getInstance().gameState + ",   " + gameStarted);
+			
 			if(!gameStarted && DataStore.getInstance().gameState == State.PLAYING){
-				System.out.println("Started game thread.");
+				gameStarted = true;
+				//old set game fields
 				(new Thread(new Game())).start();
+			}
+			try {
+				Thread.sleep(16);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -34,10 +43,11 @@ public class ThreadManager {
 	public ThreadManager() {
 		DataStore.getInstance();
 		DataStore.getInstance().setInitialFields();
+		DataStore.getInstance().setGameFields();
 		(new Thread(new Window())).start();
 		System.out.println("Started Window Thread.");
 //		(new Thread(new Game())).start();
-		(new Thread(new SoundManager())).start();
-		System.out.println("Started SoundManager Thread.");
+//		(new Thread(new SoundManager())).start();
+//		System.out.println("Started SoundManager Thread.");
 	}
 }
