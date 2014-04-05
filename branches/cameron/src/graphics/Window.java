@@ -1,29 +1,24 @@
 package graphics;
 
-
-
+//import java.awt.BorderLayout;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.CardLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.JTextArea;
 
 import main.DataStore;
-import chrriis.common.WebServer;
-import chrriis.dj.nativeswing.NSOption;
-import chrriis.dj.nativeswing.NativeComponentWrapper;
-import chrriis.dj.nativeswing.NativeSwing;
-import chrriis.dj.nativeswing.swtimpl.NativeInterface;
-import chrriis.dj.nativeswing.swtimpl.components.JFlashPlayer;
-import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
+import main.State;
 
 /**
  * The window that contains the game.
@@ -32,102 +27,134 @@ import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
  *         Stuart Thain
  * 
  */
-public class Window implements Runnable {
-	protected Camera camera;
+@SuppressWarnings("serial")
+public class Window extends JFrame implements Runnable, ActionListener,KeyListener {
+	// JPanel buttons;
 
-	private boolean fullscreen;
-	private JFrame frame;
-	private boolean startMenuLoaded;
-	private boolean startingAnimationLoaded;
+	protected Camera camera;
+	protected boolean fullscreen;
+	// protected JButton helpButton;
+	protected boolean playingScreenLoaded;
+	// protected JButton startButton;
+	protected boolean startingAnimationLoaded;
+	protected boolean startMenuLoaded;
+
+	protected JPanel panelViewer;
+	/* The frame can only display one card at a time. */
+	protected JPanel startingAnimationCard;
+	protected JPanel startMenuCard;
+	protected JPanel gamePlayCard;
+	protected JPanel helpMenuCard;
+
+	JButton startButton;
+	JButton helpButton;
+
+	protected Toolkit tk;
+	private boolean helpMenuLoaded;
+
+	protected final static String HELPTEXT = "Welcome to PenguinFish Help Page\n"
+			+ "Unfortunately no help is available at this present time. Please try again next week.";
 
 	/**
 	 * Sets up the window to 512*512, the standard width and height for this
 	 * game.
 	 */
 	public Window() {
+		super();
+		panelViewer = new JPanel(new CardLayout());
+		// while(!(this.getLayout() instanceof CardLayout)){
+
+		// }
+
+		//System.out.println(this.getLayout().toString());
+
+		// Setup cards here
+		setupStartingAnimationCard();
+		setupStartMenuCard();
+		setupGamePlayCard();
+		setupHelpMenuCard();
+		
+		//Give each card a unique identifier.
+		startingAnimationCard.setName("Starting Animation");
+		startMenuCard.setName("Start Menu");
+		gamePlayCard.setName("Game Play");
+		helpMenuCard.setName("Help Menu");
+		
+		// add the cards to the CardLayout Frame
+		panelViewer.add(startingAnimationCard, startingAnimationCard.getName());
+		panelViewer.add(startMenuCard, startMenuCard.getName());
+		panelViewer.add(gamePlayCard, gamePlayCard.getName());
+		panelViewer.add(helpMenuCard,helpMenuCard.getName());
+
+		tk = Toolkit.getDefaultToolkit();
+
 		startMenuLoaded = false;
 		startingAnimationLoaded = false;
-		frame = new JFrame("Penguin Fish");
-		// The game initial starts not in fullscreen mode.
+		playingScreenLoaded = false;
+		helpMenuLoaded = false;
 		fullscreen = false;
-		frame.setResizable(false);
-		// The width and height are now assigned to the frame.
-		frame.setSize(DataStore.getInstance().panelWidth,
+
+		this.setResizable(true);
+		this.setSize(DataStore.getInstance().panelWidth,
 				DataStore.getInstance().panelHeight);
-		// The frame is set to exit the application when the close button is
-		// pressed.
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// The frame is now fully configured, so is made visible.
-		// frame.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.add(panelViewer);
 
 	}
 
-	private void loadStartMenu() {
-		// A key listener is added to detect button presses.
-		frame.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent evt) {
-				formKeyPressed(evt);
-			}
+	private void setupHelpMenuCard() {
+		helpMenuCard = new JPanel();
+		helpMenuCard.add(new JTextArea(HELPTEXT));
+		//helpMenuCard.addKeyListener(this);
 
-			public void keyReleased(KeyEvent evt) {
-				formKeyReleased(evt);
-			}
-		});
+	}
+
+	private void setupStartingAnimationCard() {
+		startingAnimationCard = new JPanel();
+		JLabel lbl = new JLabel("Starting animation goes here");
+		
+		startingAnimationCard.add(lbl);
+	}
+
+	private void setupStartMenuCard() {
+		startMenuCard = new JPanel(new GridLayout(2, 1));
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout());
-		JButton startButton = new JButton("Start Game");
-		JButton helpButton = new JButton("Help");
+		startButton = new JButton("Start Game");
+		helpButton = new JButton("Help");
+
+		buttons.setLayout(new GridLayout(2, 2));
 		buttons.add(startButton);
 		buttons.add(helpButton);
-		startButton.setMaximumSize(new Dimension(100, 20));
-		frame.add(buttons, BorderLayout.CENTER);
-		frame.getContentPane().add(startButton, BorderLayout.LINE_START);
+	
+		startMenuCard.add(buttons);
+
+		startButton.addActionListener(this);
+		helpButton.addActionListener(this);
+		this.setVisible(true);
 	}
 
-	// public void startGame(){
-	//
-	// }
-	private void returnFullScreen() {
-		if (fullscreen) {
-			int panWidth = 512;
-			int panHeight = 512;
-			frame.setLocation((DataStore.getInstance().panelWidth / 2)
-					- panWidth / 2, (DataStore.getInstance().panelHeight / 2)
-					- panHeight / 2);
-			DataStore.getInstance().panelWidth = panWidth;
-			DataStore.getInstance().panelHeight = panHeight;
-			frame.setSize(DataStore.getInstance().panelWidth,
-					DataStore.getInstance().panelHeight);
-			fullscreen = false;
-			camera.setWidth(DataStore.getInstance().panelWidth);
-			camera.setHeight(DataStore.getInstance().panelHeight);
-			DataStore.getInstance().world.setupDefaultBoundaries();
-
-		}
-
+	private void setupGamePlayCard() {
+		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
+		gamePlayCard = new JPanel();
+		gamePlayCard.add(camera,BorderLayout.EAST);
+//		panelViewer.addKeyListener(this);
+//		camera.addKeyListener(this);
+//		gamePlayCard.addKeyListener(this);
+		addKeyListener(this);
+		gamePlayCard.setVisible(true);
 	}
 
-	private void goFullScreen() {
-
-		if (!fullscreen) {
-			Toolkit tk = Toolkit.getDefaultToolkit();
-			DataStore.getInstance().panelWidth = ((int) tk.getScreenSize()
-					.getWidth());
-			DataStore.getInstance().panelHeight = ((int) tk.getScreenSize()
-					.getHeight());
-			frame.setSize(DataStore.getInstance().panelWidth,
-					DataStore.getInstance().panelHeight);
-			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-			camera.setWidth(DataStore.getInstance().panelWidth);
-			camera.setHeight(DataStore.getInstance().panelHeight);
-			DataStore.getInstance().world.setupDefaultBoundaries();
-
-			fullscreen = true;
-
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == startButton) {
+			DataStore.getInstance().gameState = State.PLAYING;
+		} else if (e.getSource() == helpButton) {
+			DataStore.getInstance().gameState = State.HELPMENU;
 		}
 	}
 
 	protected void formKeyPressed(KeyEvent evt) {
+		System.out.println("Key pressed");
 		camera.keyPressed(evt);
 	}
 
@@ -143,24 +170,111 @@ public class Window implements Runnable {
 		}
 	}
 
+	private void goFullScreen() {
+
+		if (!fullscreen) {
+
+			DataStore.getInstance().panelWidth = ((int) tk.getScreenSize()
+					.getWidth());
+			DataStore.getInstance().panelHeight = ((int) tk.getScreenSize()
+					.getHeight());
+			this.setSize(DataStore.getInstance().panelWidth,
+					DataStore.getInstance().panelHeight);
+			this.setExtendedState(Frame.MAXIMIZED_BOTH);
+			camera.setWidth(DataStore.getInstance().panelWidth);
+			camera.setHeight(DataStore.getInstance().panelHeight);
+			DataStore.getInstance().world.setupDefaultBoundaries();
+
+			fullscreen = true;
+
+		}
+	}
+
+	// private void resetFrame() {
+	// System.out.println("frame reset");
+	// this.removeAll();
+	// this.revalidate();
+	// }
+
+	private void returnFullScreen() {
+		if (fullscreen) {
+			int panWidth = 512;
+			int panHeight = 512;
+			this.setLocation((DataStore.getInstance().panelWidth / 2)
+					- panWidth / 2, (DataStore.getInstance().panelHeight / 2)
+					- panHeight / 2);
+			DataStore.getInstance().panelWidth = panWidth;
+			DataStore.getInstance().panelHeight = panHeight;
+			this.setSize(DataStore.getInstance().panelWidth,
+					DataStore.getInstance().panelHeight);
+			fullscreen = false;
+			camera.setWidth(DataStore.getInstance().panelWidth);
+			camera.setHeight(DataStore.getInstance().panelHeight);
+			DataStore.getInstance().world.setupDefaultBoundaries();
+
+		}
+
+	}
+
+	/**
+	 * @param cardName
+	 *            The name of the card to change to, the names of the cards are
+	 *            set up in the constructor.
+	 */
+	public void changeCard(String cardName) {
+
+		CardLayout cl = (CardLayout) (panelViewer.getLayout());
+		cl.show(panelViewer, cardName);
+	}
+
 	@Override
 	public void run() {
 		while (true) {
 			switch (DataStore.getInstance().gameState) {
 			case PLAYING:
+				if (!playingScreenLoaded) {
+					this.setTitle("Operation Penguin Fish: "
+							+ gamePlayCard.getName());
+					changeCard(gamePlayCard.getName());
+
+					playingScreenLoaded = true;
+				}
 				camera.repaint();
 				camera.processKeys();
+				repaint();
+//				System.out.println("processing");
 				break;
 			case STARTMENU:
 				if (!startMenuLoaded) {
-					loadStartMenu();
+					this.setTitle("Operation Penguin Fish: "
+							+ startMenuCard.getName());
+					changeCard(startMenuCard.getName());
+
 					startMenuLoaded = true;
 				}
+
 				break;
 			case STARTINGANIMATION:
 				if (!startingAnimationLoaded) {
-					loadStartingAnimation();
+					this.setTitle("Operation Penguin Fish: "
+							+ startingAnimationCard.getName());
+					changeCard(startingAnimationCard.getName());
 					startingAnimationLoaded = true;
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					DataStore.getInstance().gameState = State.STARTMENU;
+					//System.out.println("pause over, swihcing to start menu");
+				}
+				break;
+			case HELPMENU:
+				if (!helpMenuLoaded) {
+					changeCard(helpMenuCard.getName());
+					//System.out.println("Card changed to helpmenu");
+					helpMenuLoaded = true;
 				}
 				break;
 			default:
@@ -176,42 +290,21 @@ public class Window implements Runnable {
 
 	}
 
-	public static JWebBrowser createContent() {
-	    JWebBrowser webBrowser = new JWebBrowser();
-	   // webBrowser.navigate(WebServer.getDefaultWebServer().getClassPathResourceURL(Window.class.getName(), "res/ani/bubbles.swf"));
-	   // webBrowser.navigate("http://google.com/");
-	    webBrowser.navigate("http://samples.mplayerhq.hu/SWF/zeldaADPCM2bit.swf");
-	    webBrowser.setBarsVisible(false);
-	    return webBrowser;
-	  }
-	private void loadStartingAnimation() {
-		DataStore.getInstance().panelHeight = 750;
-		DataStore.getInstance().panelWidth = 1280;
-		frame.setSize(DataStore.getInstance().panelWidth,
-				DataStore.getInstance().panelHeight);
-		NativeSwing.initialize();
-		NativeInterface.initialize();
-		NativeInterface.open();
-
-//		JWebBrowser browser = new JWebBrowser(new NSOption(null));
-		SwingUtilities.invokeLater(new Runnable() {
-		      public void run() {
-		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		        JWebBrowser browser = createContent();
-		        //frame.getContentPane().add(browser, BorderLayout.CENTER);
-		        NativeComponentWrapper ncw = new NativeComponentWrapper(browser);
-				frame.add(ncw.createEmbeddableComponent(new NSOption(null)));
-		        frame.setVisible(true);
-		      //  browser.navigate("http://google.com/");
-		      }
-		    });
-		    NativeInterface.runEventPump();
+	@Override
+	public void keyPressed(KeyEvent evt) {
+		System.out.println("KEY PRESSED");
+		formKeyPressed(evt);
 		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent evt) {
+		formKeyReleased(evt);
 		
-		System.out.println("Browser should be added");
+	}
 
-	
-		frame.setVisible(true);
-
+	@Override
+	public void keyTyped(KeyEvent evt) {
+		
 	}
 }
