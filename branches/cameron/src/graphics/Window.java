@@ -4,6 +4,8 @@ package graphics;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,6 +51,8 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 
 	JButton startButton;
 	JButton helpButton;
+	JButton backToStartButton;
+	ImageIcon logo;
 
 	protected Toolkit tk;
 	private boolean helpMenuLoaded;
@@ -67,12 +72,17 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		// }
 
 		//System.out.println(this.getLayout().toString());
-
+		
+		//Setup cross-card button
+		backToStartButton = new JButton("Back");
+		backToStartButton.addActionListener(this);
 		// Setup cards here
 		setupStartingAnimationCard();
 		setupStartMenuCard();
 		setupGamePlayCard();
 		setupHelpMenuCard();
+		
+	
 		
 		//Give each card a unique identifier.
 		startingAnimationCard.setName("Starting Animation");
@@ -105,6 +115,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 	private void setupHelpMenuCard() {
 		helpMenuCard = new JPanel();
 		helpMenuCard.add(new JTextArea(HELPTEXT));
+		helpMenuCard.add(backToStartButton);
 		//helpMenuCard.addKeyListener(this);
 
 	}
@@ -121,11 +132,15 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		JPanel buttons = new JPanel();
 		startButton = new JButton("Start Game");
 		helpButton = new JButton("Help");
-
+		
+		//Logo setup
+		logo = new ImageIcon(DataStore.getInstance().images.getTitleImage(1));
+		JLabel lblLogo = new JLabel(logo);
 		buttons.setLayout(new GridLayout(2, 2));
 		buttons.add(startButton);
 		buttons.add(helpButton);
 	
+		startMenuCard.add(lblLogo);
 		startMenuCard.add(buttons);
 
 		startButton.addActionListener(this);
@@ -135,12 +150,18 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 
 	private void setupGamePlayCard() {
 		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
+//		camera = new Camera(0, 0, 512, 512);
 		gamePlayCard = new JPanel();
-		gamePlayCard.add(camera,BorderLayout.EAST);
+		gamePlayCard.setLayout(new BorderLayout());
+		gamePlayCard.add(camera,BorderLayout.CENTER);
+		gamePlayCard.add(backToStartButton);
 //		panelViewer.addKeyListener(this);
-//		camera.addKeyListener(this);
-//		gamePlayCard.addKeyListener(this);
+		//camera.addKeyListener(this);
+		//camera.setFocusable(true);
+		setFocusable(true);
 		addKeyListener(this);
+		gamePlayCard.addKeyListener(this);
+
 		gamePlayCard.setVisible(true);
 	}
 
@@ -150,6 +171,9 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 			DataStore.getInstance().gameState = State.PLAYING;
 		} else if (e.getSource() == helpButton) {
 			DataStore.getInstance().gameState = State.HELPMENU;
+		}else if(e.getSource() == backToStartButton){
+			DataStore.getInstance().gameState = State.STARTMENU;
+			System.out.println("Return to Start Menu");
 		}
 	}
 
@@ -162,59 +186,62 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		camera.keyReleased(evt);
 		if (evt.getKeyCode() == KeyEvent.VK_G) {
 			if (!fullscreen) {
-				goFullScreen();
+//				goFullScreen();
+				setFullscreen(true);
 			} else {
-				returnFullScreen();
+//				returnFullScreen();
+				setFullscreen(false);
 			}
 
 		}
 	}
 
-	private void goFullScreen() {
 
-		if (!fullscreen) {
-
-			DataStore.getInstance().panelWidth = ((int) tk.getScreenSize()
-					.getWidth());
-			DataStore.getInstance().panelHeight = ((int) tk.getScreenSize()
-					.getHeight());
-			this.setSize(DataStore.getInstance().panelWidth,
-					DataStore.getInstance().panelHeight);
-			this.setExtendedState(Frame.MAXIMIZED_BOTH);
-			camera.setWidth(DataStore.getInstance().panelWidth);
+	public void setFullscreen(boolean fullscreen)
+	{
+		if (fullscreen == this.fullscreen)
+			return;
+		
+		boolean visible = isVisible();
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getDefaultScreenDevice();
+		
+		if (fullscreen)
+		{
+			this.fullscreen = true;
+			setVisible(false);
+			dispose();
+			setUndecorated(true);
+			setResizable(false);
+			gd.setFullScreenWindow(this);
+			DataStore.getInstance().panelHeight = gd.getFullScreenWindow().getHeight();
+			DataStore.getInstance().panelWidth = gd.getFullScreenWindow().getWidth();
 			camera.setHeight(DataStore.getInstance().panelHeight);
-			DataStore.getInstance().world.setupDefaultBoundaries();
-
-			fullscreen = true;
-
+			camera.setWidth(DataStore.getInstance().panelWidth);
 		}
-	}
-
-	// private void resetFrame() {
-	// System.out.println("frame reset");
-	// this.removeAll();
-	// this.revalidate();
-	// }
-
-	private void returnFullScreen() {
-		if (fullscreen) {
-			int panWidth = 512;
-			int panHeight = 512;
-			this.setLocation((DataStore.getInstance().panelWidth / 2)
-					- panWidth / 2, (DataStore.getInstance().panelHeight / 2)
-					- panHeight / 2);
-			DataStore.getInstance().panelWidth = panWidth;
-			DataStore.getInstance().panelHeight = panHeight;
-			this.setSize(DataStore.getInstance().panelWidth,
-					DataStore.getInstance().panelHeight);
-			fullscreen = false;
-			camera.setWidth(DataStore.getInstance().panelWidth);
+		else
+		{
+			this.fullscreen = false;
+			gd.setFullScreenWindow(null);
+			setVisible(false);
+			dispose();
+			setUndecorated(false);
+			setResizable(true);
+			setSize(1280, 750);
+			DataStore.getInstance().panelHeight = 750;
+			DataStore.getInstance().panelWidth = 1280;
 			camera.setHeight(DataStore.getInstance().panelHeight);
-			DataStore.getInstance().world.setupDefaultBoundaries();
-
+			camera.setWidth(DataStore.getInstance().panelWidth);
 		}
 
-	}
+		setVisible(visible);
+	} 
+
+	
+
+	
+
+	
 
 	/**
 	 * @param cardName
@@ -233,6 +260,8 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 			switch (DataStore.getInstance().gameState) {
 			case PLAYING:
 				if (!playingScreenLoaded) {
+					startMenuLoaded = false;
+					helpMenuLoaded =  false;
 					this.setTitle("Operation Penguin Fish: "
 							+ gamePlayCard.getName());
 					changeCard(gamePlayCard.getName());
@@ -246,6 +275,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 				break;
 			case STARTMENU:
 				if (!startMenuLoaded) {
+					helpMenuLoaded = false;
 					this.setTitle("Operation Penguin Fish: "
 							+ startMenuCard.getName());
 					changeCard(startMenuCard.getName());
@@ -256,6 +286,8 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 				break;
 			case STARTINGANIMATION:
 				if (!startingAnimationLoaded) {
+					startMenuLoaded = false;
+					helpMenuLoaded = false;
 					this.setTitle("Operation Penguin Fish: "
 							+ startingAnimationCard.getName());
 					changeCard(startingAnimationCard.getName());
@@ -272,6 +304,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 				break;
 			case HELPMENU:
 				if (!helpMenuLoaded) {
+					startMenuLoaded = false;
 					changeCard(helpMenuCard.getName());
 					//System.out.println("Card changed to helpmenu");
 					helpMenuLoaded = true;
