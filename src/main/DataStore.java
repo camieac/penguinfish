@@ -139,9 +139,9 @@ public class DataStore {
 		//these should be in setGameFields
 		
 		
-		
-		panelHeight = 750;
 		panelWidth = 1280;
+		panelHeight = 750;
+		
 		images = new Images();
 		gameState = State.STARTINGANIMATION;
 		gameStarted = false;

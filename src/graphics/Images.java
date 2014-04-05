@@ -60,7 +60,7 @@ public class Images {
 	 * 
 	 */
 	public Images() {
-		titleImages = new BufferedImage[1];
+		titleImages = new BufferedImage[2];
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[16];
@@ -75,6 +75,7 @@ public class Images {
 		playerSpriteSheet = getImage("res/img/player.png");
 		enemiesSpriteSheet = getImage("res/img/enemies.png");
 		titleImages[0] = getImage("res/img/title.png");
+		titleImages[1] = getImage("res/img/cooltext.png");
 		for (int i = 0; i < 4; i++) {
 			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64 * i, 0,
 					64, 64);
