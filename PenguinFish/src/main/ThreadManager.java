@@ -1,7 +1,7 @@
 package main;
 
-import sound.SoundManager;
 import graphics.Window;
+import sound.SoundManager;
 
 /**
  * Starts the Window, Game and SoundManager threads. Sets up the DataStore
@@ -19,6 +19,22 @@ public class ThreadManager {
 	 */
 	public static void main(String[] args) {
 		new ThreadManager();
+		boolean gameStarted = false;
+		while(true){
+			//System.out.println(DataStore.getInstance().gameState + ",   " + gameStarted);
+			
+			if(!gameStarted && DataStore.getInstance().gameState == State.PLAYING){
+				gameStarted = true;
+				//old set game fields
+				(new Thread(new Game())).start();
+			}
+			try {
+				Thread.sleep(16);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -26,9 +42,12 @@ public class ThreadManager {
 	 */
 	public ThreadManager() {
 		DataStore.getInstance();
-		DataStore.getInstance().setEverything();
+		DataStore.getInstance().setInitialFields();
+		DataStore.getInstance().setGameFields();
 		(new Thread(new Window())).start();
-		(new Thread(new Game())).start();
-		(new Thread(new SoundManager())).start();
+		System.out.println("Started Window Thread.");
+//		(new Thread(new Game())).start();
+//		(new Thread(new SoundManager())).start();
+//		System.out.println("Started SoundManager Thread.");
 	}
 }

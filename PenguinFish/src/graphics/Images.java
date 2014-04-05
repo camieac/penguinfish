@@ -54,12 +54,13 @@ public class Images {
 			playerSpriteSheet, enemiesSpriteSheet;
 
 	protected BufferedImage[] players, backgrounds, enemies, bullets,
-			sessileSpriteImages;
+			sessileSpriteImages,titleImages;
 
 	/**
 	 * 
 	 */
 	public Images() {
+		titleImages = new BufferedImage[2];
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[16];
@@ -70,10 +71,11 @@ public class Images {
 		fullHeart = getImage("res/img/Heart01.png");
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
-		enemies[0] = getImage("res/img/Enemy00.png");
 		sessileSpriteSheet = getImage("res/img/sessileSprites.png");
 		playerSpriteSheet = getImage("res/img/player.png");
 		enemiesSpriteSheet = getImage("res/img/enemies.png");
+		titleImages[0] = getImage("res/img/title.png");
+		titleImages[1] = getImage("res/img/cooltext.png");
 		for (int i = 0; i < 4; i++) {
 			sessileSpriteImages[i] = sessileSpriteSheet.getSubimage(64 * i, 0,
 					64, 64);
@@ -215,6 +217,14 @@ public class Images {
 	 */
 	public BufferedImage[] getPlayerImages() {
 		return players;
+	}
+	
+	/**
+	 * @param i The index of the title image to get.
+	 * @return The BufferedImage of the title image.
+	 */
+	public BufferedImage getTitleImage(int i){
+		return titleImages[i];
 	}
 
 	/**

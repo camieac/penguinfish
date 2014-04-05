@@ -99,7 +99,18 @@ public class DataStore {
 	 * 
 	 */
 	public int panelWidth;
+	/**
+	 * 
+	 */
 	public int panelHeight;
+	/**
+	 * 
+	 */
+	public boolean gameStarted;
+	/**
+	 * Stores the current state of the game
+	 */
+	public State gameState;
 	private DataStore() {
 
 	}
@@ -108,25 +119,55 @@ public class DataStore {
 	 * 
 	 */
 	public void setEverything() {
-		panelHeight = 512;
-		panelWidth = 512;
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("Everything has been setup in DataStore.");
+	
+	
+		
+
+	}
+	/**
+	 * When the game is first opened, not all of DataStore's fields are required, so this method initialises the required fields to run the stating animation and display the start menu.
+	 */
+	public void setInitialFields(){
+		//these should be in setGameFields
+		
+		
+		panelWidth = 1280;
+		panelHeight = 750;
+		
+		images = new Images();
+		gameState = State.STARTINGANIMATION;
+		gameStarted = false;
+	}
+
+	/**
+	 * Sets up all the fields used by the game class.
+	 */
+	public void setGameFields() {
+		levelReader = new LevelReader();
+		level = levelReader.getNextLevel();
+		
+		maxWidth = images.getBackground(levelNumber).getWidth();
+		maxHeight = images.getBackground(levelNumber).getHeight();
 		levelNumber = 0;
 		baseSpeed = 5;
-		images = new Images();
+		periodSinceLastFire = 0;
 		enemies = new LinkedList<Enemy>();
 		player = new Player(200, 200, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		pace = 1;
 		cameraAttachedToPlayer = false;
-		maxWidth = images.getBackground(levelNumber).getWidth();
-		maxHeight = images.getBackground(levelNumber).getHeight();
-		periodSinceLastFire = 0;
-		levelReader = new LevelReader();
-		level = levelReader.getNextLevel();
 		world = new World();
-		notifications = new LinkedList<Notification>();
 		
-
+		
+		notifications = new LinkedList<Notification>();
 	}
 }
