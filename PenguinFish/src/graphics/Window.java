@@ -31,7 +31,8 @@ import main.State;
  * 
  */
 @SuppressWarnings("serial")
-public class Window extends JFrame implements Runnable, ActionListener,KeyListener {
+public class Window extends JFrame implements Runnable, ActionListener,
+		KeyListener {
 	// JPanel buttons;
 
 	protected Camera camera;
@@ -67,13 +68,8 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 	public Window() {
 		super();
 		panelViewer = new JPanel(new CardLayout());
-		// while(!(this.getLayout() instanceof CardLayout)){
 
-		// }
-
-		//System.out.println(this.getLayout().toString());
-		
-		//Setup cross-card button
+		// Setup cross-card button
 		backToStartButton = new JButton("Back");
 		backToStartButton.addActionListener(this);
 		// Setup cards here
@@ -81,20 +77,18 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		setupStartMenuCard();
 		setupGamePlayCard();
 		setupHelpMenuCard();
-		
-	
-		
-		//Give each card a unique identifier.
+
+		// Give each card a unique identifier.
 		startingAnimationCard.setName("Starting Animation");
 		startMenuCard.setName("Start Menu");
 		gamePlayCard.setName("Game Play");
 		helpMenuCard.setName("Help Menu");
-		
+
 		// add the cards to the CardLayout Frame
 		panelViewer.add(startingAnimationCard, startingAnimationCard.getName());
 		panelViewer.add(startMenuCard, startMenuCard.getName());
 		panelViewer.add(gamePlayCard, gamePlayCard.getName());
-		panelViewer.add(helpMenuCard,helpMenuCard.getName());
+		panelViewer.add(helpMenuCard, helpMenuCard.getName());
 
 		tk = Toolkit.getDefaultToolkit();
 
@@ -116,14 +110,14 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		helpMenuCard = new JPanel();
 		helpMenuCard.add(new JTextArea(HELPTEXT));
 		helpMenuCard.add(backToStartButton);
-		//helpMenuCard.addKeyListener(this);
+		// helpMenuCard.addKeyListener(this);
 
 	}
 
 	private void setupStartingAnimationCard() {
 		startingAnimationCard = new JPanel();
 		JLabel lbl = new JLabel("Starting animation goes here");
-		
+
 		startingAnimationCard.add(lbl);
 	}
 
@@ -132,14 +126,14 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		JPanel buttons = new JPanel();
 		startButton = new JButton("Start Game");
 		helpButton = new JButton("Help");
-		
-		//Logo setup
+
+		// Logo setup
 		logo = new ImageIcon(DataStore.getInstance().images.getTitleImage(1));
 		JLabel lblLogo = new JLabel(logo);
 		buttons.setLayout(new GridLayout(2, 2));
 		buttons.add(startButton);
 		buttons.add(helpButton);
-	
+
 		startMenuCard.add(lblLogo);
 		startMenuCard.add(buttons);
 
@@ -149,15 +143,16 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 	}
 
 	private void setupGamePlayCard() {
-		camera = new Camera(0, 0, DataStore.getInstance().panelWidth, DataStore.getInstance().panelHeight);
-//		camera = new Camera(0, 0, 512, 512);
+		camera = new Camera(0, 0, DataStore.getInstance().panelWidth,
+				DataStore.getInstance().panelHeight);
+		// camera = new Camera(0, 0, 512, 512);
 		gamePlayCard = new JPanel();
 		gamePlayCard.setLayout(new BorderLayout());
-		gamePlayCard.add(camera,BorderLayout.CENTER);
+		gamePlayCard.add(camera, BorderLayout.CENTER);
 		gamePlayCard.add(backToStartButton);
-//		panelViewer.addKeyListener(this);
-		//camera.addKeyListener(this);
-		//camera.setFocusable(true);
+		// panelViewer.addKeyListener(this);
+		// camera.addKeyListener(this);
+		// camera.setFocusable(true);
 		setFocusable(true);
 		addKeyListener(this);
 		gamePlayCard.addKeyListener(this);
@@ -171,7 +166,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 			DataStore.getInstance().gameState = State.PLAYING;
 		} else if (e.getSource() == helpButton) {
 			DataStore.getInstance().gameState = State.HELPMENU;
-		}else if(e.getSource() == backToStartButton){
+		} else if (e.getSource() == backToStartButton) {
 			DataStore.getInstance().gameState = State.STARTMENU;
 			System.out.println("Return to Start Menu");
 		}
@@ -186,41 +181,41 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		camera.keyReleased(evt);
 		if (evt.getKeyCode() == KeyEvent.VK_G) {
 			if (!fullscreen) {
-//				goFullScreen();
+				// goFullScreen();
 				setFullscreen(true);
 			} else {
-//				returnFullScreen();
+				// returnFullScreen();
 				setFullscreen(false);
 			}
 
 		}
 	}
 
-
-	public void setFullscreen(boolean fullscreen)
-	{
+	/**
+	 * @param fullscreen True if full screen, false if not.
+	 */
+	public void setFullscreen(boolean fullscreen) {
 		if (fullscreen == this.fullscreen)
 			return;
-		
+
 		boolean visible = isVisible();
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getDefaultScreenDevice();
-		
-		if (fullscreen)
-		{
+
+		if (fullscreen) {
 			this.fullscreen = true;
 			setVisible(false);
 			dispose();
 			setUndecorated(true);
 			setResizable(false);
 			gd.setFullScreenWindow(this);
-			DataStore.getInstance().panelHeight = gd.getFullScreenWindow().getHeight();
-			DataStore.getInstance().panelWidth = gd.getFullScreenWindow().getWidth();
+			DataStore.getInstance().panelHeight = gd.getFullScreenWindow()
+					.getHeight();
+			DataStore.getInstance().panelWidth = gd.getFullScreenWindow()
+					.getWidth();
 			camera.setHeight(DataStore.getInstance().panelHeight);
 			camera.setWidth(DataStore.getInstance().panelWidth);
-		}
-		else
-		{
+		} else {
 			this.fullscreen = false;
 			gd.setFullScreenWindow(null);
 			setVisible(false);
@@ -235,13 +230,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 		}
 
 		setVisible(visible);
-	} 
-
-	
-
-	
-
-	
+	}
 
 	/**
 	 * @param cardName
@@ -261,7 +250,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 			case PLAYING:
 				if (!playingScreenLoaded) {
 					startMenuLoaded = false;
-					helpMenuLoaded =  false;
+					helpMenuLoaded = false;
 					this.setTitle("Operation Penguin Fish: "
 							+ gamePlayCard.getName());
 					changeCard(gamePlayCard.getName());
@@ -271,7 +260,7 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 				camera.repaint();
 				camera.processKeys();
 				repaint();
-//				System.out.println("processing");
+				// System.out.println("processing");
 				break;
 			case STARTMENU:
 				if (!startMenuLoaded) {
@@ -299,14 +288,14 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 						e.printStackTrace();
 					}
 					DataStore.getInstance().gameState = State.STARTMENU;
-					//System.out.println("pause over, swihcing to start menu");
+					// System.out.println("pause over, swihcing to start menu");
 				}
 				break;
 			case HELPMENU:
 				if (!helpMenuLoaded) {
 					startMenuLoaded = false;
 					changeCard(helpMenuCard.getName());
-					//System.out.println("Card changed to helpmenu");
+					// System.out.println("Card changed to helpmenu");
 					helpMenuLoaded = true;
 				}
 				break;
@@ -327,17 +316,17 @@ public class Window extends JFrame implements Runnable, ActionListener,KeyListen
 	public void keyPressed(KeyEvent evt) {
 		System.out.println("KEY PRESSED");
 		formKeyPressed(evt);
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent evt) {
 		formKeyReleased(evt);
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent evt) {
-		
+
 	}
 }

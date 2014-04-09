@@ -19,7 +19,6 @@ public class World {
 	protected LinkedList<Rectangle> boundaries;
 	protected int defaultBoundedAreas = 4;
 	protected Rectangle[] defaultBoundaries;
-	// protected BufferedImage image;
 	protected LinkedList<LinkedList<SessileSprite>> sessileSprites;
 
 	/**
