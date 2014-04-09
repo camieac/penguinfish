@@ -16,7 +16,7 @@ import sprites.SessileSprite;
 
 /**
  * Represents the viewable area of the world, the camera follows the position of
- * the player. Once sprites within the viewable area are drawn.
+ * the player. Only sprites within the viewable area are drawn.
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
@@ -24,10 +24,16 @@ import sprites.SessileSprite;
  */
 public class Camera extends JComponent {
 
+	/**
+	 * @param width The desired width.
+	 */
 	public void setWidth(double width) {
 		this.width = width;
 	}
 
+	/**
+	 * @param height The desired height.
+	 */
 	public void setHeight(double height) {
 		this.height = height;
 	}
