@@ -120,7 +120,6 @@ public class Player extends Sprite {
 		}
 	
 		else{
-			System.out.println("ALL ENABLED");
 			direction.enableDirection(Direction.NORTH);
 			direction.enableDirection(Direction.NORTHEAST);
 			direction.enableDirection(Direction.EAST);
@@ -178,8 +177,11 @@ public class Player extends Sprite {
 				(int) xcam, (int) ycam, null);
 		g.drawString("pos: " + x + "," + y, (int) xcam, (int) ycam);
 		g.drawString("step: " + dx + "," + dy, (int) xcam, (int) ycam - 15);
-		DataStore.getInstance().notifications.getLast().displayPlayerText(g,
+		if(!DataStore.getInstance().notifications.isEmpty()){
+			DataStore.getInstance().notifications.getLast().displayPlayerText(g,
 				(int) xcam, (int) ycam);
+		}
+		
 	}
 
 	/**

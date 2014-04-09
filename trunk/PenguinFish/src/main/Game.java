@@ -37,29 +37,29 @@ public class Game implements Runnable {
 	}
 
 	protected void detectBulletCollisions() {
-		LinkedList<Bullet> dead = new LinkedList<Bullet>();
-		for (Bullet bullet : DataStore.getInstance().bullets) {
-			bullet.run();
-			bullet.collideWalls(DataStore.getInstance().maxWidth,
-					DataStore.getInstance().maxHeight);
-			// if(bullet.collide(player.getRect())){
-			// player.damage(10);
-			// }
-			for (Enemy e : DataStore.getInstance().enemies) {
-				if (bullet.collide(e)) {
-					bullet.setDead(true);
-					e.damage(10);
-				}
-
-			}
-			if (bullet.isDead()) {
-				dead.add(bullet);
-			}
-
-		}
-		// System.out.println("Bullets: " + DataStore.getInstance().bullets);
-		// System.out.println("Dead Bullets: " + dead);
-		DataStore.getInstance().bullets.removeAll(dead);
+//		LinkedList<Bullet> dead = new LinkedList<Bullet>();
+//		for (Bullet bullet : DataStore.getInstance().bullets) {
+//			bullet.run();
+//			bullet.collideWalls(DataStore.getInstance().maxWidth,
+//					DataStore.getInstance().maxHeight);
+//			// if(bullet.collide(player.getRect())){
+//			// player.damage(10);
+//			// }
+//			for (Enemy e : DataStore.getInstance().enemies) {
+//				if (bullet.collide(e)) {
+//					bullet.setDead(true);
+//					e.damage(10);
+//				}
+//
+//			}
+//			if (bullet.isDead()) {
+//				dead.add(bullet);
+//			}
+//
+//		}
+//		// System.out.println("Bullets: " + DataStore.getInstance().bullets);
+//		// System.out.println("Dead Bullets: " + dead);
+//		DataStore.getInstance().bullets.removeAll(dead);
 	}
 
 	protected void detectEnemyCollisions() {
