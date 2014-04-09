@@ -25,14 +25,20 @@ import sprites.SessileSprite;
 public class Camera extends JComponent {
 
 	/**
-	 * @param width The desired width.
+	 * Sets the width of the camera to the double value given.
+	 * 
+	 * @param width
+	 *            The new desired width of the camera.
 	 */
 	public void setWidth(double width) {
 		this.width = width;
 	}
 
 	/**
-	 * @param height The desired height.
+	 * Sets the height of the camera to the double value given.
+	 * 
+	 * @param height
+	 *            The new desired height of the camera
 	 */
 	public void setHeight(double height) {
 		this.height = height;
@@ -80,10 +86,9 @@ public class Camera extends JComponent {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
 			System.out.println("Add bullet");
 			
-//			Bullet b = new Bullet(DataStore.getInstance().player.getX() - camX,
-//					DataStore.getInstance().player.getY() - camY,
-//					DataStore.getInstance().player.getDirection(), 0);
-			Bullet b = new Bullet(500,500,Direction.NORTH,22);
+			Bullet b = new Bullet(DataStore.getInstance().player.getX(),
+					DataStore.getInstance().player.getY(),
+					DataStore.getInstance().player.getDirection(), 0);
 
 			DataStore.getInstance().bullets.add(b);
 			
@@ -202,9 +207,8 @@ public class Camera extends JComponent {
 				g.drawString("DEAD!", (int) width - 65, 10);
 			}
 			// Draw Bullets
-			System.out.println("Drawing");
 			for (Bullet b : DataStore.getInstance().bullets) {
-				g.drawImage(b.getImage(), (int) b.getX(), (int) b.getY(), null);
+				g.drawImage(b.getImage(), (int) (b.getX() - camX), (int) (b.getY() - camY), null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -227,8 +231,6 @@ public class Camera extends JComponent {
 	 *            The Graphics object to to draw to.
 	 */
 	protected void paintHealth(Graphics g) {
-		
-				
 		BufferedImage fullHeart = DataStore.getInstance().images.getFullHeart();
 		BufferedImage emptyHeart = DataStore.getInstance().images
 				.getEmptyHeart();
@@ -325,10 +327,11 @@ public class Camera extends JComponent {
 
 		}
 		if (buttons.contains(KeyEvent.VK_L)) {
-			
+
 			DataStore.getInstance().world.newLevel();
 			System.out.println("Level Number incremented");
-			//This sleep is a temporary fix to stop the level incrementing more than once per button press.
+			// This sleep is a temporary fix to stop the level incrementing more
+			// than once per button press.
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

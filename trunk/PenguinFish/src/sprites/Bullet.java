@@ -113,4 +113,8 @@ public class Bullet extends Sprite {
 
 	
 	}
+	
+	public String toString(){
+		return "Type: Bullet\nx: " + x + "\ny: " + y +"\n" ;
+	}
 }
