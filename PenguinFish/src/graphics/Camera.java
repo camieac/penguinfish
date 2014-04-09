@@ -78,16 +78,15 @@ public class Camera extends JComponent {
 	 */
 	public void addBullet() {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
-			// TODO: bullets seem to get deleted as soon as they spawn,
-			// so they are probably colliding with the player instantly
-			// and getting added to the remove array.
-			Bullet b = new Bullet(DataStore.getInstance().player.getX() - camX,
-					DataStore.getInstance().player.getY() - camY,
-					DataStore.getInstance().player.getDirection(), 0);
+			System.out.println("Add bullet");
+			
+//			Bullet b = new Bullet(DataStore.getInstance().player.getX() - camX,
+//					DataStore.getInstance().player.getY() - camY,
+//					DataStore.getInstance().player.getDirection(), 0);
+			Bullet b = new Bullet(500,500,Direction.NORTH,22);
 
 			DataStore.getInstance().bullets.add(b);
-			// TODO: Why are bullets rotated to 0? Just set the direction in the
-			// constructor since they don't bounce.
+			
 
 			DataStore.getInstance().periodSinceLastFire = 0;
 		}
@@ -156,6 +155,9 @@ public class Camera extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
+		System.out.println("Painting components");
+		
+		
 		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
@@ -192,6 +194,7 @@ public class Camera extends JComponent {
 			DataStore.getInstance().player.drawPlayer(g,
 					DataStore.getInstance().player.x - camX,
 					DataStore.getInstance().player.y - camY);
+			paintBar(g);
 			paintText(g);
 			paintHealth(g);
 			if (DataStore.getInstance().player.getHealth() < 10) {
@@ -199,13 +202,24 @@ public class Camera extends JComponent {
 				g.drawString("DEAD!", (int) width - 65, 10);
 			}
 			// Draw Bullets
+			System.out.println("Drawing");
 			for (Bullet b : DataStore.getInstance().bullets) {
 				g.drawImage(b.getImage(), (int) b.getX(), (int) b.getY(), null);
 			}
 		} catch (Exception e) {
-			// erm...
+			e.printStackTrace();
 		}
 
+	}
+
+	private void paintBar(Graphics g) {
+		//Draw a white bar across the top of the screen.
+				Color oldColor = g.getColor();
+				g.setColor(Color.white);
+				g.fillRect(0, 0, DataStore.getInstance().panelWidth, 20);
+				g.fillRect(0, 0, 500, 20);
+				g.setColor(oldColor);
+		
 	}
 
 	/**
@@ -213,6 +227,8 @@ public class Camera extends JComponent {
 	 *            The Graphics object to to draw to.
 	 */
 	protected void paintHealth(Graphics g) {
+		
+				
 		BufferedImage fullHeart = DataStore.getInstance().images.getFullHeart();
 		BufferedImage emptyHeart = DataStore.getInstance().images
 				.getEmptyHeart();
