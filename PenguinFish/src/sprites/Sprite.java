@@ -100,24 +100,26 @@ public class Sprite extends SessileSprite {
 	}
 
 	/**
-	 * @param xMax
-	 * @param yMax
+	 * @param panelWidth The width of the panel.
+	 * @param panelHeight The height of the panel.
 	 */
-	public void collideWalls(double xMax, double yMax) {
+	public void collideWalls(double panelWidth, double panelHeight) {
 
 		if (x < 0) {
 			wallHit = Direction.WEST;
-		} else if (x + width > xMax) {
+			if(!bounces) dead = true;
+		} else if (x + width > panelWidth) {
 			wallHit = Direction.EAST;
+			if(!bounces) dead = true;
 		} else if (x < 0) {
 			wallHit = Direction.NORTH;
-		} else if (x + height > yMax) {
+			if(!bounces) dead = true;
+		} else if (x + height > panelHeight) {
 			wallHit = Direction.SOUTH;
+			if(!bounces) dead = true;
 		}
 		if (bounces) {
 			direction = direction.getOpposite(direction, wallHit);
-		} else {
-			dead = true;
 		}
 	}
 
