@@ -85,7 +85,7 @@ public class Camera extends JComponent {
 	 */
 	public void addBullet() {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
-			System.out.println("Add bullet");
+			//System.out.println("Add bullet");
 			
 			Bullet b = new Bullet(DataStore.getInstance().player.getX(),
 					DataStore.getInstance().player.getY(),
@@ -161,7 +161,7 @@ public class Camera extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
-		System.out.println("Painting components");
+		//System.out.println("Painting components");
 		
 		
 		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);

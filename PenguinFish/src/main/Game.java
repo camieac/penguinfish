@@ -61,8 +61,8 @@ public class Game implements Runnable {
 			}
 
 		}
-		 System.out.println("Bullets: " + DataStore.getInstance().bullets);
-		 System.out.println("Dead Bullets: " + dead);
+		 //System.out.println("Bullets: " + DataStore.getInstance().bullets);
+		 //System.out.println("Dead Bullets: " + dead);
 		DataStore.getInstance().bullets.removeAll(dead);
 	}
 
@@ -120,8 +120,11 @@ public class Game implements Runnable {
 
 	public void run() {
 		while (!gameOver) {
-			tickAll();
+			boolean playing = (DataStore.getInstance().gameState == State.PLAYING);
+			System.out.println("\t\t"+playing);
+			if(playing) tickAll();
 		}
+		
 	}
 
 	protected void tickAll() {
