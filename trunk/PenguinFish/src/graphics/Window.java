@@ -203,7 +203,6 @@ public class Window extends JFrame implements Runnable, ActionListener,
 			DataStore.getInstance().gameState = State.HELPMENU;
 		} else if (e.getSource() == backToStartButton) {
 			DataStore.getInstance().gameState = State.STARTMENU;
-			System.out.println("Return to Start Menu");
 		} else if (e.getSource() == resumeButton) {
 			DataStore.getInstance().gameState = State.PLAYING;
 		} else if (e.getSource() == quitButton) {
@@ -212,7 +211,6 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	}
 
 	protected void formKeyPressed(KeyEvent evt) {
-		System.out.println("Key pressed");
 		camera.keyPressed(evt);
 	}
 
@@ -301,7 +299,6 @@ public class Window extends JFrame implements Runnable, ActionListener,
 				camera.repaint();
 				camera.processKeys();
 				repaint();
-				 System.out.println("processing");
 				break;
 			case STARTMENU:
 				if (!startMenuLoaded) {
@@ -330,14 +327,12 @@ public class Window extends JFrame implements Runnable, ActionListener,
 						e.printStackTrace();
 					}
 					DataStore.getInstance().gameState = State.STARTMENU;
-					// System.out.println("pause over, swihcing to start menu");
 				}
 				break;
 			case HELPMENU:
 				if (!helpMenuLoaded) {
 					startMenuLoaded = false;
 					changeCard(helpMenuCard.getName());
-					// System.out.println("Card changed to helpmenu");
 					helpMenuLoaded = true;
 				}
 				break;
@@ -367,7 +362,6 @@ public class Window extends JFrame implements Runnable, ActionListener,
 
 	@Override
 	public void keyPressed(KeyEvent evt) {
-		System.out.println("KEY PRESSED");
 		formKeyPressed(evt);
 
 	}

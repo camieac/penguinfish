@@ -31,6 +31,9 @@ begin:
 		150,150,3,0
 		450,150,6,1
 	</enemies>
+	<notifications>
+	Hello my name is Elvador King of the Hills...,Black,White
+	</notifications>
 </level>
 
 

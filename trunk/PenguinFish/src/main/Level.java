@@ -1,5 +1,9 @@
 package main;
 
+import graphics.Notification;
+
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import sprites.Enemy;
@@ -14,29 +18,46 @@ import sprites.SpriteBlock;
 public class Level {
 
 	/**
-	 * 
+	 * This is here for no reason, someone will delete it eventually.
 	 */
 	private static final long serialVersionUID = 6846891938893773222L;
-
+	/**
+	 * The description of the level.
+	 */
 	private String description;
-
+	/**
+	 * The enemies that are in the level.
+	 */
 	private LinkedList<Enemy> enemies;
-
+	/**
+	 * The unique ID of the level.
+	 */
 	private int levelID;
-
+	/**
+	 * The name of the level.
+	 */
 	private String name;
-
+	/**
+	 * The sessile sprites that appear in the level.
+	 */
 	private LinkedList<SessileSprite> sessileSprites;
-
-	private LinkedList<SpriteBlock> spriteBlocks;
+	/**
+	 * The blocks of sprites taht are used in the level.
+	 */
+	private ArrayList<SpriteBlock> spriteBlocks;
+	/**
+	 * The notifications that are used in the level to instruct the user.
+	 */
+	private ArrayList<Notification> notifications;
 
 	Level() {
 		enemies = new LinkedList<Enemy>();
 		sessileSprites = new LinkedList<SessileSprite>();
-		spriteBlocks = new LinkedList<SpriteBlock>();
+		spriteBlocks = new ArrayList<SpriteBlock>();
 		levelID = 0;
 		name = "No name specified";
 		description = "No description specified.";
+		notifications = new ArrayList<Notification>();
 	}
 
 	/**
@@ -47,10 +68,10 @@ public class Level {
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param id
-	 * @param movement
+	 * @param x The starting x position of the enemy.
+	 * @param y The starting y position of the enemy.
+	 * @param id The image key of the enemy, in order to identify what image goes with the enemy.
+	 * @param movement The movement key, identifies what type of movement the enemy will make.
 	 */
 	public void addEnemy(int x, int y, int id, int movement) {
 		enemies.add(new Enemy(x, y, id, movement));
@@ -63,11 +84,11 @@ public class Level {
 		sessileSprites.add(s);
 	}
 	/**
-	 * @param x
-	 * @param y
-	 * @param w
-	 * @param h
-	 * @param img
+	 * @param x The leftmost x position of the start of the sprite block.
+	 * @param y The upper most y position of the start of the sprite block.
+	 * @param w The width of the sprite block
+	 * @param h The height of the sprite block.
+	 * @param img The sessile sprite image key that is used to identify what image to display.
 	 */
 	public void addSpriteBlock(int x, int y, int w, int h, int img) {
 		spriteBlocks.add(new SpriteBlock(x, y, w, h, img));
@@ -83,39 +104,44 @@ public class Level {
 		return enemies;
 	}
 	/**
-	 * @return
+	 * @return The ID of the level.
 	 */
 	public int getLevelID() {
 		return levelID;
 	}
 
 	/**
-	 * @return
+	 * @return The name of the level.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return
+	 * @return The sessile sprites that are part of the level.
 	 */
 	public LinkedList<SessileSprite> getSessileSprites() {
 		return sessileSprites;
 	}
 
 	/**
-	 * @return
+	 * @return The blocks of sessile sprites that are part of the level
 	 */
-	public LinkedList<SpriteBlock> getSpriteBlocks() {
+	public ArrayList<SpriteBlock> getSpriteBlocks() {
 		return spriteBlocks;
 	}
 
+	/**
+	 * Sets the description of the level.
+	 * @param description The description of the level
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
 	/**
-	 * @param enemies
+	 * This imports a LinkedList od enemies into the level.
+	 * @param enemies The enemies that are part of the level.
 	 */
 	public void setEnemies(LinkedList<Enemy> enemies) {
 		this.enemies = enemies;
@@ -145,8 +171,16 @@ public class Level {
 	/**
 	 * @param spriteBlocks
 	 */
-	public void setSpriteBlocks(LinkedList<SpriteBlock> spriteBlocks) {
+	public void setSpriteBlocks(ArrayList<SpriteBlock> spriteBlocks) {
 		this.spriteBlocks = spriteBlocks;
+	}
+	
+	/**
+	 * Sets the notifications for the level.
+	 * @param notifications The notifications that are used in the level.
+	 */
+	public void setNotifications(ArrayList<Notification> notifications){
+		this.notifications = notifications;
 	}
 
 	public String toString() {
@@ -156,6 +190,18 @@ public class Level {
 		sb.append("# of sessileSprites: " + sessileSprites.size() + "\n");
 		sb.append("# of spriteblocks: " + spriteBlocks.size() + "\n");
 		sb.append("# of enemies: " + enemies.size() + "\n");
+		sb.append("# of notifi.: " + notifications.size() + "\n");
 		return sb.toString();
+	}
+
+	/**
+	 * Adds a notification to the existing notifications.
+	 * @param text The text to be displayed in the notification.
+	 * @param textColour The text colour.
+	 * @param backColour The background colour.
+	 */
+	public void addNotification(String text, Color textColour, Color backColour) {
+		notifications.add(new Notification(text,textColour,backColour));
+		
 	}
 }
