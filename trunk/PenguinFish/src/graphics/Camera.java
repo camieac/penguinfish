@@ -10,13 +10,14 @@ import javax.swing.JComponent;
 
 import main.DataStore;
 import main.Direction;
+import main.State;
 import sprites.Bullet;
 import sprites.Enemy;
 import sprites.SessileSprite;
 
 /**
  * Represents the viewable area of the world, the camera follows the position of
- * the player. Only sprites within the viewable area are drawn.
+ * the player. Only sprites within the viewable area are drawn. Handles Key Presses.
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
@@ -338,6 +339,9 @@ public class Camera extends JComponent {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		if(buttons.contains(KeyEvent.VK_P)){
+			DataStore.getInstance().gameState = State.PAUSEMENU;
 		}
 
 	}
