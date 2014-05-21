@@ -301,7 +301,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 				camera.repaint();
 				camera.processKeys();
 				repaint();
-				// System.out.println("processing");
+				 System.out.println("processing");
 				break;
 			case STARTMENU:
 				if (!startMenuLoaded) {
