@@ -122,6 +122,7 @@ public class Game implements Runnable {
 		while (!gameOver) {
 			boolean playing = (DataStore.getInstance().gameState == State.PLAYING);
 			System.out.println("\t\t"+playing);
+			
 			if(playing) tickAll();
 		}
 		

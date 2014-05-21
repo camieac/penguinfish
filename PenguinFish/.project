@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lib</name>
+			<type>2</type>
+			<location>/usr/lib/jvm/java-6-openjdk-amd64/lib</location>
+		</link>
+	</linkedResources>
 </projectDescription>

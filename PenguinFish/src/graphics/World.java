@@ -3,7 +3,9 @@ package graphics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
+
 import main.DataStore;
 import sprites.Enemy;
 import sprites.SpriteBlock;
@@ -73,7 +75,7 @@ public class World {
 	}
 
 	private void addLevelSpriteBlocks() {
-		LinkedList<SpriteBlock> ll = DataStore.getInstance().level
+		ArrayList<SpriteBlock> ll = DataStore.getInstance().level
 				.getSpriteBlocks();
 		for (SpriteBlock s : ll) {
 			createSpriteBlock(s.getRect(), s.getImgNumber());

@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -91,6 +92,7 @@ public class LevelReader {
 			boolean inID = false;
 			boolean inSpriteBlock = false;
 			boolean inEnemies = false;
+			boolean inNotifications = false;
 			while ((line = levelReader.readLine()) != null && !endOfLevel) {
 
 				if (line.contains("<level>")) {
@@ -131,6 +133,10 @@ public class LevelReader {
 					inEnemies = true;
 				} else if (line.contains("</enemies>") && inLevel && inEnemies) {
 					inEnemies = false;
+				} else if (line.contains("<notifications>") && inLevel && !inNotifications){
+					inNotifications = true;
+				} else if (line.contains("</notifications>") && inLevel && inNotifications){
+					inNotifications = false;
 				} else if (inSessileSprites) {
 
 					String[] data = line.split(",");
@@ -159,6 +165,14 @@ public class LevelReader {
 					int movement = Integer.parseInt(data[3].trim());
 
 					level.addEnemy(x, y, id, movement);
+				} else if (inNotifications){
+					String[] data = line.split(",");
+					String text = data[0].trim();
+					Color textColour = Color.getColor(data[1].trim());
+					Color backColour = Color.getColor(data[2].trim());
+					//TODO: Add x position, y postion and display time.
+
+					level.addNotification(text, textColour, backColour);
 				}
 
 			}
@@ -169,48 +183,4 @@ public class LevelReader {
 
 	}
 
-	// public static void main(String[] args) {
-	// DataStore.getInstance();
-	// DataStore.getInstance().setEverything();
-	// LevelReader levelReader = new LevelReader();
-	// levelReader.readLevel();
-	// System.out.println("\n\n\n");
-	// levelReader.readLevel();
-	//
-	// LevelReader serial = new LevelReader();
-	// System.out.println(serial.getNextLevel().toString());
-	// System.out.println(serial.getNextLevel().toString());
-	// System.out.println(serial.getNextLevel().toString());
-	// // System.out.println(levelReader.curLevel);
-	// }
-
-	// private FileOutputStream fos;
-	// private ObjectOutputStream oos;
-	// FileInputStream fis;
-	// ObjectInputStream ois;
-
-	// try {
-	// fos = new FileOutputStream("res/temp/tempdata.ser");
-	// } catch (FileNotFoundException e2) {
-	// // TODO Auto-generated catch block
-	// e2.printStackTrace();
-	// }
-	// try {
-	// oos = new ObjectOutputStream(fos);
-	// } catch (IOException e1) {
-	// // TODO Auto-generated catch block
-	// e1.printStackTrace();
-	// }
-	// try {
-	// fis = new FileInputStream("res/temp/tempdata.ser");
-	// } catch (FileNotFoundException e1) {
-	// // TODO Auto-generated catch block
-	// e1.printStackTrace();
-	// }
-	// try {
-	// ois = new ObjectInputStream(fis);
-	// } catch (IOException e1) {
-	// // TODO Auto-generated catch block
-	// e1.printStackTrace();
-	// }
 }
