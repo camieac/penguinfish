@@ -64,10 +64,11 @@ public class Images {
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[16];
-		backgrounds = new BufferedImage[2];
+		backgrounds = new BufferedImage[3];
 		sessileSpriteImages = new BufferedImage[5];
 		backgrounds[0] = getImage("res/img/back.png");
 		backgrounds[1] = getImage("res/img/map2.png");
+		backgrounds[2] = getImage("res/img/map3.png");
 		fullHeart = getImage("res/img/Heart01.png");
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
