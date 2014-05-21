@@ -37,11 +37,11 @@ public class Window extends JFrame implements Runnable, ActionListener,
 
 	protected Camera camera;
 	protected boolean fullscreen;
-	// protected JButton helpButton;
+
 	protected boolean playingScreenLoaded;
-	// protected JButton startButton;
 	protected boolean startingAnimationLoaded;
 	protected boolean startMenuLoaded;
+	protected boolean pauseMenuLoaded;
 
 	protected JPanel panelViewer;
 	/* The frame can only display one card at a time. */
@@ -49,11 +49,16 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	protected JPanel startMenuCard;
 	protected JPanel gamePlayCard;
 	protected JPanel helpMenuCard;
+	protected JPanel pauseMenuCard;
 
 	JButton startButton;
 	JButton helpButton;
 	JButton backToStartButton;
+	JButton resumeButton;
+	JButton quitButton;
+
 	ImageIcon logo;
+	
 
 	protected Toolkit tk;
 	private boolean helpMenuLoaded;
@@ -72,23 +77,31 @@ public class Window extends JFrame implements Runnable, ActionListener,
 		// Setup cross-card button
 		backToStartButton = new JButton("Back");
 		backToStartButton.addActionListener(this);
+
+		// Setup logo image and label
+		logo = new ImageIcon(DataStore.getInstance().images.getTitleImage(1));
+		
+
 		// Setup cards here
 		setupStartingAnimationCard();
 		setupStartMenuCard();
 		setupGamePlayCard();
 		setupHelpMenuCard();
+		setupPauseMenuCard();
 
 		// Give each card a unique identifier.
 		startingAnimationCard.setName("Starting Animation");
 		startMenuCard.setName("Start Menu");
 		gamePlayCard.setName("Game Play");
 		helpMenuCard.setName("Help Menu");
+		pauseMenuCard.setName("Pause Menu");
 
 		// add the cards to the CardLayout Frame
 		panelViewer.add(startingAnimationCard, startingAnimationCard.getName());
 		panelViewer.add(startMenuCard, startMenuCard.getName());
 		panelViewer.add(gamePlayCard, gamePlayCard.getName());
 		panelViewer.add(helpMenuCard, helpMenuCard.getName());
+		panelViewer.add(pauseMenuCard, pauseMenuCard.getName());
 
 		tk = Toolkit.getDefaultToolkit();
 
@@ -96,6 +109,8 @@ public class Window extends JFrame implements Runnable, ActionListener,
 		startingAnimationLoaded = false;
 		playingScreenLoaded = false;
 		helpMenuLoaded = false;
+		pauseMenuLoaded = false;
+
 		fullscreen = false;
 
 		this.setResizable(true);
@@ -103,6 +118,25 @@ public class Window extends JFrame implements Runnable, ActionListener,
 				DataStore.getInstance().panelHeight);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(panelViewer);
+
+	}
+
+	private void setupPauseMenuCard() {
+		pauseMenuCard = new JPanel(new GridLayout(2, 1));
+		JPanel btns = new JPanel();
+		resumeButton = new JButton("Resume Game");
+		quitButton = new JButton("Quit Game");
+
+		btns.setLayout(new GridLayout(2, 2));
+		btns.add(resumeButton);
+		btns.add(quitButton);
+		JLabel lblPauseTitle = new JLabel("Pause menu...");
+		pauseMenuCard.add(lblPauseTitle);
+		pauseMenuCard.add(btns);
+
+		resumeButton.addActionListener(this);
+		quitButton.addActionListener(this);
+		this.setVisible(true);
 
 	}
 
@@ -124,17 +158,18 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	private void setupStartMenuCard() {
 		startMenuCard = new JPanel(new GridLayout(2, 1));
 		JPanel buttons = new JPanel();
+		JPanel logoPanel = new JPanel();
+		JLabel lblLogo = new JLabel(logo);
+		logoPanel.add(lblLogo);
 		startButton = new JButton("Start Game");
 		helpButton = new JButton("Help");
 
-		// Logo setup
-		logo = new ImageIcon(DataStore.getInstance().images.getTitleImage(1));
-		JLabel lblLogo = new JLabel(logo);
+
 		buttons.setLayout(new GridLayout(2, 2));
 		buttons.add(startButton);
 		buttons.add(helpButton);
-
-		startMenuCard.add(lblLogo);
+		
+		startMenuCard.add(logoPanel);
 		startMenuCard.add(buttons);
 
 		startButton.addActionListener(this);
@@ -169,6 +204,10 @@ public class Window extends JFrame implements Runnable, ActionListener,
 		} else if (e.getSource() == backToStartButton) {
 			DataStore.getInstance().gameState = State.STARTMENU;
 			System.out.println("Return to Start Menu");
+		} else if (e.getSource() == resumeButton) {
+			DataStore.getInstance().gameState = State.PLAYING;
+		} else if (e.getSource() == quitButton) {
+			DataStore.getInstance().gameState = State.STARTMENU;
 		}
 	}
 
@@ -192,7 +231,8 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	}
 
 	/**
-	 * @param fullscreen True if full screen, false if not.
+	 * @param fullscreen
+	 *            True if full screen, false if not.
 	 */
 	public void setFullscreen(boolean fullscreen) {
 		if (fullscreen == this.fullscreen)
@@ -251,6 +291,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 				if (!playingScreenLoaded) {
 					startMenuLoaded = false;
 					helpMenuLoaded = false;
+					pauseMenuLoaded = false;
 					this.setTitle("Operation Penguin Fish: "
 							+ gamePlayCard.getName());
 					changeCard(gamePlayCard.getName());
@@ -265,6 +306,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 			case STARTMENU:
 				if (!startMenuLoaded) {
 					helpMenuLoaded = false;
+					pauseMenuLoaded = false;
 					this.setTitle("Operation Penguin Fish: "
 							+ startMenuCard.getName());
 					changeCard(startMenuCard.getName());
@@ -298,6 +340,17 @@ public class Window extends JFrame implements Runnable, ActionListener,
 					// System.out.println("Card changed to helpmenu");
 					helpMenuLoaded = true;
 				}
+				break;
+			case PAUSEMENU:
+				if (!pauseMenuLoaded) {
+					playingScreenLoaded = false;
+					this.setTitle("Operation Penguin Fish: "
+							+ pauseMenuCard.getName());
+					changeCard(pauseMenuCard.getName());
+
+					pauseMenuLoaded = true;
+				}
+
 				break;
 			default:
 				break;
