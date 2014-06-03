@@ -79,24 +79,24 @@ public class Camera extends JComponent {
 
 	}
 
-	/**
-	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
-	 * 
-	 */
-	public void addBullet() {
-		if (DataStore.getInstance().periodSinceLastFire >= 3) {
-			//System.out.println("Add bullet");
-			
-			Bullet b = new Bullet(DataStore.getInstance().player.getX(),
-					DataStore.getInstance().player.getY(),
-					DataStore.getInstance().player.getDirection(), 0);
-
-			DataStore.getInstance().bullets.add(b);
-			
-
-			DataStore.getInstance().periodSinceLastFire = 0;
-		}
-	}
+//	/**
+//	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
+//	 * 
+//	 */
+//	public void addBullet() {
+//		if (DataStore.getInstance().periodSinceLastFire >= 3) {
+//			//System.out.println("Add bullet");
+//			
+//			Bullet b = new Bullet(DataStore.getInstance().player.getX(),
+//					DataStore.getInstance().player.getY(),
+//					DataStore.getInstance().player.getDirection(), 0);
+//
+//			DataStore.getInstance().bullets.add(b);
+//			
+//			
+//			DataStore.getInstance().periodSinceLastFire = 0;
+//		}
+//	}
 
 	/**
 	 * Attaches the camera to the position of the player.
@@ -321,7 +321,7 @@ public class Camera extends JComponent {
 		}
 
 		if (buttons.contains(KeyEvent.VK_F))
-			addBullet();
+			DataStore.getInstance().player.addBullet();
 
 		if (buttons.contains(KeyEvent.VK_H)) {
 			DataStore.getInstance().player.displayHelpNotification();

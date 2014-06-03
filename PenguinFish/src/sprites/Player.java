@@ -2,7 +2,6 @@ package sprites;
 
 import main.DataStore;
 import main.Direction;
-
 import graphics.Notification;
 
 import java.awt.Color;
@@ -193,6 +192,63 @@ public class Player extends Sprite {
 
 		if (health <= 0) {
 			dead = true;
+		}
+	}
+
+		/**
+	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
+	 * 
+	 */
+	public void addBullet() {//TODO: Make the bullet spawn in a different place based on the position of the player.
+		if (DataStore.getInstance().periodSinceLastFire >= 3) {
+			//System.out.println("Add bullet");
+			double x = 0;
+			double y = 0;
+			Direction playerDirection = DataStore.getInstance().player.getDirection();
+			double playerXcenter = DataStore.getInstance().player.getX() ;//+ (width/2);
+			double playerYcenter = DataStore.getInstance().player.getY() ;//+ (height/2);
+			
+			
+			int offsetY = height/4;
+			int offsetX = width/4;
+			switch(playerDirection){
+			case NORTH:
+				x = playerXcenter + offsetX;
+				y = playerYcenter - offsetY;
+				break;
+			case NORTHEAST:
+				x = playerXcenter + (2*offsetX);
+				y = playerYcenter + offsetY;
+				break;
+			case EAST:
+				
+				break;
+			case SOUTHEAST:
+				
+				break;
+			case SOUTH:
+				
+				break;
+			case SOUTHWEST:
+				
+				break;
+			case WEST:
+				
+				break;
+			case NORTHWEST:
+			
+				break;
+				
+			default:
+				break;
+			
+			}
+			Bullet b = new Bullet(x,y,playerDirection,0);
+
+			DataStore.getInstance().bullets.add(b);
+			
+			
+			DataStore.getInstance().periodSinceLastFire = 0;
 		}
 	}
 
