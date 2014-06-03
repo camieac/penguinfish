@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +34,7 @@ import main.State;
  */
 @SuppressWarnings("serial")
 public class Window extends JFrame implements Runnable, ActionListener,
-		KeyListener {
+		KeyListener,MouseListener {
 	// JPanel buttons;
 
 	protected Camera camera;
@@ -375,5 +377,35 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	@Override
 	public void keyTyped(KeyEvent evt) {
 
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

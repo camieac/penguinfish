@@ -141,6 +141,10 @@ public class World {
 		return defaultBoundaries;
 	}
 
+	/**
+	 * @param rect The rectangle to create the sprite block in.
+	 * @param spriteImage The image of the sprite that will be arrayed within the rectangle.
+	 */
 	public void createSpriteBlock(Rectangle rect, int spriteImage) {
 		LinkedList<SessileSprite> sessileSpriteType = new LinkedList<SessileSprite>();
 		for (int j = 0; j < rect.height
