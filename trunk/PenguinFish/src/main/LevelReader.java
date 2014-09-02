@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import sprites.SessileSprite;
 
@@ -42,6 +43,8 @@ public class LevelReader {
 			System.out.println("Level file not found: " + levelFile);
 		}
 		prepareReader();
+		
+	
 	}
 
 	/**
@@ -50,6 +53,34 @@ public class LevelReader {
 	public Level getNextLevel() {
 		readLevel();
 		return tempLevels.getLast();
+	}
+	
+	/**
+	 * Returns the previous level by removing the current level from the linked list, then getting the last level from the linked list.
+	 * 
+	 * @return The previous level.
+	 */
+	public Level getPreviousLevel(){
+		removeLevel();
+		try{
+		return tempLevels.getLast();
+		}catch(NoSuchElementException e){
+			System.err.println("Who cares whats's causing this error, good luck solving it in the future! #YOLO");
+		}
+		return new Level();
+		
+	}
+
+	/**
+	 * Remove the latest level in the levels linked list.
+	 */
+	private void removeLevel() {
+		if(!tempLevels.isEmpty()){
+			tempLevels.remove();
+		}else{
+			System.err.println("No levels to remove, this shoudn't happen, meaning the code is broken somewhere.");
+		}
+		
 	}
 
 	/**
