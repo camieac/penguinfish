@@ -55,14 +55,14 @@ public class Player extends Sprite {
 		switch(edgeDirection){			
 		case NORTH:
 			//Top Edge - everything with north in it.
-			System.out.println("TOP EDGE BREACH");
+//			System.out.println("TOP EDGE BREACH");
 //			direction.disableDirection(Direction.NORTHWEST);
 //			direction.disableDirection(Direction.NORTH);
 //			direction.disableDirection(Direction.NORTHEAST);
 			direction.setDirections(true, true, false, false, false, false, false, true);
 			break;
 		case NORTHEAST:
-			System.out.println("TOP RIGHT EDGE BREACH");
+//			System.out.println("TOP RIGHT EDGE BREACH");
 //			direction.disableDirection(Direction.NORTH);
 //			direction.disableDirection(Direction.NORTHEAST);
 //			direction.disableDirection(Direction.EAST);
@@ -70,14 +70,14 @@ public class Player extends Sprite {
 			break;
 		case EAST:
 			 // Right edge - everything with east in it.
-			System.out.println("RIGHT EDGE BREACH");
+//			System.out.println("RIGHT EDGE BREACH");
 //			direction.disableDirection(Direction.NORTHEAST);
 //			direction.disableDirection(Direction.EAST);
 //			direction.disableDirection(Direction.SOUTHEAST);
 			direction.setDirections(false, true, true, true, false, false, false, false);
 			break;
 		case SOUTHEAST:
-			System.out.println("BOTTOM RIGHT EDGE BREACH");
+//			System.out.println("BOTTOM RIGHT EDGE BREACH");
 //			direction.disableDirection(Direction.EAST);
 //			direction.disableDirection(Direction.SOUTHEAST);
 //			direction.disableDirection(Direction.SOUTH);
@@ -85,14 +85,14 @@ public class Player extends Sprite {
 			break;
 		case SOUTH:
 			//Bottom Edge - everything with south in it.
-			System.out.println("BOTTOM EDGE BREACH");
+//			System.out.println("BOTTOM EDGE BREACH");
 //			direction.disableDirection(Direction.SOUTHEAST);
 //			direction.disableDirection(Direction.SOUTH);
 //			direction.disableDirection(Direction.SOUTHWEST);
 			direction.setDirections(false, false, false, true, true, true, false, false);
 			break;
 		case SOUTHWEST:
-			System.out.println("BOTTOM LEFT EDGE BREACH");
+//			System.out.println("BOTTOM LEFT EDGE BREACH");
 //			direction.disableDirection(Direction.SOUTH);
 //			direction.disableDirection(Direction.SOUTHWEST);
 //			direction.disableDirection(Direction.WEST);
@@ -100,14 +100,14 @@ public class Player extends Sprite {
 			break;
 		case WEST:
 			 //Left Edge - everything with west in it
-			System.out.println("LEFT EDGE BREACH");
+//			System.out.println("LEFT EDGE BREACH");
 //			direction.disableDirection(Direction.SOUTHWEST);
 //			direction.disableDirection(Direction.WEST);
 //			direction.disableDirection(Direction.NORTHWEST);
 			direction.setDirections(false, false, false, false, false, true, true, true);
 			break;
 		case NORTHWEST:
-			System.out.println("TOP LEFT EDGE BREACH");
+//			System.out.println("TOP LEFT EDGE BREACH");
 //			direction.disableDirection(Direction.WEST);
 //			direction.disableDirection(Direction.NORTHWEST);
 //			direction.disableDirection(Direction.NORTH);
@@ -205,38 +205,44 @@ public class Player extends Sprite {
 			double x = 0;
 			double y = 0;
 			Direction playerDirection = DataStore.getInstance().player.getDirection();
-			double playerXcenter = DataStore.getInstance().player.getX() ;//+ (width/2);
-			double playerYcenter = DataStore.getInstance().player.getY() ;//+ (height/2);
+			double playerXcenter = DataStore.getInstance().player.getX()+10;//+ (width/2);
+			double playerYcenter = DataStore.getInstance().player.getY()+10;//+ (height/2);
 			
 			
 			int offsetY = height/4;
 			int offsetX = width/4;
 			switch(playerDirection){
 			case NORTH:
-				x = playerXcenter + offsetX;
+				x = playerXcenter;
 				y = playerYcenter - offsetY;
 				break;
 			case NORTHEAST:
-				x = playerXcenter + (2*offsetX);
-				y = playerYcenter + offsetY;
+				x = playerXcenter + offsetX;
+				y = playerYcenter - offsetY;
 				break;
 			case EAST:
-				
+				x = playerXcenter + offsetX;
+				y = playerYcenter;
 				break;
 			case SOUTHEAST:
-				
+				x = playerXcenter + offsetX;
+				y = playerYcenter + offsetY;
 				break;
 			case SOUTH:
-				
+				x = playerXcenter;
+				y = playerYcenter + offsetY;
 				break;
 			case SOUTHWEST:
-				
+				x = playerXcenter - offsetX;
+				y = playerYcenter + offsetY;
 				break;
 			case WEST:
-				
+				x = playerXcenter - offsetX;
+				y = playerYcenter;
 				break;
 			case NORTHWEST:
-			
+				x = playerXcenter - offsetX;
+				y = playerYcenter - offsetY;
 				break;
 				
 			default:

@@ -67,6 +67,24 @@ public class World {
 		addLevelSpriteBlocks();
 		addLevelEnemies();
 	}
+	
+	/**
+	 * Changes the level stored in the datastore to the previous level.
+	 */
+	public void previousLevel() { // TODO: Finish this thing
+		DataStore.getInstance().levelNumber--;
+
+		if(DataStore.getInstance().levelNumber < 0){
+			DataStore.getInstance().levelNumber = 0;
+		}
+		sessileSprites.clear();
+		DataStore.getInstance().enemies.clear();
+		DataStore.getInstance().level = DataStore.getInstance().levelReader
+				.getPreviousLevel();
+		addLevelSprites();
+		addLevelSpriteBlocks();
+		addLevelEnemies();
+	}
 
 	private void addLevelEnemies() {
 		LinkedList<Enemy> lle = DataStore.getInstance().level.getEnemies();
@@ -112,7 +130,7 @@ public class World {
 	 * @return
 	 */
 	public Rectangle[] createDefaultBoundaries() {
-		System.out.println("WIDTH: " + DataStore.getInstance().panelWidth + " HEIGHT: " + DataStore.getInstance().panelHeight);
+		//System.out.println("WIDTH: " + DataStore.getInstance().panelWidth + " HEIGHT: " + DataStore.getInstance().panelHeight);
 		int level = DataStore.getInstance().levelNumber;
 		defaultBoundaries[0] = new Rectangle(
 				-(DataStore.getInstance().panelWidth/ 2),
