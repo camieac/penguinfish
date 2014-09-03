@@ -17,7 +17,8 @@ import sprites.SessileSprite;
 
 /**
  * Represents the viewable area of the world, the camera follows the position of
- * the player. Only sprites within the viewable area are drawn. Handles Key Presses.
+ * the player. Only sprites within the viewable area are drawn. Handles Key
+ * Presses.
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
@@ -79,40 +80,6 @@ public class Camera extends JComponent {
 
 	}
 
-//	/**
-//	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
-//	 * 
-//	 */
-//	public void addBullet() {
-//		if (DataStore.getInstance().periodSinceLastFire >= 3) {
-//			//System.out.println("Add bullet");
-//			
-//			Bullet b = new Bullet(DataStore.getInstance().player.getX(),
-//					DataStore.getInstance().player.getY(),
-//					DataStore.getInstance().player.getDirection(), 0);
-//
-//			DataStore.getInstance().bullets.add(b);
-//			
-//			
-//			DataStore.getInstance().periodSinceLastFire = 0;
-//		}
-//	}
-
-	/**
-	 * Attaches the camera to the position of the player.
-	 */
-	public void attach() {
-		attached = true;
-
-	}
-
-	/**
-	 * Detaches the camera from the player position.
-	 */
-	public void detach() {
-		attached = false;
-	}
-
 	public int getHeight() {
 		return (int) height;
 	}
@@ -161,9 +128,8 @@ public class Camera extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
-		//System.out.println("Painting components");
-		
-		
+		// System.out.println("Painting components");
+
 		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
@@ -209,7 +175,8 @@ public class Camera extends JComponent {
 			}
 			// Draw Bullets
 			for (Bullet b : DataStore.getInstance().bullets) {
-				g.drawImage(b.getImage(), (int) (b.getX() - camX), (int) (b.getY() - camY), null);
+				g.drawImage(b.getImage(), (int) (b.getX() - camX),
+						(int) (b.getY() - camY), null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -218,13 +185,13 @@ public class Camera extends JComponent {
 	}
 
 	private void paintBar(Graphics g) {
-		//Draw a white bar across the top of the screen.
-				Color oldColor = g.getColor();
-				g.setColor(Color.white);
-				g.fillRect(0, 0, DataStore.getInstance().panelWidth, 20);
-				g.fillRect(0, 0, 500, 20);
-				g.setColor(oldColor);
-		
+		// Draw a white bar across the top of the screen.
+		Color oldColor = g.getColor();
+		g.setColor(Color.white);
+		g.fillRect(0, 0, DataStore.getInstance().panelWidth, 20);
+		g.fillRect(0, 0, 500, 20);
+		g.setColor(oldColor);
+
 	}
 
 	/**
@@ -352,7 +319,7 @@ public class Camera extends JComponent {
 				e.printStackTrace();
 			}
 		}
-		if(buttons.contains(KeyEvent.VK_P)){
+		if (buttons.contains(KeyEvent.VK_P)) {
 			DataStore.getInstance().gameState = State.PAUSEMENU;
 		}
 

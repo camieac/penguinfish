@@ -30,7 +30,7 @@ public class Player extends Sprite {
 		health = 100;
 		speed = 5;
 
-		
+
 	}
 
 	private void checkBoundary() {
@@ -51,72 +51,72 @@ public class Player extends Sprite {
 		if(bottomEdgeBreach && rightEdgeBreach) edgeDirection = Direction.SOUTHEAST;
 
 		if(edgeDirection != null){
-		switch(edgeDirection){			
-		case NORTH:
-			//Top Edge - everything with north in it.
-//			System.out.println("TOP EDGE BREACH");
-//			direction.disableDirection(Direction.NORTHWEST);
-//			direction.disableDirection(Direction.NORTH);
-//			direction.disableDirection(Direction.NORTHEAST);
-			direction.setDirections(true, true, false, false, false, false, false, true);
-			break;
-		case NORTHEAST:
-//			System.out.println("TOP RIGHT EDGE BREACH");
-//			direction.disableDirection(Direction.NORTH);
-//			direction.disableDirection(Direction.NORTHEAST);
-//			direction.disableDirection(Direction.EAST);
-			direction.setDirections(true, true, true, false, false, false, false, false);
-			break;
-		case EAST:
-			 // Right edge - everything with east in it.
-//			System.out.println("RIGHT EDGE BREACH");
-//			direction.disableDirection(Direction.NORTHEAST);
-//			direction.disableDirection(Direction.EAST);
-//			direction.disableDirection(Direction.SOUTHEAST);
-			direction.setDirections(false, true, true, true, false, false, false, false);
-			break;
-		case SOUTHEAST:
-//			System.out.println("BOTTOM RIGHT EDGE BREACH");
-//			direction.disableDirection(Direction.EAST);
-//			direction.disableDirection(Direction.SOUTHEAST);
-//			direction.disableDirection(Direction.SOUTH);
-			direction.setDirections(false, false, true, true, true, false, false, false);
-			break;
-		case SOUTH:
-			//Bottom Edge - everything with south in it.
-//			System.out.println("BOTTOM EDGE BREACH");
-//			direction.disableDirection(Direction.SOUTHEAST);
-//			direction.disableDirection(Direction.SOUTH);
-//			direction.disableDirection(Direction.SOUTHWEST);
-			direction.setDirections(false, false, false, true, true, true, false, false);
-			break;
-		case SOUTHWEST:
-//			System.out.println("BOTTOM LEFT EDGE BREACH");
-//			direction.disableDirection(Direction.SOUTH);
-//			direction.disableDirection(Direction.SOUTHWEST);
-//			direction.disableDirection(Direction.WEST);
-			direction.setDirections(false, false, false, false, true, true, true, false);
-			break;
-		case WEST:
-			 //Left Edge - everything with west in it
-//			System.out.println("LEFT EDGE BREACH");
-//			direction.disableDirection(Direction.SOUTHWEST);
-//			direction.disableDirection(Direction.WEST);
-//			direction.disableDirection(Direction.NORTHWEST);
-			direction.setDirections(false, false, false, false, false, true, true, true);
-			break;
-		case NORTHWEST:
-//			System.out.println("TOP LEFT EDGE BREACH");
-//			direction.disableDirection(Direction.WEST);
-//			direction.disableDirection(Direction.NORTHWEST);
-//			direction.disableDirection(Direction.NORTH);
-			direction.setDirections(true, false, false, false, false, false, true, true);
-			break;
-		default:
-			break;
+			switch(edgeDirection){			
+			case NORTH:
+				//Top Edge - everything with north in it.
+				//			System.out.println("TOP EDGE BREACH");
+				//			direction.disableDirection(Direction.NORTHWEST);
+				//			direction.disableDirection(Direction.NORTH);
+				//			direction.disableDirection(Direction.NORTHEAST);
+				direction.setDirections(true, true, false, false, false, false, false, true);
+				break;
+			case NORTHEAST:
+				//			System.out.println("TOP RIGHT EDGE BREACH");
+				//			direction.disableDirection(Direction.NORTH);
+				//			direction.disableDirection(Direction.NORTHEAST);
+				//			direction.disableDirection(Direction.EAST);
+				direction.setDirections(true, true, true, false, false, false, false, false);
+				break;
+			case EAST:
+				// Right edge - everything with east in it.
+				//			System.out.println("RIGHT EDGE BREACH");
+				//			direction.disableDirection(Direction.NORTHEAST);
+				//			direction.disableDirection(Direction.EAST);
+				//			direction.disableDirection(Direction.SOUTHEAST);
+				direction.setDirections(false, true, true, true, false, false, false, false);
+				break;
+			case SOUTHEAST:
+				//			System.out.println("BOTTOM RIGHT EDGE BREACH");
+				//			direction.disableDirection(Direction.EAST);
+				//			direction.disableDirection(Direction.SOUTHEAST);
+				//			direction.disableDirection(Direction.SOUTH);
+				direction.setDirections(false, false, true, true, true, false, false, false);
+				break;
+			case SOUTH:
+				//Bottom Edge - everything with south in it.
+				//			System.out.println("BOTTOM EDGE BREACH");
+				//			direction.disableDirection(Direction.SOUTHEAST);
+				//			direction.disableDirection(Direction.SOUTH);
+				//			direction.disableDirection(Direction.SOUTHWEST);
+				direction.setDirections(false, false, false, true, true, true, false, false);
+				break;
+			case SOUTHWEST:
+				//			System.out.println("BOTTOM LEFT EDGE BREACH");
+				//			direction.disableDirection(Direction.SOUTH);
+				//			direction.disableDirection(Direction.SOUTHWEST);
+				//			direction.disableDirection(Direction.WEST);
+				direction.setDirections(false, false, false, false, true, true, true, false);
+				break;
+			case WEST:
+				//Left Edge - everything with west in it
+				//			System.out.println("LEFT EDGE BREACH");
+				//			direction.disableDirection(Direction.SOUTHWEST);
+				//			direction.disableDirection(Direction.WEST);
+				//			direction.disableDirection(Direction.NORTHWEST);
+				direction.setDirections(false, false, false, false, false, true, true, true);
+				break;
+			case NORTHWEST:
+				//			System.out.println("TOP LEFT EDGE BREACH");
+				//			direction.disableDirection(Direction.WEST);
+				//			direction.disableDirection(Direction.NORTHWEST);
+				//			direction.disableDirection(Direction.NORTH);
+				direction.setDirections(true, false, false, false, false, false, true, true);
+				break;
+			default:
+				break;
+			}
 		}
-		}
-	
+
 		else{
 			direction.enableDirection(Direction.NORTH);
 			direction.enableDirection(Direction.NORTHEAST);
@@ -177,9 +177,9 @@ public class Player extends Sprite {
 		g.drawString("step: " + dx + "," + dy, (int) xcam, (int) ycam - 15);
 		if(!DataStore.getInstance().notifications.isEmpty()){
 			DataStore.getInstance().notifications.getLast().displayPlayerText(g,
-				(int) xcam, (int) ycam);
+					(int) xcam, (int) ycam);
 		}
-		
+
 	}
 
 	/**
@@ -194,20 +194,19 @@ public class Player extends Sprite {
 		}
 	}
 
-		/**
+	/**
 	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
 	 * 
 	 */
-	public void addBullet() {//TODO: Make the bullet spawn in a different place based on the position of the player.
+	public void addBullet() {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
-			//System.out.println("Add bullet");
 			double x = 0;
 			double y = 0;
 			Direction playerDirection = DataStore.getInstance().player.getDirection();
 			double playerXcenter = DataStore.getInstance().player.getX()+10;//+ (width/2);
 			double playerYcenter = DataStore.getInstance().player.getY()+10;//+ (height/2);
-			
-			
+
+
 			int offsetY = height/4;
 			int offsetX = width/4;
 			switch(playerDirection){
@@ -243,16 +242,16 @@ public class Player extends Sprite {
 				x = playerXcenter - offsetX;
 				y = playerYcenter - offsetY;
 				break;
-				
+
 			default:
 				break;
-			
+
 			}
 			Bullet b = new Bullet(x,y,playerDirection,0);
 
 			DataStore.getInstance().bullets.add(b);
-			
-			
+
+
 			DataStore.getInstance().periodSinceLastFire = 0;
 		}
 	}
