@@ -55,6 +55,9 @@ public class World {
 	 * 
 	 */
 	public void newLevel() { // TODO: Finish this thing
+		
+		DataStore.getInstance().levelStartTime = System.currentTimeMillis();//#untested
+		
 		DataStore.getInstance().levelNumber++;
 		if (DataStore.getInstance().levelNumber > DataStore.getInstance().images.backgrounds.length - 1) {
 			DataStore.getInstance().levelNumber = DataStore.getInstance().images.backgrounds.length - 1;
@@ -72,6 +75,7 @@ public class World {
 	 * Changes the level stored in the datastore to the previous level.
 	 */
 	public void previousLevel() { // TODO: Finish this thing
+		DataStore.getInstance().levelStartTime = System.currentTimeMillis(); //#untested
 		DataStore.getInstance().levelNumber--;
 
 		if(DataStore.getInstance().levelNumber < 0){
