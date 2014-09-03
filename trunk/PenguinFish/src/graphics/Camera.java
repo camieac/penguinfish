@@ -245,6 +245,7 @@ public class Camera extends JComponent {
 		g.drawString("Pace: " + DataStore.getInstance().pace, (int) width / 2,
 				10);
 		g.drawString("Life: ", (int) width - 100, 10);
+		g.drawString("Time: " + DataStore.getInstance().currentLevelTime, (int) width - 300, 10);
 	}
 
 	/**
@@ -297,7 +298,9 @@ public class Camera extends JComponent {
 		if (buttons.contains(KeyEvent.VK_L)) {
 
 			DataStore.getInstance().world.newLevel();
-			System.out.println("Level Number incremented");
+//			DataStore.getInstance().levelStartTime = System.currentTimeMillis();
+//			DataStore.getInstance().currentLevelTime = 0;
+			System.out.println("Level Number incremented, time set to 0");
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.
 			try {

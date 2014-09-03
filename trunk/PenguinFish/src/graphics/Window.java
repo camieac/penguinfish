@@ -213,6 +213,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == startButton) {
 			DataStore.getInstance().gameState = State.PLAYING;
+			DataStore.getInstance().levelStartTime = System.currentTimeMillis();//#untested
 		} else if (e.getSource() == helpButton) {
 			DataStore.getInstance().gameState = State.HELPMENU;
 		} else if (e.getSource() == backToStartButton) {

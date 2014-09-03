@@ -126,5 +126,8 @@ public class Game implements Runnable {
 		detectEnemyCollisions();
 		detectBulletCollisions();
 		DataStore.getInstance().world.tick(DataStore.getInstance().player);
+		long currentTimeMillis = System.currentTimeMillis();
+		DataStore.getInstance().currentLevelTime = Math.abs((DataStore.getInstance().levelStartTime - currentTimeMillis)/1000);
+		
 	}
 }
