@@ -54,5 +54,5 @@ public enum State {
 	/**
 	 * The user is presented with a help menu with controls and advice.
 	 */
-	HELPMENU;
+	HELPMENU();
 }

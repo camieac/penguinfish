@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 import main.DataStore;
 import main.State;
@@ -65,8 +66,17 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	protected Toolkit tk;
 	private boolean helpMenuLoaded;
 
-	protected final static String HELPTEXT = "Welcome to PenguinFish Help Page\n"
-			+ "Unfortunately no help is available at this present time. Please try again next week.";
+	protected final static String HELPTEXT = "<h1>Welcome to PenguinFish Help Page</h1>"
+			+ "Unfortunately no help is available at this present time. Please try again next week."
+			+ "<h2>Current Controls</h2>"
+			+ "<ul>"
+			+ "<li>WASD: Player movement</li>"
+			+ "<li>F: Shoot"
+			+ "<li>G: Toggle full screen</li>"
+			+ "<li>H: Display help window during gameplay, hover the player over a sprite and press H for information about it.</li>"
+			+ "<li>L: Next level</li>"
+			+ "<li>K: Previous level</li></ul>"
+			+ "";
 
 	/**
 	 * Sets up the window to 512*512, the standard width and height for this
@@ -144,9 +154,11 @@ public class Window extends JFrame implements Runnable, ActionListener,
 
 	private void setupHelpMenuCard() {
 		helpMenuCard = new JPanel();
-		helpMenuCard.add(new JTextArea(HELPTEXT));
+		JTextPane helpTextPane = new JTextPane();
+		helpTextPane.setContentType("text/html"); 
+		helpTextPane.setText(HELPTEXT);
+		helpMenuCard.add(helpTextPane);
 		helpMenuCard.add(backToStartButton);
-		// helpMenuCard.addKeyListener(this);
 
 	}
 
@@ -285,6 +297,8 @@ public class Window extends JFrame implements Runnable, ActionListener,
 
 	@Override
 	public void run() {
+		/* Constantly monitor the game state and display the correct window for the current state.
+		 */
 		while (true) {
 			switch (DataStore.getInstance().gameState) {
 			case PLAYING:

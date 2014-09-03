@@ -20,27 +20,31 @@ import java.util.NoSuchElementException;
 import sprites.SessileSprite;
 
 /**
+ * Handles all level file reading. Provides level objects on demand.
+ * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
+ * @since September 2014
  * 
  */
 public class LevelReader {
 
-	private String levelFile;
+	private String levelFileLocation;
 	private BufferedReader levelReader;
 	private LinkedList<Level> tempLevels;
 
 	/**
+	 * @param levelFileLocation The location of the level file. Development file location : "res/txt/levels.txt"
 	 * 
 	 */
-	public LevelReader() {
+	public LevelReader(String levelFileLocation) {
 
-		levelFile = "res/txt/levels.txt";
+		this.levelFileLocation = levelFileLocation;
 		tempLevels = new LinkedList<Level>();
 		try {
-			levelReader = new BufferedReader(new FileReader(levelFile));
+			levelReader = new BufferedReader(new FileReader(levelFileLocation));
 		} catch (Exception e) {
-			System.out.println("Level file not found: " + levelFile);
+			System.out.println("Level file not found: " + levelFileLocation);
 		}
 		prepareReader();
 		

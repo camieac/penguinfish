@@ -20,7 +20,7 @@ public class Level {
 	/**
 	 * This is here for no reason, someone will delete it eventually.
 	 */
-	private static final long serialVersionUID = 6846891938893773222L;
+	//private static final long serialVersionUID = 6846891938893773222L;
 	/**
 	 * The description of the level.
 	 */

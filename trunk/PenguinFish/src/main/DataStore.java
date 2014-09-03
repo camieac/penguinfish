@@ -81,7 +81,7 @@ public class DataStore {
 	public double maxHeight;
 
 	/**
-	 * 
+	 * A linked list of all the notifications for the current game.
 	 */
 	public LinkedList<Notification> notifications;
 	/**
@@ -133,36 +133,20 @@ public class DataStore {
 
 	}
 
-	/**
-	 * 
-	 */
-	// public void setEverything() { TODO:Not required? Replaced by
-	// setInitialFields and setGameFields
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	// System.out.println("Everything has been setup in DataStore.");
-	//
-	//
-	//
-	//
-	// }
+
 	/**
 	 * When the game is first opened, not all of DataStore's fields are
 	 * required, so this method initialises the required fields to run the
 	 * stating animation and display the start menu.
 	 */
 	public void setInitialFields() {
-		// these should be in setGameFields
-
+		/*The default window size is set here*/
 		panelWidth = 1280;
 		panelHeight = 750;
 
 		images = new Images();
+		
+		/*The initial game state is the starting animation.*/
 		gameState = State.STARTINGANIMATION;
 		gameStarted = false;
 	}
@@ -171,7 +155,7 @@ public class DataStore {
 	 * Sets up all the fields used by the game class.
 	 */
 	public void setGameFields() {
-		levelReader = new LevelReader();
+		levelReader = new LevelReader("res/txt/levels.txt");
 		level = levelReader.getNextLevel();
 
 		maxWidth = images.getBackground(levelNumber).getWidth();
