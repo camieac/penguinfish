@@ -20,6 +20,11 @@ import sprites.SessileSprite;
  */
 
 public class DataStore {
+	
+	/**
+	 * The time in the game in seconds. Used to trigger time-based events. The time is reset at the start of each level.
+	 */
+	public int time;
 	/**
 	 * The instance of Datastore that is used.
 	 */

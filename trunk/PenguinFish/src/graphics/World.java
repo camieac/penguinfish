@@ -194,7 +194,7 @@ public class World {
 	}
 
 	/**
-	 * @return
+	 * @return A Linked list containing all the sessile sprites in the world.
 	 */
 	public LinkedList<SessileSprite> getSessileSprites() {
 		LinkedList<SessileSprite> ll = new LinkedList<SessileSprite>();

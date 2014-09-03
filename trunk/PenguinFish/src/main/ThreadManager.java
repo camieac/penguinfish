@@ -21,7 +21,6 @@ public class ThreadManager {
 		new ThreadManager();
 		boolean gameStarted = false;
 		while(true){
-			//System.out.println(DataStore.getInstance().gameState + ",   " + gameStarted);
 			
 			if(!gameStarted && DataStore.getInstance().gameState == State.PLAYING){
 				gameStarted = true;
