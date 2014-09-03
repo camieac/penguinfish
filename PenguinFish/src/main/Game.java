@@ -18,6 +18,9 @@ public class Game implements Runnable {
 	// protected int numberOfEnemies;
 	protected Random rand;
 
+	/**
+	 * 
+	 */
 	public Game() {
 		rand = new Random();
 		// numberOfEnemies = 300;

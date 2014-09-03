@@ -130,7 +130,7 @@ public class Camera extends JComponent {
 	 *            Width of the object being checked.
 	 * @param h
 	 *            Height of the object being checked.
-	 * @return
+	 * @return Whether a sprite is viewable or not.
 	 */
 	public boolean isInFrame(double x, double y, double w, double h) {
 		if (x + w < camX)

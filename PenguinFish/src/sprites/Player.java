@@ -27,7 +27,6 @@ public class Player extends Sprite {
 	 */
 	public Player(int x, int y, Direction d, int i) {
 		super(x, y, d, i);
-
 		health = 100;
 		speed = 5;
 

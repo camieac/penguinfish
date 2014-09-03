@@ -3,6 +3,7 @@ package graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.File;
@@ -36,7 +37,7 @@ public class Images {
 			return map;
 		}
 	}
-	protected static BufferedImage toCompatibleImage(BufferedImage image) {
+	protected static BufferedImage toCompatibleImage(BufferedImage image) throws HeadlessException {
 		GraphicsConfiguration gfx_config = GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 				.getDefaultConfiguration();
@@ -151,7 +152,7 @@ public class Images {
 	 * @param camY
 	 * @param width
 	 * @param height
-	 * @return
+	 * @return The image viewable by the camera.
 	 */
 	public BufferedImage getDisplayableBackground(double camX, double camY,
 			double width, double height) {
@@ -238,6 +239,20 @@ public class Images {
 			return sessileSpriteImages[sessileSpriteImages.length - 1];
 		}
 		return sessileSpriteImages[i];
+	}
+	/**
+	 * @return The image of the sword item.
+	 */
+	public BufferedImage getSword() { //TODO: Make a sword image.
+	
+		return null;
+	}
+	/**
+	 * @return The image of the dagger item.
+	 */
+	public BufferedImage getDagger() {
+		// TODO: Get a dagger image.
+		return null;
 	}
 
 }
