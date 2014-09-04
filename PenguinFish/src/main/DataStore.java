@@ -171,11 +171,12 @@ public class DataStore {
 	 */
 	public void setGameFields() {
 		levelReader = new LevelReader("res/txt/levels.txt");
-		level = levelReader.getNextLevel();
+		levelNumber = 0;
+		level = levelReader.getLevel(levelNumber);
 
 		maxWidth = images.getBackground(levelNumber).getWidth();
 		maxHeight = images.getBackground(levelNumber).getHeight();
-		levelNumber = 0;
+		
 		baseSpeed = 5;
 		periodSinceLastFire = 0;
 		enemies = new LinkedList<Enemy>();

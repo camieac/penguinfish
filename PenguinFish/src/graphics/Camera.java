@@ -307,7 +307,7 @@ public class Camera extends JComponent {
 		}
 		if (buttons.contains(KeyEvent.VK_L)) {
 
-			DataStore.getInstance().world.newLevel();
+			DataStore.getInstance().world.nextLevel();
 //			DataStore.getInstance().levelStartTime = System.currentTimeMillis();
 //			DataStore.getInstance().currentLevelTime = 0;
 			System.out.println("Level Number incremented, time set to 0");
