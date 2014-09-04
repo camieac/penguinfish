@@ -97,6 +97,7 @@ public class World {
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();
+		addLevelNotifications();
 	}
 
 	private void addLevelEnemies() {
@@ -229,6 +230,9 @@ public class World {
 				// player.getDirection().enableDirection(player.getDirection());
 				// player.getDirection().clearDisabledDirections();
 			}
+		}
+		for(Notification n : DataStore.getInstance().notifications){
+			n.tick();
 		}
 	}
 }

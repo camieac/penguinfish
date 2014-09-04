@@ -143,7 +143,12 @@ public class Camera extends JComponent {
 				camY = DataStore.getInstance().player.getY() - height / 2;
 				// g.drawString("Camera x: " + camX + ", Y: " + camY, 100, 100);
 			}
-
+			for(Notification n : DataStore.getInstance().notifications){
+				if(n.isVisible()){
+					n.displayNotification(g);
+				}
+			}
+			
 			// Draw the enemies in the correct position in the world
 			for (Enemy enemy : DataStore.getInstance().enemies) {
 				if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),

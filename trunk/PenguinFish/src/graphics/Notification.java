@@ -23,6 +23,8 @@ public class Notification {
 
 	int fontHeight;
 
+	int xPosition,yPosition;
+	
 	String[] lines;
 
 	int margin;
@@ -37,7 +39,7 @@ public class Notification {
 
 	long timeOfAppearance;
 	int xOffset, yOffset;
-	boolean visible;
+	private boolean visible;
 	/**
 	 * @param text
 	 *            The text to be displayed in the notification box.
@@ -67,6 +69,9 @@ public class Notification {
 		lines = wrapStringToArray(text);
 		maxLength = 5;
 		visible = false;
+		
+		xPosition = 500;
+		yPosition = 500;
 
 	}
 
@@ -226,15 +231,21 @@ public class Notification {
 	 * Every tick, this method is triggered by the game class. Checks if the notification should be displayed.
 	 */
 	public void tick(){
-		if(DataStore.getInstance().currentLevelTime >= timeOfAppearance){
+		if(timeToDisplay() && !timeToDisappear()){
 			//Display notification
 			visible = true;
-			System.out.println("Notification visible");
 		}else{
 			//Hide notication
 			visible = false;
-			System.out.println("Notification invisible");
 		}
+	}
+
+	private boolean timeToDisappear() {
+		return DataStore.getInstance().currentLevelTime - timeOfAppearance >= durationOfAppearance;
+	}
+
+	private boolean timeToDisplay() {
+		return DataStore.getInstance().currentLevelTime >= timeOfAppearance;
 	}
 
 	/**
@@ -247,6 +258,42 @@ public class Notification {
 
 	public void setVisible(boolean b) {
 		visible = b;
+		
+	}
+
+	/**
+	 * @param g
+	 */
+	public void displayNotification(Graphics g) {
+		setFontHeight(g);
+
+		Rectangle captionRect = stringToCaptionRectangle(g, text);
+
+		Color oldColour = g.getColor();
+		g.setColor(backColour);
+		g.fillRoundRect(xPosition, yPosition, captionRect.width, captionRect.height, 10, 10);
+		g.setColor(textColour);
+		g.drawRoundRect(xPosition, yPosition, captionRect.width, captionRect.height, 10, 10);
+
+		// lines.
+		int i = 0;
+		for (String s : lines) {
+			g.drawString(s, xPosition + margin, (yPosition + (fontHeight * i)) + margin + 10);
+			i++;
+		}
+		g.setColor(oldColour);
+
+	
+		
+	}
+
+	/**
+	 * @param xPosition2
+	 * @param yPosition2
+	 */
+	public void setPosition(int xPosition2, int yPosition2) {
+		this.xPosition = xPosition2;
+		this.yPosition = yPosition2;
 		
 	}
 }

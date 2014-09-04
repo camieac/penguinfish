@@ -202,10 +202,11 @@ public class Level {
 	 * @param displayTime The time in milliseconds that the notification should display at.
 	 * @param displayDuration The length of time in milliseconds that the notification should display for.
 	 */
-	public void addNotification(String text, Color textColour, Color backColour, long displayTime, long displayDuration) {
+	public void addNotification(String text, Color textColour, Color backColour, long displayTime, long displayDuration, int xPosition, int yPosition) {
 		Notification n = new Notification(text,textColour,backColour);
 		n.setTimeOfAppearance(displayTime);
 		n.setDurationOfAppearance(displayDuration);
+		n.setPosition(xPosition,yPosition);
 		notifications.add(n);
 		
 	}
