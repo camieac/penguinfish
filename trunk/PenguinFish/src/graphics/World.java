@@ -62,7 +62,7 @@ public class World {
 	/**
 	 * 
 	 */
-	public void newLevel() { // TODO: Finish this thing
+	public void nextLevel() { // TODO: Finish this thing
 		
 		DataStore.getInstance().levelStartTime = System.currentTimeMillis();//#untested
 		
@@ -73,7 +73,7 @@ public class World {
 		sessileSprites.clear();
 		DataStore.getInstance().enemies.clear();
 		DataStore.getInstance().level = DataStore.getInstance().levelReader
-				.getNextLevel();
+				.getLevel(DataStore.getInstance().levelNumber);
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();
@@ -93,7 +93,7 @@ public class World {
 		sessileSprites.clear();
 		DataStore.getInstance().enemies.clear();
 		DataStore.getInstance().level = DataStore.getInstance().levelReader
-				.getPreviousLevel();
+				.getLevel(DataStore.getInstance().levelNumber);
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();

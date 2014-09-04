@@ -32,7 +32,8 @@ public class LevelReader {
 
 	private String levelFileLocation;
 	private BufferedReader levelReader;
-	private LinkedList<Level> tempLevels;
+	private LinkedList<Level> levels;
+	private boolean finishedReading;
 
 	/**
 	 * @param levelFileLocation The location of the level file. Development file location : "res/txt/levels.txt"
@@ -41,63 +42,67 @@ public class LevelReader {
 	public LevelReader(String levelFileLocation) {
 
 		this.levelFileLocation = levelFileLocation;
-		tempLevels = new LinkedList<Level>();
+		levels = new LinkedList<Level>();
 		try {
-			levelReader = new BufferedReader(new FileReader(levelFileLocation));
+			levelReader = new BufferedReader(new FileReader(this.levelFileLocation));
 		} catch (Exception e) {
-			System.out.println("Level file not found: " + levelFileLocation);
+			System.out.println("Level file not found: " + this.levelFileLocation);
 		}
 		prepareReader();
+		finishedReading = false;
+		while(!finishedReading){
+			System.out.println("Reading a level...");
+			readLevel();
+		}
+		System.out.println("Done reading levels");
+		try {
+			levelReader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	
 	}
 
-	/**
-	 * @return The next level of the game.
-	 */
-	public Level getNextLevel() {
-		readLevel();
-		return tempLevels.getLast();
-	}
+//	/**
+//	 * @return The next level of the game.
+//	 */
+//	public Level getNextLevel() {
+//		return tempLevels.getLast();
+//	}
 	
-	/**
-	 * Returns the previous level by removing the current level from the linked list, then getting the last level from the linked list.
-	 * 
-	 * @return The previous level.
-	 */
-	public Level getPreviousLevel(){
-		removeLevel();
-		try{
-		return tempLevels.getLast();
-		}catch(NoSuchElementException e){
-			System.err.println("Who cares whats's causing this error, good luck solving it in the future! #YOLO");
-		}
-		return new Level();
-		
-	}
+//	/**
+//	 * Returns the previous level by removing the current level from the linked list, then getting the last level from the linked list.
+//	 * 
+//	 * @return The previous level.
+//	 */
+//	public Level getPreviousLevel(){
+//		
+//	}
 
 	/**
 	 * Remove the latest level in the levels linked list.
 	 */
-	private void removeLevel() {
-		if(!tempLevels.isEmpty()){
-			tempLevels.remove();
-		}else{
-			System.err.println("No levels to remove, this shoudn't happen, meaning the code is broken somewhere.");
-		}
-		
-	}
+//	private void removeLevel() {
+//		if(!tempLevels.isEmpty()){
+//			tempLevels.remove();
+//		}else{
+//			System.err.println("No levels to remove, this shoudn't happen, meaning the code is broken somewhere.");
+//		}
+//		
+//	}
+
+//	/**
+//	 * 
+//	 */
+//	public void loadLevel() {
+//		DataStore.getInstance().levelNumber++;
+//
+//	}
 
 	/**
-	 * 
-	 */
-	public void loadLevel() {
-		DataStore.getInstance().levelNumber++;
-
-	}
-
-	/**
-	 * 
+	 * Prepare the BufferedReader by finding the start of the level data in the level file.
 	 */
 	public void prepareReader() {
 		String line;
@@ -129,8 +134,8 @@ public class LevelReader {
 			boolean inSpriteBlock = false;
 			boolean inEnemies = false;
 			boolean inNotifications = false;
-			while ((line = levelReader.readLine()) != null && !endOfLevel) {
-
+			while (!endOfLevel) {//(line = levelReader.readLine()) != null && 
+				line = levelReader.readLine();//this or above comments
 				if (line.contains("<level>")) {
 					inLevel = true;
 					level = new Level();
@@ -138,9 +143,9 @@ public class LevelReader {
 
 				} else if (line.contains("</level>") && inLevel) {
 					inLevel = false;
-					tempLevels.add(level);
+					levels.add(level);
 					endOfLevel = true;
-					System.out.println(level.toString());
+					System.out.println("The following level has been added to the list:\n" + level.toString());
 					level = new Level();
 				} else if (line.contains("<name>") && !inName) {
 					inName = true;
@@ -204,7 +209,7 @@ public class LevelReader {
 				} else if (inNotifications){
 					String[] data = line.split(",");
 					String text = data[0].trim();
-					System.out.println("Incooming data: " + data[1] + ", " + data[2]);
+	
 					
 					Color textColour = null;
 					Color backColour = null;
@@ -213,9 +218,9 @@ public class LevelReader {
 					    Field fieldBack = Class.forName("java.awt.Color").getField(data[2].trim());
 					    textColour = (Color)fieldText.get(null);
 					    backColour = (Color)fieldBack.get(null);
-					    System.out.println("Colours: (text/background) " + textColour.toString() + "/" + backColour.toString());
+			
 					} catch (NullPointerException e) {
-						System.err.println("Colours set to default, cannot rean input colours.");
+						System.err.println("Colours set to default, cannot read input colours.");
 					    textColour = Color.BLACK;
 					    backColour = Color.WHITE;
 					}catch(Exception e){
@@ -223,9 +228,7 @@ public class LevelReader {
 						textColour = Color.BLACK;
 					    backColour = Color.WHITE;
 					}
-//					Color textColour = Color.getColor(data[1].trim());
-//					Color backColour = Color.getColor(data[2].trim());
-					System.out.println("Colours: (text/background) " + textColour.toString() + "/" + backColour.toString());
+
 					long displayTime = Long.parseLong(data[3].trim());
 					long displayDuration = Long.parseLong(data[4].trim());
 					int xPosition = Integer.parseInt(data[5].trim());
@@ -236,11 +239,26 @@ public class LevelReader {
 				}
 
 			}
+			
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.err.println("IO Exception, must be end of level file. Finished reading");
+		//	finishedReading = true;
+		}catch(NullPointerException e){
+			System.err.println("End of level file. Finished reading.");
+			finishedReading = true;
 		}
 
+	}
+
+	/**
+	 * Get a level from the levelReader's list of levels.
+	 * @param levelNumber The level number to return.
+	 * @return The level specified.
+	 */
+	public Level getLevel(int levelNumber) {
+		return levels.get(levelNumber);
 	}
 
 
