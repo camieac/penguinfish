@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -203,13 +204,35 @@ public class LevelReader {
 				} else if (inNotifications){
 					String[] data = line.split(",");
 					String text = data[0].trim();
-					Color textColour = Color.getColor(data[1].trim());
-					Color backColour = Color.getColor(data[2].trim());
+					System.out.println("Incooming data: " + data[1] + ", " + data[2]);
+					
+					Color textColour = null;
+					Color backColour = null;
+					try {
+					    Field fieldText = Class.forName("java.awt.Color").getField(data[1].trim());
+					    Field fieldBack = Class.forName("java.awt.Color").getField(data[2].trim());
+					    textColour = (Color)fieldText.get(null);
+					    backColour = (Color)fieldBack.get(null);
+					    System.out.println("Colours: (text/background) " + textColour.toString() + "/" + backColour.toString());
+					} catch (NullPointerException e) {
+						System.err.println("Colours set to default, cannot rean input colours.");
+					    textColour = Color.BLACK;
+					    backColour = Color.WHITE;
+					}catch(Exception e){
+						System.err.println("Something went wrong while reading colours from level input file. Default colours used.");
+						textColour = Color.BLACK;
+					    backColour = Color.WHITE;
+					}
+//					Color textColour = Color.getColor(data[1].trim());
+//					Color backColour = Color.getColor(data[2].trim());
+					System.out.println("Colours: (text/background) " + textColour.toString() + "/" + backColour.toString());
 					long displayTime = Long.parseLong(data[3].trim());
 					long displayDuration = Long.parseLong(data[4].trim());
+					int xPosition = Integer.parseInt(data[5].trim());
+					int yPosition = Integer.parseInt(data[6].trim());
 					//TODO: Add x position, y postion and display time.
 
-					level.addNotification(text, textColour, backColour,displayTime,displayDuration);
+					level.addNotification(text, textColour, backColour,displayTime,displayDuration,xPosition,yPosition);
 				}
 
 			}
