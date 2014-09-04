@@ -4,6 +4,8 @@ import graphics.Images;
 import graphics.Notification;
 import graphics.World;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import sprites.Bullet;
@@ -20,7 +22,10 @@ import sprites.SessileSprite;
  */
 
 public class DataStore {
-	
+	/**
+	 * A help notification. Generated when the player presses H.
+	 */
+	public Notification helpNotification;
 	/**
 	 * The time in the game in milliseconds. Used to trigger time-based events. The time is reset at the start of each level. Set to 0 for safety.
 	 */
@@ -93,7 +98,7 @@ public class DataStore {
 	/**
 	 * A linked list of all the notifications for the current game.
 	 */
-	public LinkedList<Notification> notifications;
+	public ArrayList<Notification> notifications;
 	/**
 	 * The current pace of the game. It determined how fast everything moves.
 	 * TODO:Not required? Because of baseSpeed?
@@ -174,6 +179,8 @@ public class DataStore {
 		baseSpeed = 5;
 		periodSinceLastFire = 0;
 		enemies = new LinkedList<Enemy>();
+		notifications = new ArrayList<Notification>();
+		helpNotification = new Notification("No Help Available", Color.BLACK, Color.WHITE);
 		player = new Player(200, 200, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
@@ -181,6 +188,6 @@ public class DataStore {
 		cameraAttachedToPlayer = false;
 		world = new World();
 
-		notifications = new LinkedList<Notification>();
+		
 	}
 }

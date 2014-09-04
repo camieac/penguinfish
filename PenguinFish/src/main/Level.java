@@ -199,9 +199,21 @@ public class Level {
 	 * @param text The text to be displayed in the notification.
 	 * @param textColour The text colour.
 	 * @param backColour The background colour.
+	 * @param displayTime The time in milliseconds that the notification should display at.
+	 * @param displayDuration The length of time in milliseconds that the notification should display for.
 	 */
-	public void addNotification(String text, Color textColour, Color backColour) {
-		notifications.add(new Notification(text,textColour,backColour));
+	public void addNotification(String text, Color textColour, Color backColour, long displayTime, long displayDuration) {
+		Notification n = new Notification(text,textColour,backColour);
+		n.setTimeOfAppearance(displayTime);
+		n.setDurationOfAppearance(displayDuration);
+		notifications.add(n);
 		
+	}
+
+	/**
+	 * @return An arraylist of notifications for this level.
+	 */
+	public ArrayList<Notification> getNotifications() {
+		return notifications;
 	}
 }

@@ -35,6 +35,14 @@ public class World {
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();
+		addLevelNotifications();
+	}
+
+	private void addLevelNotifications() {
+		ArrayList<Notification> arr = DataStore.getInstance().level.getNotifications();
+		DataStore.getInstance().notifications.clear();
+		DataStore.getInstance().notifications.addAll(arr);
+		
 	}
 
 	/**
@@ -69,6 +77,7 @@ public class World {
 		addLevelSprites();
 		addLevelSpriteBlocks();
 		addLevelEnemies();
+		addLevelNotifications();
 	}
 	
 	/**
