@@ -205,9 +205,11 @@ public class LevelReader {
 					String text = data[0].trim();
 					Color textColour = Color.getColor(data[1].trim());
 					Color backColour = Color.getColor(data[2].trim());
+					long displayTime = Long.parseLong(data[3].trim());
+					long displayDuration = Long.parseLong(data[4].trim());
 					//TODO: Add x position, y postion and display time.
 
-					level.addNotification(text, textColour, backColour);
+					level.addNotification(text, textColour, backColour,displayTime,displayDuration);
 				}
 
 			}

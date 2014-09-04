@@ -293,7 +293,12 @@ public class Camera extends JComponent {
 
 		if (buttons.contains(KeyEvent.VK_H)) {
 			DataStore.getInstance().player.displayHelpNotification();
-
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		if (buttons.contains(KeyEvent.VK_L)) {
 

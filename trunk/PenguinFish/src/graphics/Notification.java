@@ -8,6 +8,8 @@ import java.text.BreakIterator;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import main.DataStore;
+
 /**
  * A small information box that appears at points in the game to give useful
  * information.
@@ -17,21 +19,25 @@ import java.util.StringTokenizer;
  * 
  */
 public class Notification {
+	long durationOfAppearance;
+
 	int fontHeight;
+
 	String[] lines;
+
 	int margin;
+
 	int maxCaptionHeight;
 	int maxCaptionWidth;
-
 	int maxLength;
 	int numberOfRows;
 	String text;
-
 	Color textColour, backColour;
 	int textWidth, textHeight;
 
+	long timeOfAppearance;
 	int xOffset, yOffset;
-
+	boolean visible;
 	/**
 	 * @param text
 	 *            The text to be displayed in the notification box.
@@ -60,6 +66,7 @@ public class Notification {
 		fontHeight = 0;
 		lines = wrapStringToArray(text);
 		maxLength = 5;
+		visible = false;
 
 	}
 
@@ -94,9 +101,24 @@ public class Notification {
 		g.setColor(oldColour);
 
 	}
+	public long getDurationOfAppearance() {
+		return durationOfAppearance;
+	}
+
+	public long getTimeOfAppearance() {
+		return timeOfAppearance;
+	}
+
+	public void setDurationOfAppearance(long durationOfAppearance) {
+		this.durationOfAppearance = durationOfAppearance;
+	}
 
 	private void setFontHeight(Graphics g) {
 		fontHeight = g.getFontMetrics().getHeight();
+	}
+
+	public void setTimeOfAppearance(long timeOfAppearance) {
+		this.timeOfAppearance = timeOfAppearance;
 	}
 
 	private Rectangle stringToCaptionRectangle(Graphics g, String text) {
@@ -198,5 +220,33 @@ public class Notification {
 		String[] s = new String[lines.size()];
 
 		return lines.toArray(s);
+	}
+	
+	/**
+	 * Every tick, this method is triggered by the game class. Checks if the notification should be displayed.
+	 */
+	public void tick(){
+		if(DataStore.getInstance().currentLevelTime >= timeOfAppearance){
+			//Display notification
+			visible = true;
+			System.out.println("Notification visible");
+		}else{
+			//Hide notication
+			visible = false;
+			System.out.println("Notification invisible");
+		}
+	}
+
+	/**
+	 * @return Whether the notification should be visible or not.
+	 */
+	public boolean isVisible() {
+		
+		return visible;
+	}
+
+	public void setVisible(boolean b) {
+		visible = b;
+		
 	}
 }

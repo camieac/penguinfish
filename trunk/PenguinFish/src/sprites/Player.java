@@ -133,13 +133,19 @@ public class Player extends Sprite {
 	 * 
 	 */
 	public void displayHelpNotification() {
+		
+		if(DataStore.getInstance().helpNotification.isVisible()){
+			DataStore.getInstance().helpNotification.setVisible(false);
+		}else{
+			
 		boolean overSessileSprite = false;
 		f1: for (SessileSprite s : DataStore.getInstance().world
 				.getSessileSprites()) {
 			if (collide(s.getBounds())) {
 				Notification n = new Notification("This is a sessile sprite\n"
 						+ s.toString(), Color.black, Color.white);
-				DataStore.getInstance().notifications.add(n);
+				n.setVisible(true);
+				DataStore.getInstance().helpNotification = n;
 				overSessileSprite = true;
 				break f1;
 
@@ -150,7 +156,8 @@ public class Player extends Sprite {
 			if (collide(e.getBounds())) {
 				Notification n = new Notification("This is an enemy\n"
 						+ e.toString(), Color.black, Color.white);
-				DataStore.getInstance().notifications.add(n);
+				n.setVisible(true);
+				DataStore.getInstance().helpNotification = n;
 				System.out.println("Help Notification for Enemy");
 				overEnemy = true;
 				break f2;
@@ -159,7 +166,9 @@ public class Player extends Sprite {
 
 		}
 		if (!overSessileSprite && !overEnemy) {
-			DataStore.getInstance().notifications.clear();
+			DataStore.getInstance().helpNotification = new Notification("No Help Available", Color.RED, Color.WHITE);
+			DataStore.getInstance().helpNotification.setVisible(true);
+		}
 		}
 
 	}
@@ -175,8 +184,8 @@ public class Player extends Sprite {
 				(int) xcam, (int) ycam, null);
 		g.drawString("pos: " + x + "," + y, (int) xcam, (int) ycam);
 		g.drawString("step: " + dx + "," + dy, (int) xcam, (int) ycam - 15);
-		if(!DataStore.getInstance().notifications.isEmpty()){
-			DataStore.getInstance().notifications.getLast().displayPlayerText(g,
+		if(DataStore.getInstance().helpNotification.isVisible()){
+			DataStore.getInstance().helpNotification.displayPlayerText(g,
 					(int) xcam, (int) ycam);
 		}
 

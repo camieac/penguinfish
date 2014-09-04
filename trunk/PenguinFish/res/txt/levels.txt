@@ -32,7 +32,7 @@ begin:
 		450,150,6,1
 	</enemies>
 	<notifications>
-	Hello my name is Elvador King of the Hills...,Black,White
+	Hello my name is Elvador King of the Hills...,Black,White,5,10
 	</notifications>
 </level>
 
