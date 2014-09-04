@@ -132,9 +132,14 @@ public class Camera extends JComponent {
 
 		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
+		
+		
+		
+		
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
 		g.setColor(Color.BLACK);
+		
 		DataStore.getInstance().world.draw(g, camX, camY);
 		try {
 			// If attached make the cam x and y be relative to the player's
@@ -143,11 +148,7 @@ public class Camera extends JComponent {
 				camY = DataStore.getInstance().player.getY() - height / 2;
 				// g.drawString("Camera x: " + camX + ", Y: " + camY, 100, 100);
 			}
-			for(Notification n : DataStore.getInstance().notifications){
-				if(n.isVisible()){
-					n.displayNotification(g);
-				}
-			}
+			
 			
 			// Draw the enemies in the correct position in the world
 			for (Enemy enemy : DataStore.getInstance().enemies) {
@@ -183,10 +184,24 @@ public class Camera extends JComponent {
 				g.drawImage(b.getImage(), (int) (b.getX() - camX),
 						(int) (b.getY() - camY), null);
 			}
+			
+			/*Draw the inventory above everything*/
+			drawInventory(g);
+			/*Notifications appear above inventory*/
+			for(Notification n : DataStore.getInstance().notifications){
+				if(n.isVisible()){
+					n.displayNotification(g);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void drawInventory(Graphics g) {
+		DataStore.getInstance().player.getInventory().displayInventory(g);
+		
 	}
 
 	private void paintBar(Graphics g) {
@@ -254,7 +269,7 @@ public class Camera extends JComponent {
 	}
 
 	/**
-	 * Handles all key presses.+ (height/2)
+	 * Handles all key presses.
 	 * 
 	 */
 	protected void processKeys() {
@@ -288,7 +303,6 @@ public class Camera extends JComponent {
 			DataStore.getInstance().player.setDirection(Direction.EAST);
 			moveKeyPressed = true;
 		}
-		// System.out.println("    Move: " + moveKeyPressed);
 		if (moveKeyPressed) {
 			DataStore.getInstance().player.move();
 		}
@@ -308,13 +322,10 @@ public class Camera extends JComponent {
 		if (buttons.contains(KeyEvent.VK_L)) {
 
 			DataStore.getInstance().world.nextLevel();
-//			DataStore.getInstance().levelStartTime = System.currentTimeMillis();
-//			DataStore.getInstance().currentLevelTime = 0;
-			System.out.println("Level Number incremented, time set to 0");
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

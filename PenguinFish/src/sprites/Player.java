@@ -2,6 +2,7 @@ package sprites;
 
 import main.DataStore;
 import main.Direction;
+import main.Inventory;
 import graphics.Notification;
 
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.awt.Graphics;
 @SuppressWarnings("serial")
 public class Player extends Sprite {
 	protected int distance;
+	private Inventory inventory;
 
 	/**
 	 * @param x
@@ -29,6 +31,7 @@ public class Player extends Sprite {
 		super(x, y, d, i);
 		health = 100;
 		speed = 5;
+		inventory = new Inventory();
 
 
 	}
@@ -263,6 +266,14 @@ public class Player extends Sprite {
 
 			DataStore.getInstance().periodSinceLastFire = 0;
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public Inventory getInventory() {
+		return inventory;
+		
 	}
 
 }
