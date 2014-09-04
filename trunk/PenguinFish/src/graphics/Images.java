@@ -52,7 +52,7 @@ public class Images {
 	}
 
 	protected BufferedImage fullHeart, emptyHeart, sessileSpriteSheet,
-			playerSpriteSheet, enemiesSpriteSheet;
+			playerSpriteSheet, enemiesSpriteSheet,itemsSpriteSheet;
 
 	protected BufferedImage[] players, backgrounds, enemies, bullets,
 			sessileSpriteImages,titleImages;
@@ -76,6 +76,7 @@ public class Images {
 		sessileSpriteSheet = getImage("res/img/sessileSprites.png");
 		playerSpriteSheet = getImage("res/img/player.png");
 		enemiesSpriteSheet = getImage("res/img/enemies.png");
+		itemsSpriteSheet = getImage("res/img/items.png");
 		titleImages[0] = getImage("res/img/title.png");
 		titleImages[1] = getImage("res/img/cooltext.png");
 		for (int i = 0; i < 4; i++) {
@@ -245,14 +246,14 @@ public class Images {
 	 */
 	public BufferedImage getSword() { //TODO: Make a sword image.
 	
-		return null;
+		return itemsSpriteSheet.getSubimage(0, 0, 64, 64);
 	}
 	/**
 	 * @return The image of the dagger item.
 	 */
 	public BufferedImage getDagger() {
-		// TODO: Get a dagger image.
-		return null;
+		
+		return itemsSpriteSheet.getSubimage(64, 0, 64, 64);
 	}
 
 }
