@@ -32,6 +32,9 @@ public enum Item {
 		this.value = value;
 	}
 
+	/**
+	 * @param g
+	 */
 	public void draw(Graphics g) {
 		g.drawImage(this.image,xPosition,yPosition, null);
 		
