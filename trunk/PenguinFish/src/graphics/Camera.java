@@ -308,9 +308,11 @@ public class Camera extends JComponent {
 		}
 
 		if (buttons.contains(KeyEvent.VK_F))
+			//Fire a bullet
 			DataStore.getInstance().player.addBullet();
 
 		if (buttons.contains(KeyEvent.VK_H)) {
+			//Display help notification
 			DataStore.getInstance().player.displayHelpNotification();
 			try {
 				Thread.sleep(100);
@@ -320,7 +322,7 @@ public class Camera extends JComponent {
 			}
 		}
 		if (buttons.contains(KeyEvent.VK_L)) {
-
+			//Go forward a level
 			DataStore.getInstance().world.nextLevel();
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.
@@ -332,19 +334,31 @@ public class Camera extends JComponent {
 			}
 		}
 		if (buttons.contains(KeyEvent.VK_K)) {
+			//Go back a level
 			DataStore.getInstance().world.previousLevel();
 			System.out.println("Level Number decremented");
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		if (buttons.contains(KeyEvent.VK_P)) {
+			//Pause game
 			DataStore.getInstance().gameState = State.PAUSEMENU;
+		}
+		if (buttons.contains(KeyEvent.VK_I)) {
+			//Toggle inventory display
+			DataStore.getInstance().player.getInventory().setVisible(!DataStore.getInstance().player.getInventory().isVisible());
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

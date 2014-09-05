@@ -18,6 +18,7 @@ public class Inventory {
 	private int xPosition, yPosition;
 	private LinkedList<Item> items;
 	private int currentNumberOfItems;
+	private boolean visible;
 
 	/**
 	 * 
@@ -28,6 +29,7 @@ public class Inventory {
 		xPosition = 0;
 		yPosition = DataStore.getInstance().panelHeight - height;
 		currentNumberOfItems = 0;
+		visible = true;
 
 		items = new LinkedList<Item>();
 		addItem(Item.SWORD);
@@ -35,47 +37,66 @@ public class Inventory {
 		printItems();
 	}
 
-	
 	/**
 	 * @param g
 	 */
 	public void displayInventory(Graphics g) {
-		Color oldColor = g.getColor();
-		Color inventoryColor = Color.getHSBColor(118, 37, 100);
-		Font oldFont = g.getFontMetrics().getFont();
-		g.setColor(inventoryColor);
-		g.drawRect(xPosition, yPosition, width, height);
-		g.fillRect(xPosition, yPosition, width, height);
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Helvetica", 10, 10));
-		g.drawString("Inventory", xPosition + 10, yPosition + 10);
-		
-		g.setColor(oldColor);
-		g.setFont(oldFont);
-		
-		for(Item i : items){
-			i.draw(g);
+		if (visible) {
+
+			Color oldColor = g.getColor();
+			Color inventoryColor = Color.getHSBColor(118, 37, 100);
+			Font oldFont = g.getFontMetrics().getFont();
+			g.setColor(inventoryColor);
+			g.drawRect(xPosition, yPosition, width, height);
+			g.fillRect(xPosition, yPosition, width, height);
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Helvetica", 10, 10));
+			g.drawString("Inventory", xPosition + 10, yPosition + 10);
+
+			g.setColor(oldColor);
+			g.setFont(oldFont);
+
+			for (Item i : items) {
+				i.draw(g);
+			}
 		}
 	}
-	
+
 	/**
 	 * @param item
 	 */
-	public void addItem(Item item){
+	public void addItem(Item item) {
 		int xYOffset = 20;
 		int xSeperation = 64;
-		item.setPosition(xPosition + xYOffset +(currentNumberOfItems*xSeperation),yPosition + xYOffset);
+		item.setPosition(xPosition + xYOffset
+				+ (currentNumberOfItems * xSeperation), yPosition + xYOffset);
 		items.add(item);
 		currentNumberOfItems++;
-		
-		
+
 	}
+
 	/**
 	 * 
 	 */
-	public void printItems(){
-		for(Item i : items){
+	public void printItems() {
+		for (Item i : items) {
 			i.print();
 		}
+	}
+
+	/**
+	 * @param visible
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	/**
+	 * @return 
+	 * 
+	 */
+	public boolean isVisible() {
+		return visible;
+		
 	}
 }
