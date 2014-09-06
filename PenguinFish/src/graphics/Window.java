@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 import main.DataStore;
+import main.KeyHandler;
 import main.State;
 
 /**
@@ -39,6 +40,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	// JPanel buttons;
 
 	protected Camera camera;
+	protected KeyHandler keyHandler;
 	protected boolean fullscreen;
 
 	protected boolean playingScreenLoaded;
@@ -84,6 +86,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	 */
 	public Window() {
 		super();
+		keyHandler = new KeyHandler();
 		panelViewer = new JPanel(new CardLayout());
 
 		// Setup cross-card button
@@ -226,11 +229,11 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	}
 
 	protected void formKeyPressed(KeyEvent evt) {
-		camera.keyPressed(evt);
+		keyHandler.keyPressed(evt);
 	}
 
 	protected void formKeyReleased(KeyEvent evt) {
-		camera.keyReleased(evt);
+		keyHandler.keyReleased(evt);
 		if (evt.getKeyCode() == KeyEvent.VK_G) {
 			if (!fullscreen) {
 				// goFullScreen();
@@ -314,7 +317,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 					playingScreenLoaded = true;
 				}
 				camera.repaint();
-				camera.processKeys();
+				keyHandler.processKeys();
 				repaint();
 				break;
 			case STARTMENU:
