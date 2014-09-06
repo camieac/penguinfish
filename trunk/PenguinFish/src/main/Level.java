@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import sprites.Enemy;
+import sprites.Item;
 import sprites.SessileSprite;
 import sprites.SpriteBlock;
 
@@ -49,6 +50,10 @@ public class Level {
 	 * The notifications that are used in the level to instruct the user.
 	 */
 	private ArrayList<Notification> notifications;
+	/**
+	 * A list of items to be populated into the level.
+	 */
+	private ArrayList<Item> items;
 
 	Level() {
 		enemies = new LinkedList<Enemy>();
@@ -58,6 +63,7 @@ public class Level {
 		name = "No name specified";
 		description = "No description specified.";
 		notifications = new ArrayList<Notification>();
+		items = new ArrayList<Item>();
 	}
 
 	/**
