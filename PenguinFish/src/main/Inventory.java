@@ -5,7 +5,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import javax.activation.DataSource;
+
 import sprites.Item;
+import sprites.ItemType;
 
 /**
  * Represents the inventory of the player. Contains a list of pickable items
@@ -34,8 +37,8 @@ public class Inventory {
 		visible = true;
 
 		items = new LinkedList<Item>();
-		addItem(Item.SWORD);
-		addItem(Item.DAGGER);
+		addItem(new Item("Sword", "This is a sword", DataStore.getInstance().images.getSword(), ItemType.WEAPON, 100, 400, 400));
+		
 		printItems();
 	}
 
