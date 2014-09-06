@@ -210,7 +210,7 @@ public class Player extends Sprite {
 	 * Adds a bullet to the LinkedList of bullets, stored in the DataStore.
 	 * 
 	 */
-	public void addBullet() {
+	public void fireBullet() {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
 			double x = 0;
 			double y = 0;

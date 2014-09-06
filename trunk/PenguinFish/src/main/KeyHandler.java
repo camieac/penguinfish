@@ -3,49 +3,77 @@ package main;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
+/**
+ * Handles all key presses for the game.
+ * 
+ * @author Cameron A. Craig
+ * @since September 2014
+ * 
+ */
 public class KeyHandler {
 	/**
-	 * 
+	 * A {@link #java.util.LinkedList} of all the buttons that are currently pressed down.
 	 */
-	private LinkedList<Integer> buttons;
-	public KeyHandler(){
-		buttons = new LinkedList<Integer>();
-	}
-	
-	
-	
+	private LinkedList<Integer> buttonsCurrentlyPressed;
+
 	/**
-	 * Handles all key presses.
+	 * Set up {@link #buttonsCurrentlyPressed} as a new {@link #java.util.LinkedList}
+	 */
+	public KeyHandler() {
+		buttonsCurrentlyPressed = new LinkedList<Integer>();
+	}
+
+	/**
+	 * @param e
+	 *            A {@link #java.awt.event.KeyEvent} representing a pressed key.
+	 */
+	public void keyPressed(KeyEvent e) {
+		buttonsCurrentlyPressed.add(e.getKeyCode());
+	}
+
+	/**
+	 * @param e
+	 *            A {@link #java.awt.event.KeyEvent} representing a released key.
+	 */
+	public void keyReleased(KeyEvent e) {
+		if (buttonsCurrentlyPressed.contains(e.getKeyCode()))
+			buttonsCurrentlyPressed.remove(buttonsCurrentlyPressed.indexOf(e
+					.getKeyCode()));
+	}
+
+	/**
+	 * Handles all key presses. Checks the list of pressed keys and calls the
+	 * necessary method(s) to execute the key's set command.
 	 * 
 	 */
 	public void processKeys() {
 		boolean moveKeyPressed = false;
-		if (buttons.contains(KeyEvent.VK_UP)
-				&& buttons.contains(KeyEvent.VK_LEFT)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_UP)
+				&& buttonsCurrentlyPressed.contains(KeyEvent.VK_LEFT)) {
 			DataStore.getInstance().player.setDirection(Direction.NORTHWEST);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_UP)
-				&& buttons.contains(KeyEvent.VK_RIGHT)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_UP)
+				&& buttonsCurrentlyPressed.contains(KeyEvent.VK_RIGHT)) {
 			DataStore.getInstance().player.setDirection(Direction.NORTHEAST);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_DOWN)
-				&& buttons.contains(KeyEvent.VK_LEFT)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_DOWN)
+				&& buttonsCurrentlyPressed.contains(KeyEvent.VK_LEFT)) {
 			DataStore.getInstance().player.setDirection(Direction.SOUTHWEST);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_DOWN)
-				&& buttons.contains(KeyEvent.VK_RIGHT)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_DOWN)
+				&& buttonsCurrentlyPressed.contains(KeyEvent.VK_RIGHT)) {
 			DataStore.getInstance().player.setDirection(Direction.SOUTHEAST);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_UP)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_UP)) {
 			DataStore.getInstance().player.setDirection(Direction.NORTH);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_DOWN)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_DOWN)) {
 			DataStore.getInstance().player.setDirection(Direction.SOUTH);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_LEFT)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_LEFT)) {
 			DataStore.getInstance().player.setDirection(Direction.WEST);
 			moveKeyPressed = true;
-		} else if (buttons.contains(KeyEvent.VK_RIGHT)) {
+		} else if (buttonsCurrentlyPressed.contains(KeyEvent.VK_RIGHT)) {
 			DataStore.getInstance().player.setDirection(Direction.EAST);
 			moveKeyPressed = true;
 		}
@@ -53,11 +81,11 @@ public class KeyHandler {
 			DataStore.getInstance().player.move();
 		}
 
-		if (buttons.contains(KeyEvent.VK_F))
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_F))
 			// Fire a bullet
-			DataStore.getInstance().player.addBullet();
+			DataStore.getInstance().player.fireBullet();
 
-		if (buttons.contains(KeyEvent.VK_H)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_H)) {
 			// Display help notification
 			DataStore.getInstance().player.displayHelpNotification();
 			try {
@@ -67,7 +95,7 @@ public class KeyHandler {
 				e.printStackTrace();
 			}
 		}
-		if (buttons.contains(KeyEvent.VK_L)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_L)) {
 			// Go forward a level
 			DataStore.getInstance().world.nextLevel();
 			// This sleep is a temporary fix to stop the level incrementing more
@@ -79,7 +107,7 @@ public class KeyHandler {
 				e.printStackTrace();
 			}
 		}
-		if (buttons.contains(KeyEvent.VK_K)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_K)) {
 			// Go back a level
 			DataStore.getInstance().world.previousLevel();
 			System.out.println("Level Number decremented");
@@ -92,11 +120,11 @@ public class KeyHandler {
 				e.printStackTrace();
 			}
 		}
-		if (buttons.contains(KeyEvent.VK_P)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_P)) {
 			// Pause game
 			DataStore.getInstance().gameState = State.PAUSEMENU;
 		}
-		if (buttons.contains(KeyEvent.VK_I)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_I)) {
 			// Toggle inventory display
 			DataStore.getInstance().player.getInventory().setVisible(
 					!DataStore.getInstance().player.getInventory().isVisible());
@@ -107,7 +135,8 @@ public class KeyHandler {
 				e.printStackTrace();
 			}
 		}
-		if (buttons.contains(KeyEvent.VK_O)) {
+		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_O)) {
+			//Pick up an item
 			DataStore.getInstance().player.pick();
 			try {
 				Thread.sleep(100);
@@ -117,21 +146,6 @@ public class KeyHandler {
 			}
 		}
 
-	}
-	
-	/**
-	 * @param e
-	 */
-	public void keyPressed(KeyEvent e) {
-		buttons.add(e.getKeyCode());
-	}
-
-	/**
-	 * @param e
-	 */
-	public void keyReleased(KeyEvent e) {
-		if (buttons.contains(e.getKeyCode()))
-			buttons.remove(buttons.indexOf(e.getKeyCode()));
 	}
 
 }
