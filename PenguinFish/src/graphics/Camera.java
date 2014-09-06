@@ -2,15 +2,10 @@ package graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
-
 import javax.swing.JComponent;
-
 import main.DataStore;
-import main.Direction;
-import main.State;
 import sprites.Bullet;
 import sprites.Enemy;
 import sprites.Item;
@@ -18,8 +13,7 @@ import sprites.SessileSprite;
 
 /**
  * Represents the viewable area of the world, the camera follows the position of
- * the player. Only sprites within the viewable area are drawn. Handles Key
- * Presses.
+ * the player. Only sprites within the viewable area are drawn.
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
@@ -31,24 +25,17 @@ public class Camera extends JComponent {
 	private static final long serialVersionUID = -3395117504081297410L;
 
 	/**
-	 * Whether or not the camera is attached to the player. For the current implementation, the camera is always attached to the player.
+	 * Whether or not the camera is attached to the player. For the current
+	 * implementation, the camera is always attached to the player.
 	 */
 	private boolean attached;
 
-
-	
-
+	/**
+	 * The X and Y position of the camera.
+	 */
 	private double camX, camY;
 	/**
-	 * 
-	 */
-	private Direction direction;
-	/**
-	 * 
-	 */
-	private boolean moveX, moveY;
-	/**
-	 * 
+	 * The width and height of the camera.
 	 */
 	private double width, height;
 
@@ -63,20 +50,86 @@ public class Camera extends JComponent {
 	 *            Height of the camera.
 	 */
 	public Camera(int x, int y, int w, int h) {
-		
 		camX = 0;
 		camY = 0;
-
 		width = w;
 		height = h;
-
 		attached = true;
-
 	}
 
+	/**
+	 * Draws all the bullets that have been fired by the player.
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
+	private void drawBullets(Graphics g) {
+		for (Bullet b : DataStore.getInstance().bullets) {
+			g.drawImage(b.getImage(), (int) (b.getX() - camX),
+					(int) (b.getY() - camY), null);
+		}
+	}
+
+	/**
+	 * Draws the enemies in their correct location on the screen.
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
+	private void drawEnemies(Graphics g) {
+		for (Enemy enemy : DataStore.getInstance().enemies) {
+			if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),
+					enemy.getHeight())) {
+				enemy.draw(enemy.getX() - camX, enemy.getY() - camY, g, 0);
+			}
+		}
+	}
+
+	/**
+	 * Draws the inventory at the bottom of the screen.
+	 * 
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
 	private void drawInventory(Graphics g) {
 		DataStore.getInstance().player.getInventory().displayInventory(g);
 
+	}
+
+	/**
+	 * Draws all the items.
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
+	private void drawItems(Graphics g) {
+		for (Item item : DataStore.getInstance().level.getItems()) {
+			item.draw(g, camX, camY);
+		}
+	}
+
+	/**
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
+	private void drawNotifications(Graphics g) {
+		for (Notification n : DataStore.getInstance().notifications) {
+			if (n.isVisible()) {
+				n.displayNotification(g);
+			}
+		}
+	}
+
+	/**
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
+	private void drawSessileSprites(Graphics g) {
+		for (LinkedList<SessileSprite> sp : DataStore.getInstance().world.sessileSprites) {
+			for (SessileSprite s : sp) {
+				// if the sprite is in the camera area
+				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
+					s.draw(s.getX() - camX, s.getY() - camY, g, 0);
+				}
+			}
+		}
 	}
 
 	public int getHeight() {
@@ -111,8 +164,12 @@ public class Camera extends JComponent {
 			return true;
 	}
 
-	
-
+	/**
+	 * Draws a white bar across the top of the screen.
+	 * 
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
 	private void paintBar(Graphics g) {
 		// Draw a white bar across the top of the screen.
 		Color oldColor = g.getColor();
@@ -124,9 +181,6 @@ public class Camera extends JComponent {
 	}
 
 	public void paintComponent(Graphics g) {
-		// System.out.println("Painting components");
-
-		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
 
 		g.setColor(Color.BLUE);
@@ -135,60 +189,35 @@ public class Camera extends JComponent {
 
 		DataStore.getInstance().world.draw(g, camX, camY);
 		try {
-			// If attached make the cam x and y be relative to the player's
+			// If attached make the cam x and y be relative to the player
 			if (attached) {
 				camX = DataStore.getInstance().player.getX() - width / 2;
 				camY = DataStore.getInstance().player.getY() - height / 2;
 				// g.drawString("Camera x: " + camX + ", Y: " + camY, 100, 100);
 			}
 
-			// Draw the enemies in the correct position in the world
-			for (Enemy enemy : DataStore.getInstance().enemies) {
-				if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),
-						enemy.getHeight())) {
-					enemy.draw(enemy.getX() - camX, enemy.getY() - camY, g, 0);
-				}
-			}
-
-			// Draw the background sprites in the correct position in the world
-			for (LinkedList<SessileSprite> sp : DataStore.getInstance().world.sessileSprites) {
-				for (SessileSprite s : sp) {
-					// if the sprite is in the camera area
-					if (isInFrame(s.getX(), s.getY(), s.getWidth(),
-							s.getHeight())) {
-						s.draw(s.getX() - camX, s.getY() - camY, g, 0);
-					}
-				}
-			}
-			// Draw items
-			for (Item item : DataStore.getInstance().level.getItems()) {
-				item.draw(g, camX, camY);
-			}
-			// Draw Player
+			// Draw the enemies in the correct position in the world.
+			drawEnemies(g);
+			// Draw the background sprites in the correct position in the world.
+			drawSessileSprites(g);
+			// Draw items.
+			drawItems(g);
+			// Draw Player.
 			DataStore.getInstance().player.drawPlayer(g,
 					DataStore.getInstance().player.x - camX,
 					DataStore.getInstance().player.y - camY);
+			// Paint the white bar across the top of the screen.
 			paintBar(g);
+			// Paint the text to be displayed on the white bar.
 			paintText(g);
+			// Paint the health hearts on top of the white bar.
 			paintHealth(g);
-			if (DataStore.getInstance().player.getHealth() < 10) {
-				g.setColor(Color.red);
-				g.drawString("DEAD!", (int) width - 65, 10);
-			}
 			// Draw Bullets
-			for (Bullet b : DataStore.getInstance().bullets) {
-				g.drawImage(b.getImage(), (int) (b.getX() - camX),
-						(int) (b.getY() - camY), null);
-			}
-
+			drawBullets(g);
 			/* Draw the inventory above everything */
 			drawInventory(g);
 			/* Notifications appear above inventory */
-			for (Notification n : DataStore.getInstance().notifications) {
-				if (n.isVisible()) {
-					n.displayNotification(g);
-				}
-			}
+			drawNotifications(g);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -197,7 +226,7 @@ public class Camera extends JComponent {
 
 	/**
 	 * @param g
-	 *            The Graphics object to to draw to.
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
 	 */
 	protected void paintHealth(Graphics g) {
 		BufferedImage fullHeart = DataStore.getInstance().images.getFullHeart();
@@ -205,41 +234,39 @@ public class Camera extends JComponent {
 				.getEmptyHeart();
 		if (DataStore.getInstance().player.getHealth() == 100) {
 			g.drawImage(fullHeart, (int) width - 75, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() < 100
+		} else if (DataStore.getInstance().player.getHealth() < 100
 				&& DataStore.getInstance().player.getHealth() >= 90) {
 			g.drawImage(emptyHeart, (int) width - 75, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() >= 80) {
+		} else if (DataStore.getInstance().player.getHealth() >= 80) {
 			g.drawImage(fullHeart, (int) width - 65, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() < 80
+		} else if (DataStore.getInstance().player.getHealth() < 80
 				&& DataStore.getInstance().player.getHealth() >= 70) {
 			g.drawImage(emptyHeart, (int) width - 65, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() >= 60) {
+		} else if (DataStore.getInstance().player.getHealth() >= 60) {
 			g.drawImage(fullHeart, (int) width - 55, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() < 60
+		} else if (DataStore.getInstance().player.getHealth() < 60
 				&& DataStore.getInstance().player.getHealth() >= 50) {
 			g.drawImage(emptyHeart, (int) width - 55, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() >= 40) {
+		} else if (DataStore.getInstance().player.getHealth() >= 40) {
 			g.drawImage(fullHeart, (int) width - 45, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() < 40
+		} else if (DataStore.getInstance().player.getHealth() < 40
 				&& DataStore.getInstance().player.getHealth() >= 30) {
 			g.drawImage(emptyHeart, (int) width - 45, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() >= 20) {
+		} else if (DataStore.getInstance().player.getHealth() >= 20) {
 			g.drawImage(fullHeart, (int) width - 35, 1, this);
-		}
-		else if (DataStore.getInstance().player.getHealth() < 20
+		} else if (DataStore.getInstance().player.getHealth() < 20
 				&& DataStore.getInstance().player.getHealth() >= 10) {
 			g.drawImage(emptyHeart, (int) width - 35, 1, this);
+		} else if (DataStore.getInstance().player.getHealth() < 10) {
+			g.setColor(Color.red);
+			g.drawString("DEAD!", (int) width - 65, 10);
 		}
 	}
 
+	/**
+	 * @param g
+	 *            The {@link #java.awt.Graphics} object that the camera draws to.
+	 */
 	protected void paintText(Graphics g) {
 		g.setColor(Color.black);
 		g.drawString("Avoid the red enemy!", 10, 10);
@@ -249,8 +276,6 @@ public class Camera extends JComponent {
 		g.drawString("Time: " + DataStore.getInstance().currentLevelTime,
 				(int) width - 300, 10);
 	}
-
-	
 
 	/**
 	 * Sets the height of the camera to the double value given.
@@ -273,11 +298,3 @@ public class Camera extends JComponent {
 	}
 
 }
-
-// Stuff that might be used
-
-// protected void paintGameOver(Graphics g) {
-// player.draw(g, 8);
-// g.setColor(Color.black);
-// g.drawString("Game Over", (width / 2) - 25, height / 2);
-// }

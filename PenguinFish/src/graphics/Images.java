@@ -19,7 +19,7 @@ import main.DataStore;
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
- *         @since 
+ * @since September 2014
  * 
  */
 public class Images {
@@ -38,7 +38,9 @@ public class Images {
 			return map;
 		}
 	}
-	protected static BufferedImage toCompatibleImage(BufferedImage image) throws HeadlessException {
+
+	protected static BufferedImage toCompatibleImage(BufferedImage image)
+			throws HeadlessException {
 		GraphicsConfiguration gfx_config = GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 				.getDefaultConfiguration();
@@ -53,10 +55,10 @@ public class Images {
 	}
 
 	protected BufferedImage fullHeart, emptyHeart, sessileSpriteSheet,
-			playerSpriteSheet, enemiesSpriteSheet,itemsSpriteSheet;
+			playerSpriteSheet, enemiesSpriteSheet, itemsSpriteSheet;
 
 	protected BufferedImage[] players, backgrounds, enemies, bullets,
-			sessileSpriteImages,titleImages;
+			sessileSpriteImages, titleImages;
 
 	/**
 	 * 
@@ -116,12 +118,11 @@ public class Images {
 		enemies[9] = enemiesSpriteSheet.getSubimage(12, 331, 96, 145);
 		enemies[10] = enemiesSpriteSheet.getSubimage(133, 331, 127, 145);
 		enemies[11] = enemiesSpriteSheet.getSubimage(246, 326, 127, 145);
-		
-		//Setup Dragons
+
+		// Setup Dragons
 		enemies[12] = enemiesSpriteSheet.getSubimage(136, 564, 860, 580);
 		enemies[13] = enemiesSpriteSheet.getSubimage(1260, 573, 861, 564);
 		enemies[14] = enemiesSpriteSheet.getSubimage(2376, 561, 860, 580);
-		
 
 	}
 
@@ -133,12 +134,6 @@ public class Images {
 	public BufferedImage getBackground(int i) {
 		return backgrounds[i];
 	}
-	/**
-	 * @return The background image for the current level.
-	 */
-	public BufferedImage getCurrentBackground(){
-		return backgrounds[DataStore.getInstance().levelNumber];
-	}
 
 	/**
 	 * @param i
@@ -147,6 +142,25 @@ public class Images {
 	 */
 	public BufferedImage getBulletImage(int i) {
 		return bullets[i];
+	}
+
+	/**
+	 * @return The background image for the current level.
+	 */
+	public BufferedImage getCurrentBackground() {
+		return backgrounds[DataStore.getInstance().levelNumber];
+	}
+
+	/**
+	 * @return The image of the dagger item.
+	 */
+	public BufferedImage getDagger() {
+
+		return itemsSpriteSheet.getSubimage(64, 0, 64, 64);
+	}
+
+	private BufferedImage getDefaultItemImage() {
+		return itemsSpriteSheet.getSubimage(0, 64, 64, 64);
 	}
 
 	/**
@@ -199,6 +213,22 @@ public class Images {
 	}
 
 	/**
+	 * @param itemName
+	 * @return The item image associated with the name supplied, returns default
+	 *         item image if the name is not recognised.
+	 */
+	public BufferedImage getItemImage(String itemName) {
+		switch (itemName) {
+		case "sword":
+			return getSword();
+		case "dagger":
+			return getDagger();
+		default:
+			return getDefaultItemImage();
+		}
+	}
+
+	/**
 	 * @param i
 	 *            The index of the world map array.
 	 * @return The image of the world background.
@@ -222,14 +252,6 @@ public class Images {
 	public BufferedImage[] getPlayerImages() {
 		return players;
 	}
-	
-	/**
-	 * @param i The index of the title image to get.
-	 * @return The BufferedImage of the title image.
-	 */
-	public BufferedImage getTitleImage(int i){
-		return titleImages[i];
-	}
 
 	/**
 	 * @param i
@@ -242,33 +264,22 @@ public class Images {
 		}
 		return sessileSpriteImages[i];
 	}
+
 	/**
 	 * @return The image of the sword item.
 	 */
-	public BufferedImage getSword() { //TODO: Make a sword image.
-	
+	public BufferedImage getSword() { // TODO: Make a sword image.
+
 		return itemsSpriteSheet.getSubimage(0, 0, 64, 64);
 	}
+
 	/**
-	 * @return The image of the dagger item.
+	 * @param i
+	 *            The index of the title image to get.
+	 * @return The BufferedImage of the title image.
 	 */
-	public BufferedImage getDagger() {
-		
-		return itemsSpriteSheet.getSubimage(64, 0, 64, 64);
-	}
-	/**
-	 * @param itemName
-	 * @return The item image associated with the name supplied, returns default item image if the name is not recognised.
-	 */
-	public BufferedImage getItemImage(String itemName) {
-		switch(itemName){
-		case "sword": return getSword();
-		case "dagger": return getDagger();
-		default: return getDefaultItemImage();
-		}
-	}
-	private BufferedImage getDefaultItemImage() {
-		return itemsSpriteSheet.getSubimage(0, 64, 64, 64);
+	public BufferedImage getTitleImage(int i) {
+		return titleImages[i];
 	}
 
 }
