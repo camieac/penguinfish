@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
+import sprites.Item;
+
 /**
  * Represents the inventory of the player. Contains a list of pickable items
  * that are currently in the player's inventory.

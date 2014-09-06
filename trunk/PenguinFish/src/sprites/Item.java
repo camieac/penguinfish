@@ -1,7 +1,9 @@
-package main;
+package sprites;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import main.DataStore;
 
 /**
  * @author Cameron A. Craig
