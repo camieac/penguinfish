@@ -35,6 +35,9 @@ begin:
 	Hello my name is Elvador King of the Hills...,black,white,0,5,10,500
 	Welcome to to my Tutorial Level...,green,white,5,5,10,500
 	</notifications>
+	<items>
+		dagger,This is a dagger.,dagger,dagger,300,20,250
+	</items>
 </level>
 
 

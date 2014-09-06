@@ -6,25 +6,40 @@ package sprites;
  *
  */
 public enum ItemType{
+	
 	/**
 	 * 
 	 */
-	WEAPON(),
+	WEAPON("Weapon"),
 	/**
 	 * 
 	 */
-	CONSUMABLE(),
+	CONSUMABLE("Consumable"),
 	/**
 	 * 
 	 */
-	CLOTHING(),
+	CLOTHING("Clothing"),
 	/**
 	 * 
 	 */
-	COIN(),
+	COIN("Coin"),
 	/**
 	 * 
 	 */
-	HEALTH();
+	HEALTH("Health");
+	ItemType(String name){
+		this.name = name;
+	}
+private String name;
+	/**
+	 * @param itemType The name of the item type as a String.
+	 * @return The ItemType value associated with the string given.
+	 */
+	public static ItemType getItemType(String itemType) {
+		for(ItemType iType : ItemType.values()){
+			if(iType.name.equals(itemType)) return iType;
+		}
+		return null;
+	}
 	
 }

@@ -1,5 +1,7 @@
 package main;
 
+import graphics.Notification;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,6 +11,7 @@ import javax.activation.DataSource;
 
 import sprites.Item;
 import sprites.ItemType;
+import sprites.SessileSprite;
 
 /**
  * Represents the inventory of the player. Contains a list of pickable items
@@ -62,7 +65,7 @@ public class Inventory {
 			g.setFont(oldFont);
 
 			for (Item i : items) {
-				i.draw(g);
+				if(i.isPicked()) i.draw(g,0,0);
 			}
 		}
 	}
@@ -104,4 +107,6 @@ public class Inventory {
 		return visible;
 		
 	}
+
+	
 }

@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import sprites.Item;
+import sprites.ItemType;
 import sprites.SessileSprite;
 
 /**
@@ -242,6 +245,16 @@ public class LevelReader {
 
 					level.addNotification(text, textColour, backColour,displayTime,displayDuration,xPosition,yPosition);
 				} else if(inItems){
+					String[] data = line.split(",");
+					String name = data[0].trim();
+					String description = data[1].trim();
+					BufferedImage image = DataStore.getInstance().images.getItemImage(data[2]);
+					ItemType itemType = ItemType.getItemType(data[3].trim());
+					int value = Integer.parseInt(data[4].trim());
+					int xCoordinate = Integer.parseInt(data[5].trim());
+					int yCoordinate = Integer.parseInt(data[6].trim());
+					
+					level.addItem(name,description,image,itemType,value,xCoordinate,yCoordinate);
 					
 				}
 

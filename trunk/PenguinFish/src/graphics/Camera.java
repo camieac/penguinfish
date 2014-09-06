@@ -13,6 +13,7 @@ import main.Direction;
 import main.State;
 import sprites.Bullet;
 import sprites.Enemy;
+import sprites.Item;
 import sprites.SessileSprite;
 
 /**
@@ -167,6 +168,10 @@ public class Camera extends JComponent {
 						s.draw(s.getX() - camX, s.getY() - camY, g, 0);
 					}
 				}
+			}
+			//Draw items
+			for(Item item : DataStore.getInstance().level.getItems()){
+				item.draw(g,camX,camY);
 			}
 			// Draw Player
 			DataStore.getInstance().player.drawPlayer(g,
@@ -353,6 +358,15 @@ public class Camera extends JComponent {
 		if (buttons.contains(KeyEvent.VK_I)) {
 			//Toggle inventory display
 			DataStore.getInstance().player.getInventory().setVisible(!DataStore.getInstance().player.getInventory().isVisible());
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(buttons.contains(KeyEvent.VK_O)){
+			DataStore.getInstance().player.pick();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

@@ -255,5 +255,19 @@ public class Images {
 		
 		return itemsSpriteSheet.getSubimage(64, 0, 64, 64);
 	}
+	/**
+	 * @param itemName
+	 * @return The item image associated with the name supplied, returns default item image if the name is not recognised.
+	 */
+	public BufferedImage getItemImage(String itemName) {
+		switch(itemName){
+		case "sword": return getSword();
+		case "dagger": return getDagger();
+		default: return getDefaultItemImage();
+		}
+	}
+	private BufferedImage getDefaultItemImage() {
+		return itemsSpriteSheet.getSubimage(0, 64, 64, 64);
+	}
 
 }
