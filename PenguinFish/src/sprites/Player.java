@@ -276,4 +276,21 @@ public class Player extends Sprite {
 		
 	}
 
+	/**
+	 * 
+	 */
+	public void pick() {
+		
+		f1: for (Item i : DataStore.getInstance().level.getItems()){
+			if (collide(i.getBounds())) {
+				//Item over = i;
+				i.setPicked(true);
+				
+				break f1;
+
+			}
+		}
+		
+	}
+
 }

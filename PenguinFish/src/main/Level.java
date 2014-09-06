@@ -3,11 +3,13 @@ package main;
 import graphics.Notification;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import sprites.Enemy;
 import sprites.Item;
+import sprites.ItemType;
 import sprites.SessileSprite;
 import sprites.SpriteBlock;
 
@@ -43,7 +45,7 @@ public class Level {
 	 */
 	private LinkedList<SessileSprite> sessileSprites;
 	/**
-	 * The blocks of sprites taht are used in the level.
+	 * The blocks of sprites that are used in the level.
 	 */
 	private ArrayList<SpriteBlock> spriteBlocks;
 	/**
@@ -222,5 +224,25 @@ public class Level {
 	 */
 	public ArrayList<Notification> getNotifications() {
 		return notifications;
+	}
+	/**
+	 * @param name
+	 * @param description
+	 * @param image
+	 * @param itemType
+	 * @param value
+	 * @param xCoordinate
+	 * @param yCoordinate
+	 */
+	public void addItem(String name, String description, BufferedImage image, ItemType itemType, int value,int xCoordinate,int yCoordinate){
+		Item item = new Item(name,description,image,itemType,value,xCoordinate,yCoordinate);
+		items.add(item);
+	}
+
+	/**
+	 * @return All the items in the level.
+	 */
+	public ArrayList<Item> getItems() {
+		return items;
 	}
 }
