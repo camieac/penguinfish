@@ -38,11 +38,8 @@ public class Inventory {
 		yPosition = DataStore.getInstance().panelHeight - height;
 		currentNumberOfItems = 0;
 		visible = true;
-
 		items = new LinkedList<Item>();
-		addItem(new Item("Sword", "This is a sword", DataStore.getInstance().images.getSword(), ItemType.WEAPON, 100, 400, 400));
-		
-		printItems();
+	
 	}
 
 	/**

@@ -36,7 +36,8 @@ begin:
 	Welcome to to my Tutorial Level...,green,white,5,5,10,500
 	</notifications>
 	<items>
-		dagger,This is a dagger.,dagger,dagger,300,20,250
+		dagger,This is a dagger.,dagger,dagger,300,150,250
+		sword,This is a sword.,sword,sword,300,300,400
 	</items>
 </level>
 
