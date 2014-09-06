@@ -23,41 +23,37 @@ import sprites.SessileSprite;
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain
+ * @since September 2014
  * 
  */
 public class Camera extends JComponent {
 
-	/**
-	 * Sets the width of the camera to the double value given.
-	 * 
-	 * @param width
-	 *            The new desired width of the camera.
-	 */
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	/**
-	 * Sets the height of the camera to the double value given.
-	 * 
-	 * @param height
-	 *            The new desired height of the camera
-	 */
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
 	private static final long serialVersionUID = -3395117504081297410L;
-	boolean attached;
 
-	double backgroundWidth, backgroundHeight;
-	LinkedList<Integer> buttons;
-	double camX, camY;
-	Direction direction;
+	/**
+	 * Whether or not the camera is attached to the player. For the current implementation, the camera is always attached to the player.
+	 */
+	private boolean attached;
 
-	boolean moveX, moveY;
 
-	double width, height;
+	/**
+	 * 
+	 */
+	private LinkedList<Integer> buttons;
+
+	private double camX, camY;
+	/**
+	 * 
+	 */
+	private Direction direction;
+	/**
+	 * 
+	 */
+	private boolean moveX, moveY;
+	/**
+	 * 
+	 */
+	private double width, height;
 
 	/**
 	 * @param x
@@ -78,6 +74,11 @@ public class Camera extends JComponent {
 		height = h;
 
 		attached = true;
+
+	}
+
+	private void drawInventory(Graphics g) {
+		DataStore.getInstance().player.getInventory().displayInventory(g);
 
 	}
 
@@ -128,19 +129,26 @@ public class Camera extends JComponent {
 			buttons.remove(buttons.indexOf(e.getKeyCode()));
 	}
 
+	private void paintBar(Graphics g) {
+		// Draw a white bar across the top of the screen.
+		Color oldColor = g.getColor();
+		g.setColor(Color.white);
+		g.fillRect(0, 0, DataStore.getInstance().panelWidth, 20);
+		g.fillRect(0, 0, 500, 20);
+		g.setColor(oldColor);
+
+	}
+
 	public void paintComponent(Graphics g) {
 		// System.out.println("Painting components");
 
 		// nc.displayPlayerText(g, "Hello", Color.black, Color.white);
 		super.paintComponent(g);
-		
-		
-		
-		
+
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
 		g.setColor(Color.BLACK);
-		
+
 		DataStore.getInstance().world.draw(g, camX, camY);
 		try {
 			// If attached make the cam x and y be relative to the player's
@@ -149,8 +157,7 @@ public class Camera extends JComponent {
 				camY = DataStore.getInstance().player.getY() - height / 2;
 				// g.drawString("Camera x: " + camX + ", Y: " + camY, 100, 100);
 			}
-			
-			
+
 			// Draw the enemies in the correct position in the world
 			for (Enemy enemy : DataStore.getInstance().enemies) {
 				if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),
@@ -169,9 +176,9 @@ public class Camera extends JComponent {
 					}
 				}
 			}
-			//Draw items
-			for(Item item : DataStore.getInstance().level.getItems()){
-				item.draw(g,camX,camY);
+			// Draw items
+			for (Item item : DataStore.getInstance().level.getItems()) {
+				item.draw(g, camX, camY);
 			}
 			// Draw Player
 			DataStore.getInstance().player.drawPlayer(g,
@@ -189,33 +196,18 @@ public class Camera extends JComponent {
 				g.drawImage(b.getImage(), (int) (b.getX() - camX),
 						(int) (b.getY() - camY), null);
 			}
-			
-			/*Draw the inventory above everything*/
+
+			/* Draw the inventory above everything */
 			drawInventory(g);
-			/*Notifications appear above inventory*/
-			for(Notification n : DataStore.getInstance().notifications){
-				if(n.isVisible()){
+			/* Notifications appear above inventory */
+			for (Notification n : DataStore.getInstance().notifications) {
+				if (n.isVisible()) {
 					n.displayNotification(g);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	private void drawInventory(Graphics g) {
-		DataStore.getInstance().player.getInventory().displayInventory(g);
-		
-	}
-
-	private void paintBar(Graphics g) {
-		// Draw a white bar across the top of the screen.
-		Color oldColor = g.getColor();
-		g.setColor(Color.white);
-		g.fillRect(0, 0, DataStore.getInstance().panelWidth, 20);
-		g.fillRect(0, 0, 500, 20);
-		g.setColor(oldColor);
 
 	}
 
@@ -230,35 +222,35 @@ public class Camera extends JComponent {
 		if (DataStore.getInstance().player.getHealth() == 100) {
 			g.drawImage(fullHeart, (int) width - 75, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() < 100
+		else if (DataStore.getInstance().player.getHealth() < 100
 				&& DataStore.getInstance().player.getHealth() >= 90) {
 			g.drawImage(emptyHeart, (int) width - 75, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() >= 80) {
+		else if (DataStore.getInstance().player.getHealth() >= 80) {
 			g.drawImage(fullHeart, (int) width - 65, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() < 80
+		else if (DataStore.getInstance().player.getHealth() < 80
 				&& DataStore.getInstance().player.getHealth() >= 70) {
 			g.drawImage(emptyHeart, (int) width - 65, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() >= 60) {
+		else if (DataStore.getInstance().player.getHealth() >= 60) {
 			g.drawImage(fullHeart, (int) width - 55, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() < 60
+		else if (DataStore.getInstance().player.getHealth() < 60
 				&& DataStore.getInstance().player.getHealth() >= 50) {
 			g.drawImage(emptyHeart, (int) width - 55, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() >= 40) {
+		else if (DataStore.getInstance().player.getHealth() >= 40) {
 			g.drawImage(fullHeart, (int) width - 45, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() < 40
+		else if (DataStore.getInstance().player.getHealth() < 40
 				&& DataStore.getInstance().player.getHealth() >= 30) {
 			g.drawImage(emptyHeart, (int) width - 45, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() >= 20) {
+		else if (DataStore.getInstance().player.getHealth() >= 20) {
 			g.drawImage(fullHeart, (int) width - 35, 1, this);
 		}
-		if (DataStore.getInstance().player.getHealth() < 20
+		else if (DataStore.getInstance().player.getHealth() < 20
 				&& DataStore.getInstance().player.getHealth() >= 10) {
 			g.drawImage(emptyHeart, (int) width - 35, 1, this);
 		}
@@ -270,7 +262,8 @@ public class Camera extends JComponent {
 		g.drawString("Pace: " + DataStore.getInstance().pace, (int) width / 2,
 				10);
 		g.drawString("Life: ", (int) width - 100, 10);
-		g.drawString("Time: " + DataStore.getInstance().currentLevelTime, (int) width - 300, 10);
+		g.drawString("Time: " + DataStore.getInstance().currentLevelTime,
+				(int) width - 300, 10);
 	}
 
 	/**
@@ -313,11 +306,11 @@ public class Camera extends JComponent {
 		}
 
 		if (buttons.contains(KeyEvent.VK_F))
-			//Fire a bullet
+			// Fire a bullet
 			DataStore.getInstance().player.addBullet();
 
 		if (buttons.contains(KeyEvent.VK_H)) {
-			//Display help notification
+			// Display help notification
 			DataStore.getInstance().player.displayHelpNotification();
 			try {
 				Thread.sleep(100);
@@ -327,7 +320,7 @@ public class Camera extends JComponent {
 			}
 		}
 		if (buttons.contains(KeyEvent.VK_L)) {
-			//Go forward a level
+			// Go forward a level
 			DataStore.getInstance().world.nextLevel();
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.
@@ -339,7 +332,7 @@ public class Camera extends JComponent {
 			}
 		}
 		if (buttons.contains(KeyEvent.VK_K)) {
-			//Go back a level
+			// Go back a level
 			DataStore.getInstance().world.previousLevel();
 			System.out.println("Level Number decremented");
 			// This sleep is a temporary fix to stop the level incrementing more
@@ -352,12 +345,13 @@ public class Camera extends JComponent {
 			}
 		}
 		if (buttons.contains(KeyEvent.VK_P)) {
-			//Pause game
+			// Pause game
 			DataStore.getInstance().gameState = State.PAUSEMENU;
 		}
 		if (buttons.contains(KeyEvent.VK_I)) {
-			//Toggle inventory display
-			DataStore.getInstance().player.getInventory().setVisible(!DataStore.getInstance().player.getInventory().isVisible());
+			// Toggle inventory display
+			DataStore.getInstance().player.getInventory().setVisible(
+					!DataStore.getInstance().player.getInventory().isVisible());
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -365,7 +359,7 @@ public class Camera extends JComponent {
 				e.printStackTrace();
 			}
 		}
-		if(buttons.contains(KeyEvent.VK_O)){
+		if (buttons.contains(KeyEvent.VK_O)) {
 			DataStore.getInstance().player.pick();
 			try {
 				Thread.sleep(100);
@@ -375,6 +369,26 @@ public class Camera extends JComponent {
 			}
 		}
 
+	}
+
+	/**
+	 * Sets the height of the camera to the double value given.
+	 * 
+	 * @param height
+	 *            The new desired height of the camera
+	 */
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	/**
+	 * Sets the width of the camera to the double value given.
+	 * 
+	 * @param width
+	 *            The new desired width of the camera.
+	 */
+	public void setWidth(double width) {
+		this.width = width;
 	}
 
 }
