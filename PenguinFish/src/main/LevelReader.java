@@ -134,6 +134,7 @@ public class LevelReader {
 			boolean inSpriteBlock = false;
 			boolean inEnemies = false;
 			boolean inNotifications = false;
+			boolean inItems = false;
 			while (!endOfLevel) {//(line = levelReader.readLine()) != null && 
 				line = levelReader.readLine();//this or above comments
 				if (line.contains("<level>")) {
@@ -178,8 +179,12 @@ public class LevelReader {
 					inNotifications = true;
 				} else if (line.contains("</notifications>") && inLevel && inNotifications){
 					inNotifications = false;
-				} else if (inSessileSprites) {
-
+				} else if (line.contains("<items>") && inLevel && !inItems){
+					inItems = true;
+				} else if (line.contains("</items>") && inLevel && inItems){
+					inItems = false;
+				}
+				else if (inSessileSprites) {
 					String[] data = line.split(",");
 					int x = Integer.parseInt(data[0].trim());
 					int y = Integer.parseInt(data[1].trim());
@@ -236,6 +241,8 @@ public class LevelReader {
 					//TODO: Add x position, y postion and display time.
 
 					level.addNotification(text, textColour, backColour,displayTime,displayDuration,xPosition,yPosition);
+				} else if(inItems){
+					
 				}
 
 			}
