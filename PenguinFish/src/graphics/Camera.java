@@ -75,7 +75,7 @@ public class Camera extends JComponent {
 	 *            The {@link #java.awt.Graphics} object that the camera draws to.
 	 */
 	private void drawEnemies(Graphics g) {
-		for (Enemy enemy : DataStore.getInstance().enemies) {
+		for (Enemy enemy : DataStore.getInstance().level.getEnemies()) {
 			if (isInFrame(enemy.getX(), enemy.getY(), enemy.getWidth(),
 					enemy.getHeight())) {
 				enemy.draw(enemy.getX() - camX, enemy.getY() - camY, g, 0);
@@ -110,7 +110,7 @@ public class Camera extends JComponent {
 	 *            The {@link #java.awt.Graphics} object that the camera draws to.
 	 */
 	private void drawNotifications(Graphics g) {
-		for (Notification n : DataStore.getInstance().notifications) {
+		for (Notification n : DataStore.getInstance().level.getNotifications()) {
 			if (n.isVisible()) {
 				n.displayNotification(g);
 			}
@@ -122,7 +122,7 @@ public class Camera extends JComponent {
 	 *            The {@link #java.awt.Graphics} object that the camera draws to.
 	 */
 	private void drawSessileSprites(Graphics g) {
-		for (LinkedList<SessileSprite> sp : DataStore.getInstance().world.sessileSprites) {
+		for (LinkedList<SessileSprite> sp : DataStore.getInstance().level.sessileSpritesLL) {
 			for (SessileSprite s : sp) {
 				// if the sprite is in the camera area
 				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
@@ -186,8 +186,8 @@ public class Camera extends JComponent {
 		g.setColor(Color.BLUE);
 		g.fillRect(-5000, -5000, 10000, 10000);
 		g.setColor(Color.BLACK);
-
-		DataStore.getInstance().world.draw(g, camX, camY);
+		drawOutsideBoundary(g);
+		
 		try {
 			// If attached make the cam x and y be relative to the player
 			if (attached) {
@@ -222,6 +222,11 @@ public class Camera extends JComponent {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void drawOutsideBoundary(Graphics g) {
+		DataStore.getInstance().level.draw(g, camX, camY);
+		
 	}
 
 	/**

@@ -97,7 +97,7 @@ public class KeyHandler {
 		}
 		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_L)) {
 			// Go forward a level
-			DataStore.getInstance().world.nextLevel();
+			DataStore.getInstance().level.nextLevel();
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.
 			try {
@@ -109,7 +109,7 @@ public class KeyHandler {
 		}
 		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_K)) {
 			// Go back a level
-			DataStore.getInstance().world.previousLevel();
+			DataStore.getInstance().level.previousLevel();
 			System.out.println("Level Number decremented");
 			// This sleep is a temporary fix to stop the level incrementing more
 			// than once per button press.

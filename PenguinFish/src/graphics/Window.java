@@ -28,7 +28,7 @@ import main.KeyHandler;
 import main.State;
 
 /**
- * The window that contains the game.
+ * The window that contains the game and menu cards. 
  * 
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
  *         Stuart Thain

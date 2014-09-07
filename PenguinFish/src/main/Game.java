@@ -51,7 +51,7 @@ public class Game implements Runnable {
 			// player.damage(10);
 			// }
 
-			for (Enemy e : DataStore.getInstance().enemies) {
+			for (Enemy e : DataStore.getInstance().level.getEnemies()) {
 				if (bullet.collide(e)) {
 					bullet.setDead(true);
 					e.damage(10);
@@ -70,14 +70,14 @@ public class Game implements Runnable {
 
 	protected void detectEnemyCollisions() {
 		LinkedList<Enemy> dead = new LinkedList<Enemy>();
-		for (Enemy enemy : DataStore.getInstance().enemies) {
+		for (Enemy enemy : DataStore.getInstance().level.getEnemies()) {
 			enemy.run();
 			enemy.collideWalls(DataStore.getInstance().maxWidth,
 					DataStore.getInstance().maxHeight);
 			if (enemy.collide(DataStore.getInstance().player)) {
 				DataStore.getInstance().player.damage(10);
 			}
-			for (Enemy e : DataStore.getInstance().enemies) {
+			for (Enemy e : DataStore.getInstance().level.getEnemies()) {
 				if (!e.equals(enemy)) {
 					if (enemy.collide(e)) {
 						enemy.setDead(true);
@@ -90,7 +90,7 @@ public class Game implements Runnable {
 			}
 
 		}
-		DataStore.getInstance().enemies.removeAll(dead);
+		DataStore.getInstance().level.getEnemies().removeAll(dead);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class Game implements Runnable {
 		DataStore.getInstance().player.tick();
 		detectEnemyCollisions();
 		detectBulletCollisions();
-		DataStore.getInstance().world.tick(DataStore.getInstance().player);
+		DataStore.getInstance().level.tick(DataStore.getInstance().player);
 		long currentTimeMillis = System.currentTimeMillis();
 		DataStore.getInstance().currentLevelTime = Math.abs((DataStore.getInstance().levelStartTime - currentTimeMillis)/1000);
 		

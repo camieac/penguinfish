@@ -2,7 +2,6 @@ package main;
 
 import graphics.Images;
 import graphics.Notification;
-import graphics.World;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -64,11 +63,11 @@ public class DataStore {
 	 * True if the camera is following the player, false if not.
 	 */
 	public boolean cameraAttachedToPlayer;
-	/**
-	 * A list of enemies in the game. They are created when the level loads and
-	 * destroyed when killed.
-	 */
-	public LinkedList<Enemy> enemies;
+//	/**
+//	 * A list of enemies in the game. They are created when the level loads and
+//	 * destroyed when killed.
+//	 */
+//	public LinkedList<Enemy> enemies;
 	/**
 	 * A collection of images that are used in the game.
 	 */
@@ -95,10 +94,10 @@ public class DataStore {
 	 */
 	public double maxHeight;
 
-	/**
-	 * A linked list of all the notifications for the current game.
-	 */
-	public ArrayList<Notification> notifications;
+//	/**
+//	 * A linked list of all the notifications for the current game.
+//	 */
+//	public ArrayList<Notification> notifications;
 	/**
 	 * The current pace of the game. It determined how fast everything moves.
 	 * TODO:Not required? Because of baseSpeed?
@@ -118,19 +117,14 @@ public class DataStore {
 	/**
 	 * 
 	 */
-	public World world;
-
-	/**
-	 * 
-	 */
 	public LinkedList<SessileSprite> worldSprites;
 
 	/**
-	 * The widtrh of the panel that contains the game.
+	 * The width of the panel that contains the game.
 	 */
 	public int panelWidth;
 	/**
-	 * Thje height of the panel that contains the game.
+	 * The height of the panel that contains the game.
 	 */
 	public int panelHeight;
 	/**
@@ -172,6 +166,7 @@ public class DataStore {
 	public void setGameFields() {
 		levelReader = new LevelReader("res/txt/levels.txt");
 		levelNumber = 0;
+		level = new Level();
 		level = levelReader.getLevel(levelNumber);
 
 		maxWidth = images.getBackground(levelNumber).getWidth();
@@ -179,15 +174,13 @@ public class DataStore {
 		
 		baseSpeed = 5;
 		periodSinceLastFire = 0;
-		enemies = new LinkedList<Enemy>();
-		notifications = new ArrayList<Notification>();
 		helpNotification = new Notification("No Help Available", Color.BLACK, Color.WHITE);
 		player = new Player(200, 200, Direction.SOUTH, 0);
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		pace = 1;
 		cameraAttachedToPlayer = false;
-		world = new World();
+		//world = new World();
 
 		
 	}
