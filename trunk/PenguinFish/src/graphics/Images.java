@@ -57,8 +57,17 @@ public class Images {
 	protected BufferedImage fullHeart, emptyHeart, sessileSpriteSheet,
 			playerSpriteSheet, enemiesSpriteSheet, itemsSpriteSheet;
 
-	protected BufferedImage[] players, backgrounds, enemies, bullets,
-			sessileSpriteImages, titleImages;
+	protected BufferedImage[] players;
+
+	private BufferedImage[] backgrounds;
+
+	protected BufferedImage[] enemies;
+
+	protected BufferedImage[] bullets;
+
+	protected BufferedImage[] sessileSpriteImages;
+
+	protected BufferedImage[] titleImages;
 
 	/**
 	 * 
@@ -68,11 +77,11 @@ public class Images {
 		players = new BufferedImage[16];
 		bullets = new BufferedImage[1];
 		enemies = new BufferedImage[16];
-		backgrounds = new BufferedImage[3];
+		setBackgrounds(new BufferedImage[3]);
 		sessileSpriteImages = new BufferedImage[5];
-		backgrounds[0] = getImage("res/img/back.png");
-		backgrounds[1] = getImage("res/img/map2.png");
-		backgrounds[2] = getImage("res/img/map3.png");
+		getBackgrounds()[0] = getImage("res/img/back.png");
+		getBackgrounds()[1] = getImage("res/img/map2.png");
+		getBackgrounds()[2] = getImage("res/img/map3.png");
 		fullHeart = getImage("res/img/Heart01.png");
 		emptyHeart = getImage("res/img/Heart02.png");
 		bullets[0] = getImage("res/img/FishSkeleton.png");
@@ -132,7 +141,7 @@ public class Images {
 	 * @return BufferedImage background at index i.
 	 */
 	public BufferedImage getBackground(int i) {
-		return backgrounds[i];
+		return getBackgrounds()[i];
 	}
 
 	/**
@@ -148,7 +157,7 @@ public class Images {
 	 * @return The background image for the current level.
 	 */
 	public BufferedImage getCurrentBackground() {
-		return backgrounds[DataStore.getInstance().levelNumber];
+		return getBackgrounds()[DataStore.getInstance().levelNumber];
 	}
 
 	/**
@@ -174,10 +183,10 @@ public class Images {
 			double width, double height) {
 		BufferedImage image = null;
 		try {
-			image = backgrounds[0].getSubimage((int) camX, (int) camY,
+			image = getBackgrounds()[0].getSubimage((int) camX, (int) camY,
 					(int) width, (int) height);
 		} catch (RasterFormatException e) {
-			return backgrounds[0];
+			return getBackgrounds()[0];
 		}
 		return image;
 	}
@@ -234,7 +243,7 @@ public class Images {
 	 * @return The image of the world background.
 	 */
 	public BufferedImage getMapImage(int i) {
-		return backgrounds[i];
+		return getBackgrounds()[i];
 	}
 
 	/**
@@ -280,6 +289,14 @@ public class Images {
 	 */
 	public BufferedImage getTitleImage(int i) {
 		return titleImages[i];
+	}
+
+	public BufferedImage[] getBackgrounds() {
+		return backgrounds;
+	}
+
+	public void setBackgrounds(BufferedImage[] backgrounds) {
+		this.backgrounds = backgrounds;
 	}
 
 }
