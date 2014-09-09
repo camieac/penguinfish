@@ -75,9 +75,9 @@ public class Item {
 	 * @param camX 
 	 */
 	public void draw(Graphics g, double camX, double camY) {
-		if(picked){
+		if(picked && DataStore.getInstance().player.getInventory().isVisible()){
 			g.drawImage(this.image,xPosition,yPosition, null);
-		}else{
+		}else if(!picked){
 			g.drawImage(this.image,(int)(xPosition - camX),(int)(yPosition - camY), null);
 		}
 		
