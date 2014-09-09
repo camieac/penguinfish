@@ -28,8 +28,11 @@ public class KeyHandler {
 	 *            A {@link #java.awt.event.KeyEvent} representing a pressed key.
 	 */
 	public void keyPressed(KeyEvent e) {
-		buttonsCurrentlyPressed.add(e.getKeyCode());
+		if(!buttonsCurrentlyPressed.contains(e.getKeyCode())){
+			buttonsCurrentlyPressed.add(e.getKeyCode());
+		}
 	}
+		
 
 	/**
 	 * @param e
@@ -80,6 +83,7 @@ public class KeyHandler {
 		if (moveKeyPressed) {
 			DataStore.getInstance().player.move();
 		}
+
 
 		if (buttonsCurrentlyPressed.contains(KeyEvent.VK_F))
 			// Fire a bullet
