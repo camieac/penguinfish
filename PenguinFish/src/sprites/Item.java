@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import main.DataStore;
 
 /**
+ * An item is available on the map for the player to pick up. All items must be 64x64 pixels.
  * @author Cameron A. Craig
  * @since 17th April 2014
  * 
@@ -14,37 +15,37 @@ import main.DataStore;
 public class Item {
 	
 	/**
-	 * 
+	 * The name of the item.
 	 */
 	String name;
 	/**
-	 * 
+	 * A short description of the item.
 	 */
 	String description;
 	/**
-	 * 
+	 * An image of the item.
 	 */
 	BufferedImage image;
 	/**
-	 * 
+	 * The monetary value of the item.
 	 */
 	int value;
 	/**
-	 * 
+	 * The xPosition and yPosition of the item. Not adjusted for the camera position.
 	 */
 	private int xPosition,yPosition;
 	/**
-	 * 
+	 * The width and height of the item.
 	 */
 	private int width,height;
 
 	/**
-	 * 
+	 * The type of item,.
 	 */
 	private ItemType itemType;
 	
 	/**
-	 * 
+	 * Whether or not the item has been picked up by the player.
 	 */
 	private boolean picked;
 	/**
@@ -65,6 +66,8 @@ public class Item {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
 		this.picked = false;
+		this.width = image.getWidth();
+		this.height = image.getHeight();
 	}
 
 
