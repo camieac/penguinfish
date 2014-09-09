@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+
 import javax.swing.JComponent;
+
 import main.DataStore;
 import sprites.Bullet;
 import sprites.Enemy;
 import sprites.Item;
 import sprites.SessileSprite;
+import sprites.SpriteBlock;
 
 /**
  * Represents the viewable area of the world, the camera follows the position of
@@ -122,13 +125,13 @@ public class Camera extends JComponent {
 	 *            The {@link #java.awt.Graphics} object that the camera draws to.
 	 */
 	private void drawSessileSprites(Graphics g) {
-		for (LinkedList<SessileSprite> sp : DataStore.getInstance().level.sessileSpritesLL) {
-			for (SessileSprite s : sp) {
+		//for (LinkedList<SessileSprite> sp : DataStore.getInstance().level.sessileSprites) {
+			for (SessileSprite s : DataStore.getInstance().level.getSessileSprites()) {
 				// if the sprite is in the camera area
 				if (isInFrame(s.getX(), s.getY(), s.getWidth(), s.getHeight())) {
 					s.draw(s.getX() - camX, s.getY() - camY, g, 0);
 				}
-			}
+			//}
 		}
 	}
 
@@ -198,6 +201,8 @@ public class Camera extends JComponent {
 
 			// Draw the enemies in the correct position in the world.
 			drawEnemies(g);
+			//Draw Sprite Blocks
+			drawSpriteBlocks(g);
 			// Draw the background sprites in the correct position in the world.
 			drawSessileSprites(g);
 			// Draw items.
@@ -222,6 +227,13 @@ public class Camera extends JComponent {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void drawSpriteBlocks(Graphics g) {
+		for(SpriteBlock sb : DataStore.getInstance().level.getSpriteBlocks()){
+			sb.draw(g,camX,camY);
+		}
+		
 	}
 
 	private void drawOutsideBoundary(Graphics g) {

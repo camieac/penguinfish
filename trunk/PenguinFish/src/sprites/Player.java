@@ -142,7 +142,7 @@ public class Player extends Sprite {
 		}else{
 			
 		boolean overSessileSprite = false;
-		f1: for (SessileSprite s : DataStore.getInstance().world
+		f1: for (SessileSprite s : DataStore.getInstance().level
 				.getSessileSprites()) {
 			if (collide(s.getBounds())) {
 				Notification n = new Notification("This is a sessile sprite\n"
@@ -155,7 +155,7 @@ public class Player extends Sprite {
 			}
 		}
 		boolean overEnemy = false;
-		f2: for (Enemy e : DataStore.getInstance().enemies) {
+		f2: for (Enemy e : DataStore.getInstance().level.getEnemies()) {
 			if (collide(e.getBounds())) {
 				Notification n = new Notification("This is an enemy\n"
 						+ e.toString(), Color.black, Color.white);

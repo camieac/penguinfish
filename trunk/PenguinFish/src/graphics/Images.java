@@ -268,10 +268,15 @@ public class Images {
 	 * @return BufferedImage of a sessile sprite at index i.
 	 */
 	public BufferedImage getSessileImage(int i) {
+		try{
 		if (i > sessileSpriteImages.length) {
 			return sessileSpriteImages[sessileSpriteImages.length - 1];
 		}
 		return sessileSpriteImages[i];
+		}catch(ArrayIndexOutOfBoundsException e){
+			System.err.println("Sessile sprite image index out of bounds, returning default image");
+			return getDefaultItemImage();
+		}
 	}
 
 	/**
