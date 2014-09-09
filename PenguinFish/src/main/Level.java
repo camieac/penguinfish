@@ -24,10 +24,6 @@ import sprites.SpriteBlock;
 public class Level {
 
 	/**
-	 * This is here for no reason, someone will delete it eventually.
-	 */
-	//private static final long serialVersionUID = 6846891938893773222L;
-	/**
 	 * The description of the level.
 	 */
 	private String description;
@@ -60,10 +56,10 @@ public class Level {
 	 */
 	private ArrayList<Item> items;
 	
-	protected LinkedList<Rectangle> boundaries;
-	protected int defaultBoundedAreas = 4;
-	protected Rectangle[] defaultBoundaries;
-	public LinkedList<LinkedList<SessileSprite>> sessileSpritesLL;
+//	protected LinkedList<Rectangle> boundaries;
+//	protected int defaultBoundedAreas = 4;
+//	protected Rectangle[] defaultBoundaries;
+//	public LinkedList<LinkedList<SessileSprite>> sessileSpritesLL;
 
 	Level() {
 		enemies = new LinkedList<Enemy>();
@@ -75,9 +71,9 @@ public class Level {
 		notifications = new ArrayList<Notification>();
 		items = new ArrayList<Item>();
 		
-		sessileSpritesLL = new LinkedList<LinkedList<SessileSprite>>();
-		defaultBoundaries = new Rectangle[defaultBoundedAreas];
-		boundaries = new LinkedList<Rectangle>();
+//		sessileSpritesLL = new LinkedList<LinkedList<SessileSprite>>();
+//		defaultBoundaries = new Rectangle[defaultBoundedAreas];
+//		boundaries = new LinkedList<Rectangle>();
 
 //		setupDefaultBoundaries();
 //		addLevelEnemies();
@@ -351,52 +347,52 @@ public class Level {
 //		sessileSpritesLL.add(DataStore.getInstance().level.getSessileSprites());
 //	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @return
-	 */
-	public Rectangle createBoundaries(int x, int y, int width, int height) {
-		Rectangle boundary = new Rectangle(x, y, width, height);
-		boundaries.add(boundary);
-		return boundary;
-	}
+//	/**
+//	 * @param x
+//	 * @param y
+//	 * @param width
+//	 * @param height
+//	 * @return
+//	 */
+//	public Rectangle createBoundaries(int x, int y, int width, int height) {
+//		Rectangle boundary = new Rectangle(x, y, width, height);
+//		boundaries.add(boundary);
+//		return boundary;
+//	}
 
 	// Create rectangular areas which act as perimeter for the map.
 	/**
 	 * @return
 	 */
-	public Rectangle[] createDefaultBoundaries() {
-		//System.out.println("WIDTH: " + DataStore.getInstance().panelWidth + " HEIGHT: " + DataStore.getInstance().panelHeight);
-		int level = DataStore.getInstance().levelNumber;
-		defaultBoundaries[0] = new Rectangle(
-				-(DataStore.getInstance().panelWidth/ 2),
-				-(DataStore.getInstance().panelHeight / 2),
-				DataStore.getInstance().images.getBackground(level).getWidth()
-						+ (DataStore.getInstance().panelWidth),
-				(DataStore.getInstance().panelHeight/ 2));
-		defaultBoundaries[1] = new Rectangle(
-				-(DataStore.getInstance().panelWidth / 2),
-				DataStore.getInstance().images.getBackground(level).getHeight(),
-				DataStore.getInstance().images.getBackground(level).getWidth()
-						+ (DataStore.getInstance().panelWidth),
-				(DataStore.getInstance().panelHeight / 2));
-		defaultBoundaries[2] = new Rectangle(
-				-(DataStore.getInstance().panelWidth / 2), 0,
-				(DataStore.getInstance().panelWidth / 2),
-				DataStore.getInstance().images.getBackground(level).getHeight());
-		defaultBoundaries[3] = new Rectangle(DataStore.getInstance().images
-				.getBackground(level).getWidth(), 0,
-				(DataStore.getInstance().panelWidth / 2),
-				DataStore.getInstance().images.getBackground(level).getHeight());
-		for (int i = 0; i < defaultBoundedAreas; i++) {
-			// createSpriteBlock(defualtBoundaries[i], 0);
-			boundaries.add(defaultBoundaries[i]);
-		}
-		return defaultBoundaries;
-	}
+//	public Rectangle[] createDefaultBoundaries() {
+//		//System.out.println("WIDTH: " + DataStore.getInstance().panelWidth + " HEIGHT: " + DataStore.getInstance().panelHeight);
+//		int level = DataStore.getInstance().levelNumber;
+//		defaultBoundaries[0] = new Rectangle(
+//				-(DataStore.getInstance().panelWidth/ 2),
+//				-(DataStore.getInstance().panelHeight / 2),
+//				DataStore.getInstance().images.getBackground(level).getWidth()
+//						+ (DataStore.getInstance().panelWidth),
+//				(DataStore.getInstance().panelHeight/ 2));
+//		defaultBoundaries[1] = new Rectangle(
+//				-(DataStore.getInstance().panelWidth / 2),
+//				DataStore.getInstance().images.getBackground(level).getHeight(),
+//				DataStore.getInstance().images.getBackground(level).getWidth()
+//						+ (DataStore.getInstance().panelWidth),
+//				(DataStore.getInstance().panelHeight / 2));
+//		defaultBoundaries[2] = new Rectangle(
+//				-(DataStore.getInstance().panelWidth / 2), 0,
+//				(DataStore.getInstance().panelWidth / 2),
+//				DataStore.getInstance().images.getBackground(level).getHeight());
+//		defaultBoundaries[3] = new Rectangle(DataStore.getInstance().images
+//				.getBackground(level).getWidth(), 0,
+//				(DataStore.getInstance().panelWidth / 2),
+//				DataStore.getInstance().images.getBackground(level).getHeight());
+//		for (int i = 0; i < defaultBoundedAreas; i++) {
+//			// createSpriteBlock(defualtBoundaries[i], 0);
+//			boundaries.add(defaultBoundaries[i]);
+//		}
+//		return defaultBoundaries;
+//	}
 
 //	/**
 //	 * @param rect The rectangle to create the sprite block in.
@@ -432,30 +428,30 @@ public class Level {
 
 	}
 
-	/**
-	 * @return A Linked list containing all the sessile sprites in the world.
-	 */
-	public LinkedList<SessileSprite> getSessileSpritesLL() {
-		LinkedList<SessileSprite> ll = new LinkedList<SessileSprite>();
-		for (LinkedList<SessileSprite> l : sessileSpritesLL) {
-			ll.addAll(l);
-		}
-		return ll;
-	}
+//	/**
+//	 * @return A Linked list containing all the sessile sprites in the world.
+//	 */
+//	public LinkedList<SessileSprite> getSessileSpritesLL() {
+//		LinkedList<SessileSprite> ll = new LinkedList<SessileSprite>();
+//		for (LinkedList<SessileSprite> l : sessileSpritesLL) {
+//			ll.addAll(l);
+//		}
+//		return ll;
+//	}
 
 	/**
 	 * @param player
 	 */
 	public void tick(Player player) {
-		for (Rectangle b : boundaries) {
-			if (player.collide(b)) {
-				// Need to sort out directions!!!
-				// player.getDirection().disableDirection(player.getDirection());
-			} else {
-				// player.getDirection().enableDirection(player.getDirection());
-				// player.getDirection().clearDisabledDirections();
-			}
-		}
+//		for (Rectangle b : boundaries) {
+//			if (player.collide(b)) {
+//				// Need to sort out directions!!!
+//				// player.getDirection().disableDirection(player.getDirection());
+//			} else {
+//				// player.getDirection().enableDirection(player.getDirection());
+//				// player.getDirection().clearDisabledDirections();
+//			}
+//		}
 		for(Notification n : DataStore.getInstance().level.getNotifications()){
 			n.tick();
 		}

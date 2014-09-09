@@ -2,6 +2,7 @@ package sprites;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import main.DataStore;
@@ -26,6 +27,12 @@ public class SessileSprite extends Rectangle implements Serializable {
 				.getWidth(), DataStore.getInstance().images.getSessileImage(id)
 				.getHeight());
 		this.id = id;
+	}
+	public SessileSprite(int x, int y, BufferedImage img) {
+		super(x, y, img
+				.getWidth(), img
+				.getHeight());
+		this.id = 0;
 	}
 
 	/**
