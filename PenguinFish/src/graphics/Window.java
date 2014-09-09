@@ -202,9 +202,6 @@ public class Window extends JFrame implements Runnable, ActionListener,
 		gamePlayCard.setLayout(new BorderLayout());
 		gamePlayCard.add(camera, BorderLayout.CENTER);
 		gamePlayCard.add(backToStartButton);
-		// panelViewer.addKeyListener(this);
-		// camera.addKeyListener(this);
-		// camera.setFocusable(true);
 		setFocusable(true);
 		addKeyListener(this);
 		gamePlayCard.addKeyListener(this);
@@ -406,7 +403,7 @@ public class Window extends JFrame implements Runnable, ActionListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
-		
+		System.out.println("mousew");
 	}
 
 	@Override

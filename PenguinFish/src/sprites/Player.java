@@ -36,6 +36,9 @@ public class Player extends Sprite {
 
 	}
 
+	/**
+	 * Checks for boundary breaches and disables all player directions that would cause the player to further breach that boundary.
+	 */
 	private void checkBoundary() {
 		boolean leftEdgeBreach = x <= 0;
 		boolean topEdgeBreach = y <= 0;
@@ -44,75 +47,39 @@ public class Player extends Sprite {
 		boolean bottomEdgeBreach = y >= DataStore.getInstance().images.getCurrentBackground().getHeight()
 				- (height / 2);
 		Direction edgeDirection = null;
+		//Cannot be going north and south at the same time, hence the else if. Same applies to east and west.
 		if(topEdgeBreach) edgeDirection = Direction.NORTH;
-		if(rightEdgeBreach) edgeDirection = Direction.EAST;
 		if(bottomEdgeBreach) edgeDirection = Direction.SOUTH;
+		if(rightEdgeBreach) edgeDirection = Direction.EAST;
 		if(leftEdgeBreach) edgeDirection = Direction.WEST;
 		if(topEdgeBreach && rightEdgeBreach) edgeDirection = Direction.NORTHEAST;
 		if(topEdgeBreach && leftEdgeBreach) edgeDirection = Direction.NORTHWEST;
 		if(bottomEdgeBreach && leftEdgeBreach) edgeDirection = Direction.SOUTHWEST;
 		if(bottomEdgeBreach && rightEdgeBreach) edgeDirection = Direction.SOUTHEAST;
-
 		if(edgeDirection != null){
 			switch(edgeDirection){			
 			case NORTH:
-				//Top Edge - everything with north in it.
-				//			System.out.println("TOP EDGE BREACH");
-				//			direction.disableDirection(Direction.NORTHWEST);
-				//			direction.disableDirection(Direction.NORTH);
-				//			direction.disableDirection(Direction.NORTHEAST);
 				direction.setDirections(true, true, false, false, false, false, false, true);
 				break;
 			case NORTHEAST:
-				//			System.out.println("TOP RIGHT EDGE BREACH");
-				//			direction.disableDirection(Direction.NORTH);
-				//			direction.disableDirection(Direction.NORTHEAST);
-				//			direction.disableDirection(Direction.EAST);
 				direction.setDirections(true, true, true, false, false, false, false, false);
 				break;
 			case EAST:
-				// Right edge - everything with east in it.
-				//			System.out.println("RIGHT EDGE BREACH");
-				//			direction.disableDirection(Direction.NORTHEAST);
-				//			direction.disableDirection(Direction.EAST);
-				//			direction.disableDirection(Direction.SOUTHEAST);
 				direction.setDirections(false, true, true, true, false, false, false, false);
 				break;
 			case SOUTHEAST:
-				//			System.out.println("BOTTOM RIGHT EDGE BREACH");
-				//			direction.disableDirection(Direction.EAST);
-				//			direction.disableDirection(Direction.SOUTHEAST);
-				//			direction.disableDirection(Direction.SOUTH);
 				direction.setDirections(false, false, true, true, true, false, false, false);
 				break;
 			case SOUTH:
-				//Bottom Edge - everything with south in it.
-				//			System.out.println("BOTTOM EDGE BREACH");
-				//			direction.disableDirection(Direction.SOUTHEAST);
-				//			direction.disableDirection(Direction.SOUTH);
-				//			direction.disableDirection(Direction.SOUTHWEST);
 				direction.setDirections(false, false, false, true, true, true, false, false);
 				break;
 			case SOUTHWEST:
-				//			System.out.println("BOTTOM LEFT EDGE BREACH");
-				//			direction.disableDirection(Direction.SOUTH);
-				//			direction.disableDirection(Direction.SOUTHWEST);
-				//			direction.disableDirection(Direction.WEST);
 				direction.setDirections(false, false, false, false, true, true, true, false);
 				break;
 			case WEST:
-				//Left Edge - everything with west in it
-				//			System.out.println("LEFT EDGE BREACH");
-				//			direction.disableDirection(Direction.SOUTHWEST);
-				//			direction.disableDirection(Direction.WEST);
-				//			direction.disableDirection(Direction.NORTHWEST);
 				direction.setDirections(false, false, false, false, false, true, true, true);
 				break;
 			case NORTHWEST:
-				//			System.out.println("TOP LEFT EDGE BREACH");
-				//			direction.disableDirection(Direction.WEST);
-				//			direction.disableDirection(Direction.NORTHWEST);
-				//			direction.disableDirection(Direction.NORTH);
 				direction.setDirections(true, false, false, false, false, false, true, true);
 				break;
 			default:
@@ -130,6 +97,7 @@ public class Player extends Sprite {
 			direction.enableDirection(Direction.WEST);
 			direction.enableDirection(Direction.NORTHWEST);
 		}
+		//if(edgeDirection != null) System.out.println("Direction: " + edgeDirection.toString());
 	}
 
 	/**
