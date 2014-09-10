@@ -39,6 +39,9 @@ begin:
 		dagger,This is a dagger.,dagger,dagger,300,150,250
 		sword,This is a sword.,sword,sword,300,300,400
 	</items>
+	<walls>
+	200,200,100,1000,black
+	</walls>
 </level>
 
 

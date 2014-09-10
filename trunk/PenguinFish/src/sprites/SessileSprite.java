@@ -12,9 +12,8 @@ import main.DataStore;
  *         Stuart Thain
  * 
  */
-public class SessileSprite extends Rectangle implements Serializable {
+public class SessileSprite extends Rectangle {
 
-	private static final long serialVersionUID = 1L;
 //	protected int id;
 	protected String name;
 

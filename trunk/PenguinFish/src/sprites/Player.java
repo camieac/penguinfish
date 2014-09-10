@@ -227,7 +227,7 @@ public class Player extends Sprite {
 				break;
 
 			}
-			Bullet b = new Bullet(x,y,playerDirection,0);
+			Bullet b = new Bullet(x,y,playerDirection,"bullet");
 
 			DataStore.getInstance().bullets.add(b);
 

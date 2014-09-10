@@ -31,8 +31,8 @@ public class Bullet extends Sprite {
 	 *            The desired direction of the bullet.
 	 * @param id
 	 */
-	public Bullet(double x, double y, Direction d, int id) {
-		super(x, y, d, id);
+	public Bullet(double x, double y, Direction d, String name) {
+		super(x, y, d, name);
 		setDead(false);
 		rotatedImage = null;
 		bounces = false;
