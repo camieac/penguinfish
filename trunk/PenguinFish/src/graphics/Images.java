@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.File;
@@ -267,7 +268,7 @@ public class Images {
 	 *            Index of the sessile sprite array.
 	 * @return BufferedImage of a sessile sprite at index i.
 	 */
-	public BufferedImage getSessileImage(int i) {
+	private BufferedImage getSessileImage(int i) {
 		try{
 		if (i > sessileSpriteImages.length) {
 			return sessileSpriteImages[sessileSpriteImages.length - 1];
@@ -302,6 +303,29 @@ public class Images {
 
 	public void setBackgrounds(BufferedImage[] backgrounds) {
 		this.backgrounds = backgrounds;
+	}
+
+	/**
+	 * @param name
+	 * @return
+	 */
+	public BufferedImage getSessileImage(String name) {
+		switch(name){
+		case "tree": return getSessileImage(0);
+		case "bush": return getSessileImage(1);
+		case "hole": return getSessileImage(2);
+		default: return getDefaultItemImage();
+		}
+	}
+	public BufferedImage getNextEnemyImage(String name,int imageNumber) {
+		switch(name){
+		case "spider": return getEnemy(0 + imageNumber);
+		case "worm": return getEnemy(3 + imageNumber);
+		case "fisherman": return getEnemy(6 + imageNumber);
+		case "minotaur": return getEnemy(9 + imageNumber);
+		case "dragon": return getEnemy(12 + imageNumber);
+		default: return getDefaultItemImage();
+		}
 	}
 
 }

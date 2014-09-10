@@ -175,7 +175,7 @@ public class DataStore {
 		baseSpeed = 5;
 		periodSinceLastFire = 0;
 		helpNotification = new Notification("No Help Available", Color.BLACK, Color.WHITE);
-		player = new Player(200, 200, Direction.SOUTH, 0);
+		player = new Player(200, 200, Direction.SOUTH, "Alundra");
 		bullets = new LinkedList<Bullet>();
 		player.setSpeed(baseSpeed);
 		pace = 1;

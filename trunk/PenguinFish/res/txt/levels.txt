@@ -18,18 +18,18 @@ begin:
 		0
 	</id>
 	<SessileSprites>
-		20,20,0
-		20,84,1
-		84,20,2
-		84,84,0
+		20,20,tree
+		20,84,bush
+		84,20,hole
+		84,84,tree
 	</SessileSprites>
 	<spriteblock>
-		100,100,200,200,1
+		100,100,200,200,bush
 	</spriteblock>
 	<enemies>
-		30,30,0,0
-		150,150,3,0
-		450,150,6,1
+		30,30,spider,0
+		150,150,worm,0
+		450,150,fisherman,1
 	</enemies>
 	<notifications>
 	Hello my name is Elvador King of the Hills...,black,white,0,5,10,500
@@ -52,13 +52,13 @@ begin:
 		1
 	</id>
 	<SessileSprites>
-		100,100,0
-		200,200,1
-		300,300,2
-		400,400,0
+		100,100,tree
+		200,200,bush
+		300,300,hole
+		400,400,tree
 	</SessileSprites>
 	<spriteblock>
-		500,500,200,200,1
+		500,500,200,200,bush
 	</spriteblock>
 	<enemies>
 		500,-500,12,3
@@ -76,13 +76,13 @@ begin:
 		2
 	</id>
 	<SessileSprites>
-		100,100,0
-		200,200,1
-		300,300,2
-		400,400,0
+		100,100,tree
+		200,200,bush
+		300,300,hole
+		400,400,tree
 	</SessileSprites>
 	<spriteblock>
-		500,500,200,200,1
+		500,500,200,200,bush
 	</spriteblock>
 	<enemies>
 		500,-500,12,3
