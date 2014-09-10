@@ -15,6 +15,7 @@ import sprites.ItemType;
 import sprites.Player;
 import sprites.SessileSprite;
 import sprites.SpriteBlock;
+import sprites.Wall;
 
 /**
  * @author Andrew J. Rigg, Cameron A. Craig, Euan Mutch, Duncan Robertson,
@@ -55,6 +56,10 @@ public class Level {
 	 * A list of items to be populated into the level.
 	 */
 	private ArrayList<Item> items;
+	/**
+	 * All the walls for the level.
+	 */
+	private ArrayList<Wall> walls;
 	
 //	protected LinkedList<Rectangle> boundaries;
 //	protected int defaultBoundedAreas = 4;
@@ -70,6 +75,7 @@ public class Level {
 		description = "No description specified.";
 		notifications = new ArrayList<Notification>();
 		items = new ArrayList<Item>();
+		walls = new ArrayList<Wall>();
 		
 //		sessileSpritesLL = new LinkedList<LinkedList<SessileSprite>>();
 //		defaultBoundaries = new Rectangle[defaultBoundedAreas];
@@ -114,6 +120,15 @@ public class Level {
 		spriteBlocks.add(new SpriteBlock(x, y, w, h, name));
 
 	}
+	/**
+	 * @param wall The wall to be added.
+	 */
+	public void addWall(Wall wall){
+		walls.add(wall);
+	}
+	/**
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
@@ -211,7 +226,8 @@ public class Level {
 		sb.append("# of spriteblocks: " + spriteBlocks.size() + "\n");
 		sb.append("# of enemies: " + enemies.size() + "\n");
 		sb.append("# of notifi.: " + notifications.size() + "\n");
-		sb.append("# of items: " + items.size());
+		sb.append("# of items: " + items.size() + "\n");
+		sb.append("# of walls: " + walls.size());
 		return sb.toString();
 	}
 
@@ -455,5 +471,9 @@ public class Level {
 		for(Notification n : DataStore.getInstance().level.getNotifications()){
 			n.tick();
 		}
+	}
+
+	public ArrayList<Wall> getWalls() {
+		return walls;
 	}
 }

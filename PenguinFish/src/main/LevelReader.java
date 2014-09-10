@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 import sprites.Item;
 import sprites.ItemType;
 import sprites.SessileSprite;
+import sprites.Wall;
 
 /**
  * Handles all level file reading. Provides level objects on demand.
@@ -138,6 +139,7 @@ public class LevelReader {
 			boolean inEnemies = false;
 			boolean inNotifications = false;
 			boolean inItems = false;
+			boolean inWalls = false;
 			while (!endOfLevel) {//(line = levelReader.readLine()) != null && 
 				line = levelReader.readLine();//this or above comments
 				if (line.contains("<level>")) {
@@ -186,6 +188,10 @@ public class LevelReader {
 					inItems = true;
 				} else if (line.contains("</items>") && inLevel && inItems){
 					inItems = false;
+				} else if(line.contains("<walls>") && inLevel && !inWalls){
+					inWalls = true;
+				} else if(line.contains("</walls>") && inWalls && inLevel){
+					inWalls = false;
 				}
 				else if (inSessileSprites) {
 					String[] data = line.split(",");
@@ -219,29 +225,13 @@ public class LevelReader {
 					String text = data[0].trim();
 	
 					
-					Color textColour = null;
-					Color backColour = null;
-					try {
-					    Field fieldText = Class.forName("java.awt.Color").getField(data[1].trim());
-					    Field fieldBack = Class.forName("java.awt.Color").getField(data[2].trim());
-					    textColour = (Color)fieldText.get(null);
-					    backColour = (Color)fieldBack.get(null);
-			
-					} catch (NullPointerException e) {
-						System.err.println("Colours set to default, cannot read input colours.");
-					    textColour = Color.BLACK;
-					    backColour = Color.WHITE;
-					}catch(Exception e){
-						System.err.println("Something went wrong while reading colours from level input file. Default colours used.");
-						textColour = Color.BLACK;
-					    backColour = Color.WHITE;
-					}
+					Color textColour = getColor(data[1].trim());
+					Color backColour = getColor(data[2].trim());
 
 					long displayTime = Long.parseLong(data[3].trim());
 					long displayDuration = Long.parseLong(data[4].trim());
 					int xPosition = Integer.parseInt(data[5].trim());
 					int yPosition = Integer.parseInt(data[6].trim());
-					//TODO: Add x position, y postion and display time.
 
 					level.addNotification(text, textColour, backColour,displayTime,displayDuration,xPosition,yPosition);
 				} else if(inItems){
@@ -256,6 +246,15 @@ public class LevelReader {
 					
 					level.addItem(name,description,image,itemType,value,xCoordinate,yCoordinate);
 					
+				} else if(inWalls){
+					String[] data = line.split(",");
+					//Walls format: x,y,width,height,colour
+					int x = Integer.parseInt(data[0].trim());
+					int y = Integer.parseInt(data[1].trim());
+					int width = Integer.parseInt(data[2].trim());
+					int height = Integer.parseInt(data[3].trim());
+					Color colour = getColor(data[4]);
+					level.addWall(new Wall(x,y,"wall",width,height,colour));
 				}
 
 			}
@@ -281,5 +280,23 @@ public class LevelReader {
 		return levels.get(levelNumber);
 	}
 
+	/**
+	 * @param colourText
+	 * @return
+	 */
+	private Color getColor(String colourText){
+		Color colour;
+		try {
+		    Field fieldText = Class.forName("java.awt.Color").getField(colourText);
+		   colour = (Color)fieldText.get(null);
+		} catch (NullPointerException e) {
+			System.err.println("Colours set to default, cannot read input colours.");
+		    colour = Color.BLACK;
+		}catch(Exception e){
+			System.err.println("Something went wrong while reading colours from level input file. Default colours used.");
+			colour = Color.BLACK;
+		}
+		return colour;
+	}
 
 }

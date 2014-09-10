@@ -13,6 +13,7 @@ import sprites.Enemy;
 import sprites.Item;
 import sprites.SessileSprite;
 import sprites.SpriteBlock;
+import sprites.Wall;
 
 /**
  * Represents the viewable area of the world, the camera follows the position of
@@ -207,6 +208,8 @@ public class Camera extends JComponent {
 			drawSessileSprites(g);
 			// Draw items.
 			drawItems(g);
+			//Draw walls
+			drawWalls(g);
 			// Draw Player.
 			DataStore.getInstance().player.drawPlayer(g,
 					DataStore.getInstance().player.x - camX,
@@ -227,6 +230,13 @@ public class Camera extends JComponent {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void drawWalls(Graphics g) {
+		for(Wall w : DataStore.getInstance().level.getWalls()){
+			w.draw(g,camX,camY);
+		}
+		
 	}
 
 	private void drawSpriteBlocks(Graphics g) {
