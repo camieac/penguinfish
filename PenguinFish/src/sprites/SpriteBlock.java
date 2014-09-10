@@ -21,6 +21,7 @@ public class SpriteBlock {
 	private int x, y, w, h;
 	private BufferedImage img;
 	private ArrayList<SessileSprite> sprites;
+	private String name;
 
 	/**
 	 * @param x
@@ -29,14 +30,14 @@ public class SpriteBlock {
 	 * @param h
 	 * @param img
 	 */
-	public SpriteBlock(int x, int y, int w, int h, BufferedImage img) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
-		this.img = img;
-		this.sprites = new ArrayList<SessileSprite>();
-	}
+//	public SpriteBlock(int x, int y, int w, int h, BufferedImage img) {
+//		this.x = x;
+//		this.y = y;
+//		this.w = w;
+//		this.h = h;
+//		this.img = img;
+//		this.sprites = new ArrayList<SessileSprite>();
+//	}
 
 	/**
 	 * @param x
@@ -45,13 +46,14 @@ public class SpriteBlock {
 	 * @param h
 	 * @param img
 	 */
-	public SpriteBlock(int x, int y, int w, int h, int img) {
+	public SpriteBlock(int x, int y, int w, int h, String name) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		this.img = DataStore.getInstance().images.getSessileImage(img);
+		this.img = DataStore.getInstance().images.getSessileImage(name);
 		this.sprites = new ArrayList<SessileSprite>();
+		this.name = name;
 	}
 
 	/**
@@ -72,7 +74,7 @@ public class SpriteBlock {
 		for (int j = 0; j < rect.height / img.getHeight(); j++) {
 			for (int i = 0; i < rect.width / img.getWidth(); i++) {
 				sprites.add(new SessileSprite(rect.x + (img.getWidth() * i),
-						rect.y + (img.getHeight() * j), img));
+						rect.y + (img.getHeight() * j), name));
 			}
 		}
 		for(SessileSprite ss : sprites){

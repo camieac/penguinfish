@@ -27,8 +27,8 @@ public class Player extends Sprite {
 	 *            Direction of the player.
 	 * @param i
 	 */
-	public Player(int x, int y, Direction d, int i) {
-		super(x, y, d, i);
+	public Player(int x, int y, Direction d, String name) {
+		super(x, y, d, name);
 		health = 100;
 		speed = 5;
 		inventory = new Inventory();

@@ -30,20 +30,20 @@ public class Enemy extends Sprite {
 	 * @param id The type image of the Enemy.
 	 * @param movement The type of movement of the Enemy.
 	 */
-	public Enemy(int x, int y, int id, int movement) {
-		super(x, y, Direction.getRandom(), id);
+	public Enemy(int x, int y, String name, int movement) {
+		super(x, y, Direction.getRandom(), name);
 		// Valid ID's 0,3,6,9,12
-		if (id > 0 && id < 3)
-			id = 0;
-		if (id > 3 && id < 6)
-			id = 3;
-		if (id > 6 && id < 9)
-			id = 6;
-		if (id > 9 && id < 12)
-			id = 9;
-		if (id >12){
-			id = 12;
-		}
+//		if (id > 0 && id < 3)
+//			id = 0;
+//		if (id > 3 && id < 6)
+//			id = 3;
+//		if (id > 6 && id < 9)
+//			id = 6;
+//		if (id > 9 && id < 12)
+//			id = 9;
+//		if (id >12){
+//			id = 12;
+//		}
 
 		this.movement = movement;
 		bounces = true;
@@ -54,9 +54,9 @@ public class Enemy extends Sprite {
 
 		animationStep = 0;
 		images = new BufferedImage[3];
-		images[0] = DataStore.getInstance().images.getEnemy(id);
-		images[1] = DataStore.getInstance().images.getEnemy(id + 1);
-		images[2] = DataStore.getInstance().images.getEnemy(id + 2);
+		images[0] = DataStore.getInstance().images.getNextEnemyImage(name,0);
+		images[1] = DataStore.getInstance().images.getNextEnemyImage(name,1);
+		images[2] = DataStore.getInstance().images.getNextEnemyImage(name,2);
 
 	}
 
@@ -127,18 +127,7 @@ public class Enemy extends Sprite {
 		sb.append("x: " + x + "\n");
 		sb.append("y: " + y + "\n");
 		String type;
-		if (id == 0) {
-			type = "Spider";
-		} else if (id == 3)
-			type = "Worm";
-		else if (id == 6)
-			type = "Fisherman";
-		else if (id == 9)
-			type = "Minotaur";
-		else if (id == 12)
-			type = "Dragon";
-		else
-			type = "Unknown";
+		type = name;
 		sb.append("Type: " + type + "\n");
 		return sb.toString();
 	}

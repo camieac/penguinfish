@@ -191,7 +191,7 @@ public class LevelReader {
 					String[] data = line.split(",");
 					int x = Integer.parseInt(data[0].trim());
 					int y = Integer.parseInt(data[1].trim());
-					int type = Integer.parseInt(data[2].trim());
+					String type = data[2].trim();
 					SessileSprite s = new SessileSprite(x, y, type);
 					level.addSessileSprite(s);
 					System.out.println(s.toString());
@@ -204,16 +204,16 @@ public class LevelReader {
 					int y = Integer.parseInt(data[1].trim());
 					int w = Integer.parseInt(data[2].trim());
 					int h = Integer.parseInt(data[3].trim());
-					int img = Integer.parseInt(data[4].trim());
-					level.addSpriteBlock(x, y, w, h, img);
+					String name = data[4].trim();
+					level.addSpriteBlock(x, y, w, h, name);
 				} else if (inEnemies) {
 					String[] data = line.split(",");
 					int x = Integer.parseInt(data[0].trim());
 					int y = Integer.parseInt(data[1].trim());
-					int id = Integer.parseInt(data[2].trim());
+					String name = data[2].trim();
 					int movement = Integer.parseInt(data[3].trim());
 
-					level.addEnemy(x, y, id, movement);
+					level.addEnemy(x, y, name, movement);
 				} else if (inNotifications){
 					String[] data = line.split(",");
 					String text = data[0].trim();

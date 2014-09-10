@@ -15,25 +15,38 @@ import main.DataStore;
 public class SessileSprite extends Rectangle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	protected int id;
+//	protected int id;
+	protected String name;
 
 	/**
 	 * @param x
 	 * @param y
 	 * @param id
 	 */
-	public SessileSprite(int x, int y, int id) {
-		super(x, y, DataStore.getInstance().images.getSessileImage(id)
-				.getWidth(), DataStore.getInstance().images.getSessileImage(id)
+//	public SessileSprite(int x, int y, int id) {
+//		super(x, y, DataStore.getInstance().images.getSessileImage(id)
+//				.getWidth(), DataStore.getInstance().images.getSessileImage(id)
+//				.getHeight());
+//		this.id = id;
+//	}
+	public SessileSprite(int x, int y, String name) {
+		super(x, y, DataStore.getInstance().images.getSessileImage(name)
+				.getWidth(), DataStore.getInstance().images.getSessileImage(name)
 				.getHeight());
-		this.id = id;
+		this.name = name;
 	}
-	public SessileSprite(int x, int y, BufferedImage img) {
-		super(x, y, img
-				.getWidth(), img
-				.getHeight());
-		this.id = 0;
-	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param img
+	 */
+//	public SessileSprite(int x, int y, BufferedImage img) {
+//		super(x, y, img
+//				.getWidth(), img
+//				.getHeight());
+//	//	this.id = 0;
+//		this.name = "Unknown";
+//	}
 
 	/**
 	 * @param x
@@ -42,7 +55,7 @@ public class SessileSprite extends Rectangle implements Serializable {
 	 * @param i
 	 */
 	public void draw(double x, double y, Graphics g, int i) {
-		g.drawImage(DataStore.getInstance().images.getSessileImage(id),
+		g.drawImage(DataStore.getInstance().images.getSessileImage(name),
 				(int) x, (int) y, null);
 	}
 
@@ -67,14 +80,7 @@ public class SessileSprite extends Rectangle implements Serializable {
 		sb.append("x: " + x + "\n");
 		sb.append("y: " + y + "\n");
 		String type;
-		if (id == 0) {
-			type = "Tree";
-		} else if (id == 1)
-			type = "Bush";
-		else if (id == 2)
-			type = "Hole";
-		else
-			type = "Unknown";
+		type = name;
 		sb.append("Type: " + type + "\n");
 		return sb.toString();
 	}

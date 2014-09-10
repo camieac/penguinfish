@@ -93,8 +93,8 @@ public class Level {
 	 * @param id The image key of the enemy, in order to identify what image goes with the enemy.
 	 * @param movement The movement key, identifies what type of movement the enemy will make.
 	 */
-	public void addEnemy(int x, int y, int id, int movement) {
-		enemies.add(new Enemy(x, y, id, movement));
+	public void addEnemy(int x, int y, String name, int movement) {
+		enemies.add(new Enemy(x, y, name, movement));
 
 	}
 	/**
@@ -108,10 +108,10 @@ public class Level {
 	 * @param y The upper most y position of the start of the sprite block.
 	 * @param w The width of the sprite block
 	 * @param h The height of the sprite block.
-	 * @param img The sessile sprite image key that is used to identify what image to display.
+	 * @param name The sessile sprite image key that is used to identify what image to display.
 	 */
-	public void addSpriteBlock(int x, int y, int w, int h, int img) {
-		spriteBlocks.add(new SpriteBlock(x, y, w, h, img));
+	public void addSpriteBlock(int x, int y, int w, int h, String name) {
+		spriteBlocks.add(new SpriteBlock(x, y, w, h, name));
 
 	}
 	public String getDescription() {

@@ -28,8 +28,8 @@ public class Sprite extends SessileSprite {
 	 * @param id
 	 *            ID of player.
 	 */
-	public Sprite(double x, double y, Direction d, int id) {
-		super((int) x, (int) y, id);
+	public Sprite(double x, double y, Direction d, String name) {
+		super((int) x, (int) y, name);
 		this.direction = d;
 		this.health = 0;
 		this.dead = false;
