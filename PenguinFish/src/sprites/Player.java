@@ -57,34 +57,7 @@ public class Player extends Sprite {
 		if(bottomEdgeBreach && leftEdgeBreach) edgeDirection = Direction.SOUTHWEST;
 		if(bottomEdgeBreach && rightEdgeBreach) edgeDirection = Direction.SOUTHEAST;
 		if(edgeDirection != null){
-			switch(edgeDirection){			
-			case NORTH:
-				direction.setDirections(true, true, false, false, false, false, false, true);
-				break;
-			case NORTHEAST:
-				direction.setDirections(true, true, true, false, false, false, false, false);
-				break;
-			case EAST:
-				direction.setDirections(false, true, true, true, false, false, false, false);
-				break;
-			case SOUTHEAST:
-				direction.setDirections(false, false, true, true, true, false, false, false);
-				break;
-			case SOUTH:
-				direction.setDirections(false, false, false, true, true, true, false, false);
-				break;
-			case SOUTHWEST:
-				direction.setDirections(false, false, false, false, true, true, true, false);
-				break;
-			case WEST:
-				direction.setDirections(false, false, false, false, false, true, true, true);
-				break;
-			case NORTHWEST:
-				direction.setDirections(true, false, false, false, false, false, true, true);
-				break;
-			default:
-				break;
-			}
+			togglePlayerDirections(edgeDirection);
 		}
 
 		else{
@@ -98,6 +71,37 @@ public class Player extends Sprite {
 			direction.enableDirection(Direction.NORTHWEST);
 		}
 		//if(edgeDirection != null) System.out.println("Direction: " + edgeDirection.toString());
+	}
+
+	private void togglePlayerDirections(Direction edgeDirection) {
+		switch(edgeDirection){			
+		case NORTH:
+			direction.setDirections(true, true, false, false, false, false, false, true);
+			break;
+		case NORTHEAST:
+			direction.setDirections(true, true, true, false, false, false, false, false);
+			break;
+		case EAST:
+			direction.setDirections(false, true, true, true, false, false, false, false);
+			break;
+		case SOUTHEAST:
+			direction.setDirections(false, false, true, true, true, false, false, false);
+			break;
+		case SOUTH:
+			direction.setDirections(false, false, false, true, true, true, false, false);
+			break;
+		case SOUTHWEST:
+			direction.setDirections(false, false, false, false, true, true, true, false);
+			break;
+		case WEST:
+			direction.setDirections(false, false, false, false, false, true, true, true);
+			break;
+		case NORTHWEST:
+			direction.setDirections(true, false, false, false, false, false, true, true);
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -168,6 +172,7 @@ public class Player extends Sprite {
 	public void tick() {
 		checkBoundary();
 		calcStep();
+		checkForWallBreach();
 
 		if (health <= 0) {
 			dead = true;
@@ -259,6 +264,25 @@ public class Player extends Sprite {
 			}
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * @return The direction the player was going when it breached a wall.
+	 */
+	private Direction wallBreachDirection(){
+		return this.direction;
+	}
+	/**
+	 * 
+	 */
+	private void checkForWallBreach(){//TODO: Complete this
+		for(Wall w : DataStore.getInstance().level.getWalls()){
+			if(this.collide(w.getBounds())){
+				Direction wallBreachDirection = wallBreachDirection();
+				togglePlayerDirections(wallBreachDirection);
+			}
+		}
 	}
 
 }
