@@ -112,6 +112,18 @@ public enum Direction {
 			// System.out.println(d + " has been disabled");
 		}
 	}
+	/**
+	 * Disables or enables the directions of the player. A true value will disable a direction, a false value will enable a direction.
+	 * 
+	 * @param N North
+	 * @param NE Northeast
+	 * @param E East
+	 * @param SE Southeast
+	 * @param S South
+	 * @param SW Southwest
+	 * @param W West
+	 * @param NW Northwest
+	 */
 	public void setDirections(boolean N,boolean NE, boolean E, boolean SE, boolean S, boolean SW, boolean W, boolean NW){
 		disabledDirections.clear();
 		if(N) disabledDirections.add(Direction.NORTH);
