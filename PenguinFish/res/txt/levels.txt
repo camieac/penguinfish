@@ -40,7 +40,7 @@ begin:
 		sword,This is a sword.,sword,sword,300,300,400
 	</items>
 	<walls>
-	200,200,100,1000,black
+	400,200,100,1000,black
 	</walls>
 </level>
 
