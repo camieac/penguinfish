@@ -33,71 +33,99 @@ public class Player extends Sprite {
 		speed = 5;
 		inventory = new Inventory();
 
-
 	}
 
 	/**
-	 * Checks for boundary breaches and disables all player directions that would cause the player to further breach that boundary.
+	 * Checks for boundary breaches and disables all player directions that
+	 * would cause the player to further breach that boundary.
+	 * 
+	 * @return
 	 */
-	private void checkBoundary() {
+	private boolean checkBoundary() {
 		boolean leftEdgeBreach = x <= 0;
 		boolean topEdgeBreach = y <= 0;
-		boolean rightEdgeBreach = x >= DataStore.getInstance().images.getCurrentBackground().getWidth()
-				- (width / 2);
-		boolean bottomEdgeBreach = y >= DataStore.getInstance().images.getCurrentBackground().getHeight()
-				- (height / 2);
+		boolean rightEdgeBreach = x >= DataStore.getInstance().images
+				.getCurrentBackground().getWidth() - (width / 2);
+		boolean bottomEdgeBreach = y >= DataStore.getInstance().images
+				.getCurrentBackground().getHeight() - (height / 2);
 		Direction edgeDirection = null;
-		//Cannot be going north and south at the same time, hence the else if. Same applies to east and west.
-		if(topEdgeBreach) edgeDirection = Direction.NORTH;
-		if(bottomEdgeBreach) edgeDirection = Direction.SOUTH;
-		if(rightEdgeBreach) edgeDirection = Direction.EAST;
-		if(leftEdgeBreach) edgeDirection = Direction.WEST;
-		if(topEdgeBreach && rightEdgeBreach) edgeDirection = Direction.NORTHEAST;
-		if(topEdgeBreach && leftEdgeBreach) edgeDirection = Direction.NORTHWEST;
-		if(bottomEdgeBreach && leftEdgeBreach) edgeDirection = Direction.SOUTHWEST;
-		if(bottomEdgeBreach && rightEdgeBreach) edgeDirection = Direction.SOUTHEAST;
-		if(edgeDirection != null){
+		// Cannot be going north and south at the same time, hence the else if.
+		// Same applies to east and west.
+		if (topEdgeBreach)
+			edgeDirection = Direction.NORTH;
+		if (bottomEdgeBreach)
+			edgeDirection = Direction.SOUTH;
+		if (rightEdgeBreach)
+			edgeDirection = Direction.EAST;
+		if (leftEdgeBreach)
+			edgeDirection = Direction.WEST;
+		if (topEdgeBreach && rightEdgeBreach)
+			edgeDirection = Direction.NORTHEAST;
+		if (topEdgeBreach && leftEdgeBreach)
+			edgeDirection = Direction.NORTHWEST;
+		if (bottomEdgeBreach && leftEdgeBreach)
+			edgeDirection = Direction.SOUTHWEST;
+		if (bottomEdgeBreach && rightEdgeBreach)
+			edgeDirection = Direction.SOUTHEAST;
+		if (edgeDirection != null) {
 			togglePlayerDirections(edgeDirection);
 		}
 
-		else{
-			direction.enableDirection(Direction.NORTH);
-			direction.enableDirection(Direction.NORTHEAST);
-			direction.enableDirection(Direction.EAST);
-			direction.enableDirection(Direction.SOUTHEAST);
-			direction.enableDirection(Direction.SOUTH);
-			direction.enableDirection(Direction.SOUTHWEST);
-			direction.enableDirection(Direction.WEST);
-			direction.enableDirection(Direction.NORTHWEST);
+		else {
+			enableAllPlayerDirections();
+			// Wall Collisions
+			checkForWallBreach();
 		}
-		//if(edgeDirection != null) System.out.println("Direction: " + edgeDirection.toString());
+		// if(edgeDirection != null) System.out.println("Direction: " +
+		// edgeDirection.toString());
+		return topEdgeBreach || bottomEdgeBreach || rightEdgeBreach
+				|| leftEdgeBreach;
+	}
+
+	private void enableAllPlayerDirections() {
+		direction.enableDirection(Direction.NORTH);
+		direction.enableDirection(Direction.NORTHEAST);
+		direction.enableDirection(Direction.EAST);
+		direction.enableDirection(Direction.SOUTHEAST);
+		direction.enableDirection(Direction.SOUTH);
+		direction.enableDirection(Direction.SOUTHWEST);
+		direction.enableDirection(Direction.WEST);
+		direction.enableDirection(Direction.NORTHWEST);
 	}
 
 	private void togglePlayerDirections(Direction edgeDirection) {
-		switch(edgeDirection){			
+		switch (edgeDirection) {
 		case NORTH:
-			direction.setDirections(true, true, false, false, false, false, false, true);
+			direction.setDirections(true, true, false, false, false, false,
+					false, true);
 			break;
 		case NORTHEAST:
-			direction.setDirections(true, true, true, false, false, false, false, false);
+			direction.setDirections(true, true, true, false, false, false,
+					false, false);
 			break;
 		case EAST:
-			direction.setDirections(false, true, true, true, false, false, false, false);
+			direction.setDirections(false, true, true, true, false, false,
+					false, false);
 			break;
 		case SOUTHEAST:
-			direction.setDirections(false, false, true, true, true, false, false, false);
+			direction.setDirections(false, false, true, true, true, false,
+					false, false);
 			break;
 		case SOUTH:
-			direction.setDirections(false, false, false, true, true, true, false, false);
+			direction.setDirections(false, false, false, true, true, true,
+					false, false);
 			break;
 		case SOUTHWEST:
-			direction.setDirections(false, false, false, false, true, true, true, false);
+			direction.setDirections(false, false, false, false, true, true,
+					true, false);
 			break;
 		case WEST:
-			direction.setDirections(false, false, false, false, false, true, true, true);
+			direction.setDirections(false, false, false, false, false, true,
+					true, true);
 			break;
 		case NORTHWEST:
-			direction.setDirections(true, false, false, false, false, false, true, true);
+			direction.setDirections(true, false, false, false, false, false,
+					true, true);
 			break;
 		default:
 			break;
@@ -108,42 +136,44 @@ public class Player extends Sprite {
 	 * 
 	 */
 	public void displayHelpNotification() {
-		
-		if(DataStore.getInstance().helpNotification.isVisible()){
+
+		if (DataStore.getInstance().helpNotification.isVisible()) {
 			DataStore.getInstance().helpNotification.setVisible(false);
-		}else{
-			
-		boolean overSessileSprite = false;
-		f1: for (SessileSprite s : DataStore.getInstance().level
-				.getSessileSprites()) {
-			if (collide(s.getBounds())) {
-				Notification n = new Notification("This is a sessile sprite\n"
-						+ s.toString(), Color.black, Color.white);
-				n.setVisible(true);
-				DataStore.getInstance().helpNotification = n;
-				overSessileSprite = true;
-				break f1;
+		} else {
+
+			boolean overSessileSprite = false;
+			f1: for (SessileSprite s : DataStore.getInstance().level
+					.getSessileSprites()) {
+				if (collide(s.getBounds())) {
+					Notification n = new Notification(
+							"This is a sessile sprite\n" + s.toString(),
+							Color.black, Color.white);
+					n.setVisible(true);
+					DataStore.getInstance().helpNotification = n;
+					overSessileSprite = true;
+					break f1;
+
+				}
+			}
+			boolean overEnemy = false;
+			f2: for (Enemy e : DataStore.getInstance().level.getEnemies()) {
+				if (collide(e.getBounds())) {
+					Notification n = new Notification("This is an enemy\n"
+							+ e.toString(), Color.black, Color.white);
+					n.setVisible(true);
+					DataStore.getInstance().helpNotification = n;
+					System.out.println("Help Notification for Enemy");
+					overEnemy = true;
+					break f2;
+
+				}
 
 			}
-		}
-		boolean overEnemy = false;
-		f2: for (Enemy e : DataStore.getInstance().level.getEnemies()) {
-			if (collide(e.getBounds())) {
-				Notification n = new Notification("This is an enemy\n"
-						+ e.toString(), Color.black, Color.white);
-				n.setVisible(true);
-				DataStore.getInstance().helpNotification = n;
-				System.out.println("Help Notification for Enemy");
-				overEnemy = true;
-				break f2;
-
+			if (!overSessileSprite && !overEnemy) {
+				DataStore.getInstance().helpNotification = new Notification(
+						"No Help Available", Color.RED, Color.WHITE);
+				DataStore.getInstance().helpNotification.setVisible(true);
 			}
-
-		}
-		if (!overSessileSprite && !overEnemy) {
-			DataStore.getInstance().helpNotification = new Notification("No Help Available", Color.RED, Color.WHITE);
-			DataStore.getInstance().helpNotification.setVisible(true);
-		}
 		}
 
 	}
@@ -159,7 +189,7 @@ public class Player extends Sprite {
 				(int) xcam, (int) ycam, null);
 		g.drawString("pos: " + x + "," + y, (int) xcam, (int) ycam);
 		g.drawString("step: " + dx + "," + dy, (int) xcam, (int) ycam - 15);
-		if(DataStore.getInstance().helpNotification.isVisible()){
+		if (DataStore.getInstance().helpNotification.isVisible()) {
 			DataStore.getInstance().helpNotification.displayPlayerText(g,
 					(int) xcam, (int) ycam);
 		}
@@ -170,13 +200,25 @@ public class Player extends Sprite {
 	 * 
 	 */
 	public void tick() {
-		checkBoundary();
+		checkBoundaries();
 		calcStep();
-		checkForWallBreach();
+		// checkForWallBreach();
 
 		if (health <= 0) {
 			dead = true;
 		}
+	}
+
+	private void checkBoundaries() {
+		if(!checkBoundary()) {
+			// Do nothing
+		}else if(!checkForWallBreach()) {
+			// Do nothing
+
+		}else{
+			enableAllPlayerDirections();
+		}
+
 	}
 
 	/**
@@ -187,14 +229,16 @@ public class Player extends Sprite {
 		if (DataStore.getInstance().periodSinceLastFire >= 3) {
 			double x = 0;
 			double y = 0;
-			Direction playerDirection = DataStore.getInstance().player.getDirection();
-			double playerXcenter = DataStore.getInstance().player.getX()+10;//+ (width/2);
-			double playerYcenter = DataStore.getInstance().player.getY()+10;//+ (height/2);
+			Direction playerDirection = DataStore.getInstance().player
+					.getDirection();
+			double playerXcenter = DataStore.getInstance().player.getX() + 10;// +
+																				// (width/2);
+			double playerYcenter = DataStore.getInstance().player.getY() + 10;// +
+																				// (height/2);
 
-
-			int offsetY = height/4;
-			int offsetX = width/4;
-			switch(playerDirection){
+			int offsetY = height / 4;
+			int offsetX = width / 4;
+			switch (playerDirection) {
 			case NORTH:
 				x = playerXcenter;
 				y = playerYcenter - offsetY;
@@ -232,10 +276,9 @@ public class Player extends Sprite {
 				break;
 
 			}
-			Bullet b = new Bullet(x,y,playerDirection,"bullet");
+			Bullet b = new Bullet(x, y, playerDirection, "bullet");
 
 			DataStore.getInstance().bullets.add(b);
-
 
 			DataStore.getInstance().periodSinceLastFire = 0;
 		}
@@ -246,43 +289,40 @@ public class Player extends Sprite {
 	 */
 	public Inventory getInventory() {
 		return inventory;
-		
+
 	}
 
 	/**
 	 * 
 	 */
 	public void pick() {
-		
-		f1: for (Item i : DataStore.getInstance().level.getItems()){
+
+		f1: for (Item i : DataStore.getInstance().level.getItems()) {
 			if (collide(i.getBounds())) {
-				//Item over = i;
+				// Item over = i;
 				i.setPicked(true);
-				
+
 				break f1;
 
 			}
 		}
-		
+
 	}
-	
-	/**
-	 * 
-	 * @return The direction the player was going when it breached a wall.
-	 */
-	private Direction wallBreachDirection(){
-		return this.direction;
-	}
+
 	/**
 	 * 
 	 */
-	private void checkForWallBreach(){//TODO: Complete this
-		for(Wall w : DataStore.getInstance().level.getWalls()){
-			if(this.collide(w.getBounds())){
-				Direction wallBreachDirection = wallBreachDirection();
-				togglePlayerDirections(wallBreachDirection);
+	private boolean checkForWallBreach() {// TODO: Complete this
+		Boolean breach = false;
+		for (Wall w : DataStore.getInstance().level.getWalls()) {
+			if (this.collide(w.getBounds())) {
+				// System.out.println("Collision with wall");
+				breach = true;
+				togglePlayerDirections(direction);
 			}
+
 		}
+		return breach;
 	}
 
 }
