@@ -19,7 +19,7 @@ public class Settings {
 	private int windowWidth;
 	private int windowHeight;
 
-	private Settings() {
+	public Settings() {
 		XMLParser xmlParser = new XMLParser();
 		InputStream is = null;
 		try {
@@ -33,6 +33,10 @@ public class Settings {
 			e.printStackTrace();
 		}
 
+	}
+	
+	private void saveSettingstoXML(){
+		
 	}
 
 	public static XMLElement getInstance() {

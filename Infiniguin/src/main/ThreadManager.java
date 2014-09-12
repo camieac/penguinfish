@@ -15,7 +15,7 @@ public ThreadManager(){
 }
 	public static void main(String[] args) {
 		new ThreadManager();
-
+		String title = Settings.getInstance().getAttribute("title");
 		// start container
 		try {
 			AppGameContainer container = new AppGameContainer(new Game("Infiniguin"));
