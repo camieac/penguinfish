@@ -16,9 +16,6 @@ public class Settings {
 		settings = new Settings();
 	}
 
-	private int windowWidth;
-	private int windowHeight;
-
 	public Settings() {
 		XMLParser xmlParser = new XMLParser();
 		InputStream is = null;
@@ -41,5 +38,9 @@ public class Settings {
 
 	public static XMLElement getInstance() {
 		return settings.xmlSettings;
+	}
+	
+	public static String getTitle(){
+		return getInstance().getAttributeNames()[0];
 	}
 }
