@@ -35,7 +35,7 @@ public class Settings {
 
 	}
 
-	public Settings getInstance() {
-		return settings.xml;
+	public static XMLElement getInstance() {
+		return settings.xmlSettings;
 	}
 }

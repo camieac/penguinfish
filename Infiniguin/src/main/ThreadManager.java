@@ -4,11 +4,13 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import settings.Settings;
+
 public class ThreadManager {
 Input input;
 
 public ThreadManager(){
-	input = new Input(Settings.getInstance().get);
+	//input = new Input(Settings.getInstance().getAttribute("windowHeight"));
 	
 }
 	public static void main(String[] args) {
