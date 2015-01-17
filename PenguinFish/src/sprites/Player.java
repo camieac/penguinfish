@@ -73,7 +73,7 @@ public class Player extends Sprite {
 
 		else {
 			enableAllPlayerDirections();
-			// Wall Collisions
+			
 			
 		}
 		// if(edgeDirection != null) System.out.println("Direction: " +
@@ -93,6 +93,10 @@ public class Player extends Sprite {
 		direction.enableDirection(Direction.NORTHWEST);
 	}
 
+	/**
+	 * For a given direction, this will disable all directions that move in that genaral direction, if that makes sense.
+	 * @param edgeDirection
+	 */
 	private void togglePlayerDirections(Direction edgeDirection) {
 		switch (edgeDirection) {
 		case NORTH:

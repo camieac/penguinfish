@@ -30,7 +30,8 @@ public Wall(int x, int y, String name, int width, int height,Color colour){
 public void draw(Graphics g,double camX,double camY){
 	Color oldColour = g.getColor();
 	g.setColor(colour);
-	g.drawRect((int)(x - camX),(int)( y - camY), width, height);
+	//g.drawRect((int)(x - camX),(int)( y - camY), width, height);
+	g.fillRect((int)(x - camX),(int)( y - camY), width, height);
 	g.setColor(oldColour);
 }
 }
