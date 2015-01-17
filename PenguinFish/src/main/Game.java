@@ -17,25 +17,18 @@ import sprites.Enemy;
  */
 public class Game implements Runnable {
 
-	protected boolean gameOver;
-	protected Random rand;
+	
+	
 
 	/**
 	 * 
 	 */
 	public Game() {
-		rand = new Random();
-		// numberOfEnemies = 300;
-		createGame();
+		
 	}
 
 
-	protected void createGame() {
-
-		// createEnemies();
-		gameOver = false;
-
-	}
+	
 
 	protected void detectBulletCollisions() {
 		LinkedList<Bullet> dead = new LinkedList<Bullet>();
@@ -114,10 +107,12 @@ public class Game implements Runnable {
 	}
 
 	public void run() {
-		while (!gameOver) {
-			difficultyWait();
-			if (DataStore.getInstance().gameState == State.PLAYING)
+		while (true) {
+			if (DataStore.getInstance().gameState == State.PLAYING){
+				difficultyWait();
 				tickAll();
+			}
+				
 		}
 	}
 

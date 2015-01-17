@@ -74,7 +74,7 @@ public class Player extends Sprite {
 		else {
 			enableAllPlayerDirections();
 			// Wall Collisions
-			checkForWallBreach();
+			
 		}
 		// if(edgeDirection != null) System.out.println("Direction: " +
 		// edgeDirection.toString());
@@ -210,12 +210,7 @@ public class Player extends Sprite {
 	}
 
 	private void checkBoundaries() {
-		if(!checkBoundary()) {
-			// Do nothing
-		}else if(!checkForWallBreach()) {
-			// Do nothing
-
-		}else{
+		if(!checkBoundary() && !checkForWallBreach()){
 			enableAllPlayerDirections();
 		}
 
